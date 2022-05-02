@@ -1,18 +1,20 @@
 {
-  "block.torchikoma.prismarine_torch.name": "海晶火把",
-  "block.torchikoma.glowstone_torch.name": "荧石火把",
-  "block.torchikoma.torchikoma.name": "拓吉克玛",
+  "itemGroup.torchikoma.tab": "火把克玛",
 
-  "item.torchikoma.glowstone_torch.name": "荧石火把",
-  "item.torchikoma.prismarine_torch.name": "海晶火把",
-  "item.torchikoma.clustered_torch.name": "集束火把",
-  "item.torchikoma.clustered_redstone_torch.name": "集束红石火把",
-  "item.torchikoma.clustered_soul_torch.name": "集束灵魂火把",
-  "item.torchikoma.clustered_glowstone_torch.name": "集束荧石火把",
-  "item.torchikoma.clustered_prismarine_torch.name": "集束海晶火把",
-  "item.torchikoma.torch_launcher.name": "火把发射器",
-  "item.torchikoma.torch_gatlingr.name": "南无加特林菩萨（火把加特林）",
-  "item.torchikoma.torch_cannon.name": "大慈大悲贫铀弹（火把手炮）",
+  "block.torchikoma.prismarine_torch": "海晶火把",
+  "block.torchikoma.glowstone_torch": "荧石火把",
+  "block.torchikoma.torchikoma": "拓吉克玛",
 
-  "entity.torchikoma.torchikoma.name": "拓吉克玛"
+  "item.torchikoma.glowstone_torch": "荧石火把",
+  "item.torchikoma.prismarine_torch": "海晶火把",
+  "item.torchikoma.clustered_torch": "集束火把",
+  "item.torchikoma.clustered_redstone_torch": "集束红石火把",
+  "item.torchikoma.clustered_soul_torch": "集束灵魂火把",
+  "item.torchikoma.clustered_glowstone_torch": "集束荧石火把",
+  "item.torchikoma.clustered_prismarine_torch": "集束海晶火把",
+  "item.torchikoma.torch_launcher": "火把发射器",
+  "item.torchikoma.torch_gatlingr": "南无加特林菩萨（火把加特林）",
+  "item.torchikoma.torch_cannon": "大慈大悲贫铀弹（火把手炮）",
+
+  "entity.torchikoma.torchikoma": "拓吉克玛"
 }

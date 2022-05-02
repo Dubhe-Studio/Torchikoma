@@ -23,6 +23,11 @@ public class TorchikomaEvents {
             event.getRegistry().register(MyItems.PRISMARINE_TORCH);
             event.getRegistry().register(MyItems.GLOWSTONE_TORCH);
             event.getRegistry().register(MyItems.TORCH_LAUNCHER);
+            event.getRegistry().register(MyItems.CLUSTERED_TORCH);
+            event.getRegistry().register(MyItems.CLUSTERED_REDSTONE_TORCH);
+            event.getRegistry().register(MyItems.CLUSTERED_SOUL_TORCH);
+            event.getRegistry().register(MyItems.CLUSTERED_GLOWSTONE_TORCH);
+            event.getRegistry().register(MyItems.CLUSTERED_PRISMARINE_TORCH);
         }
     }
 }
