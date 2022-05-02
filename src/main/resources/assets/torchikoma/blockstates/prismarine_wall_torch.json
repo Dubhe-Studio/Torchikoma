@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "torchikoma:block/prismarine_wall_torch"
+    },
+    "facing=north": {
+      "model": "torchikoma:block/prismarine_wall_torch",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "torchikoma:block/prismarine_wall_torch",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "torchikoma:block/prismarine_wall_torch",
+      "y": 180
+    }
+  }
+}

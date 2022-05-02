@@ -13,9 +13,9 @@ public class TorchikomaEvents {
         @SubscribeEvent
         public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
             event.getRegistry().register(MyBlocks.PRISMARINE_TORCH);
-            event.getRegistry().register(MyBlocks.WALL_PRISMARINE_TORCH);
+            event.getRegistry().register(MyBlocks.PRISMARINE_WALL_TORCH);
             event.getRegistry().register(MyBlocks.GLOWSTONE_TORCH);
-            event.getRegistry().register(MyBlocks.WALL_GLOWSTONE_TORCH);
+            event.getRegistry().register(MyBlocks.GLOWSTONE_WALL_TORCH);
         }
 
         @SubscribeEvent

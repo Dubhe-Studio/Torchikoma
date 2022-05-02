@@ -3,6 +3,8 @@
 
   "block.torchikoma.prismarine_torch": "海晶火把",
   "block.torchikoma.glowstone_torch": "荧石火把",
+  "block.torchikoma.prismarine_wall_torch": "墙上的海晶火把",
+  "block.torchikoma.glowstone_wall_torch": "墙上的荧石火把",
   "block.torchikoma.torchikoma": "拓奇克玛",
 
   "item.torchikoma.glowstone_torch": "荧石火把",

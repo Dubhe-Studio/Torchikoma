@@ -17,9 +17,9 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
         }
     };
 
-    public static final Item PRISMARINE_TORCH = new StandingAndWallBlockItem(MyBlocks.PRISMARINE_TORCH, MyBlocks.WALL_PRISMARINE_TORCH, defaultProperties())
+    public static final Item PRISMARINE_TORCH = new StandingAndWallBlockItem(MyBlocks.PRISMARINE_TORCH, MyBlocks.PRISMARINE_WALL_TORCH, defaultProperties())
             .setRegistryName(Torchikoma.getId("prismarine_torch"));
-    public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.WALL_GLOWSTONE_TORCH, defaultProperties())
+    public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties())
             .setRegistryName(Torchikoma.getId("glowstone_torch"));
     public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties())
             .setRegistryName(Torchikoma.getId("torch_launcher"));

@@ -1,8 +1,10 @@
 {
   "itemGroup.torchikoma.tab": "torchikoma",
-  
+
   "block.torchikoma.prismarine_torch": "prismarine torch",
   "block.torchikoma.glowstone_torch": "glowstone torch",
+  "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",
+  "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "torchikoma",
 
   "item.torchikoma.glowstone_torch": "glowstone torch",
