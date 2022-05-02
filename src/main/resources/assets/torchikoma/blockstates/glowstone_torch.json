@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "torchikoma:block/glowstone_torch"
+    }
+  }
+}
