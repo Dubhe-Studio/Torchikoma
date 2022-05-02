@@ -1,4 +1,4 @@
-package com.xekr.torchikoma;
+package dev.dubhe.torchikoma;
 
 import net.minecraftforge.fml.common.Mod;
 
