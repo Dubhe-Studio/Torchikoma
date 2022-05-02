@@ -22,6 +22,8 @@ public class MyBlocks {
             .noCollission().instabreak().sound(SoundType.WOOD).lootFrom(() -> GLOWSTONE_TORCH).lightLevel(state -> 15))
             .setRegistryName(Torchikoma.getId("glowstone_wall_torch"));
 
+    public static final Block TORCHIKOMA = new Block(defaultProperties(Material.METAL)).setRegistryName("torchikoma");
+
     private static BlockBehaviour.Properties defaultProperties(Material material) {
         return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F).requiresCorrectToolForDrops();
     }
