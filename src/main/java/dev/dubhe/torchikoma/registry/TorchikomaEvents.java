@@ -23,6 +23,7 @@ public class TorchikomaEvents {
             event.getRegistry().register(MyBlocks.PRISMARINE_WALL_TORCH);
             event.getRegistry().register(MyBlocks.GLOWSTONE_TORCH);
             event.getRegistry().register(MyBlocks.GLOWSTONE_WALL_TORCH);
+            event.getRegistry().register(MyBlocks.TORCHIKOMA);
         }
 
         @SubscribeEvent
@@ -30,11 +31,14 @@ public class TorchikomaEvents {
             event.getRegistry().register(MyItems.PRISMARINE_TORCH);
             event.getRegistry().register(MyItems.GLOWSTONE_TORCH);
             event.getRegistry().register(MyItems.TORCH_LAUNCHER);
+            event.getRegistry().register(MyItems.TORCH_GATLING);
+            event.getRegistry().register(MyItems.TORCH_CANNON);
             event.getRegistry().register(MyItems.CLUSTERED_TORCH);
             event.getRegistry().register(MyItems.CLUSTERED_REDSTONE_TORCH);
             event.getRegistry().register(MyItems.CLUSTERED_SOUL_TORCH);
             event.getRegistry().register(MyItems.CLUSTERED_GLOWSTONE_TORCH);
             event.getRegistry().register(MyItems.CLUSTERED_PRISMARINE_TORCH);
+            event.getRegistry().register(MyItems.TORCHIKOMA);
         }
         @SubscribeEvent
         public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {
