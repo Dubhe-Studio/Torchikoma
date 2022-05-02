@@ -85,6 +85,7 @@ public class WallColdFireTorch extends ColdFireTorch {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder);
         pBuilder.add(FACING);
     }
 
