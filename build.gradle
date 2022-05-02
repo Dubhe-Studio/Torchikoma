@@ -20,7 +20,9 @@ apply plugin: 'org.spongepowered.mixin'
 archivesBaseName = mod_name
 group = maven_group
 version = 'mc' + mc_version + '-' + mod_version
-// name-mc{mcv}-{version}
+if (build_number != "undefined") {
+    version += "+build.${build_number}"
+} // name-mc{mcv}-{version}+build.{build_number}
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -97,3 +99,7 @@ jar {
 }
 
 jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
