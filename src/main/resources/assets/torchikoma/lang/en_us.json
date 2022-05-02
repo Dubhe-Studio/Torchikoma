@@ -1,0 +1,18 @@
+{
+  "block.torchikoma.prismarine_torch.name": "prismarine torch",
+  "block.torchikoma.glowstone_torch.name": "glowstone torch",
+  "block.torchikoma.torchikoma.name": "torchikoma",
+
+  "item.torchikoma.glowstone_torch.name": "glowstone torch",
+  "item.torchikoma.prismarine_torch.name": "prismarine torch",
+  "item.torchikoma.clustered_torch.name": "clustered torch",
+  "item.torchikoma.clustered_redstone_torch.name": "clustered redstone torch",
+  "item.torchikoma.clustered_soul_torch.name": "clustered soul torch",
+  "item.torchikoma.clustered_glowstone_torch.name": "clustered glowstone torch",
+  "item.torchikoma.clustered_prismarine_torch.name": "clustered prismarine torch",
+  "item.torchikoma.torch_launcher.name": "torch launcher",
+  "item.torchikoma.torch_gatlingr.name": "torch gatlingr",
+  "item.torchikoma.torch_cannon.name": "torch cannon",
+
+  "entity.torchikoma.torchikoma.name": "torchikoma"
+}
