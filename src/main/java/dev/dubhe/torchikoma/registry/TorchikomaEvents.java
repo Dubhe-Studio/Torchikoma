@@ -1,18 +1,20 @@
 package dev.dubhe.torchikoma.registry;
 
-import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
+import com.mojang.blaze3d.platform.ScreenManager;
+import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class TorchikomaEvents {
-
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     static class GlobalModEvents {
         @SubscribeEvent
@@ -40,13 +42,16 @@ public class TorchikomaEvents {
         }
     }
 
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetUpEvent(FMLClientSetupEvent event) {
-            ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_TORCH, RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(MyBlocks.WALL_GLOWSTONE_TORCH, RenderType.cutout());
+            MenuScreens.register(MyMenuTypes.TORCH_LAUNCHER, TorchLauncherScreen::new);
+
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.PRISMARINE_TORCH, RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(MyBlocks.WALL_PRISMARINE_TORCH, RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(MyBlocks.PRISMARINE_WALL_TORCH, RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_TORCH, RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_WALL_TORCH, RenderType.cutout());
         }
     }
 }
