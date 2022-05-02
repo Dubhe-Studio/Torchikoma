@@ -1,0 +1,30 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+
+license = "All rights reserved"
+[[mods]]
+modId = "torchikoma"
+version = "${file.jarVersion}"
+displayName = "Torchikoma"
+#updateJSONURL="http://myurl.me/"
+displayURL=""
+#logoFile="ironstars.png"
+#credits="Thanks for this example mod goes to Java"
+authors = ""
+description = '''
+
+'''
+
+[[dependencies.torchikoma]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.torchikoma]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.1,1.19)"
+ordering = "NONE"
+side = "BOTH"
