@@ -28,6 +28,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, CONTAINER_BACKGROUND);
+        // 绘制物品栏等信息
 //        int i = (this.width - this.imageWidth) / 2;
 //        int j = (this.height - this.imageHeight) / 2;
 //        this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.containerRows * 18 + 17);
