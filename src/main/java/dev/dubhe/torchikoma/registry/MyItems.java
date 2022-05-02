@@ -3,10 +3,7 @@ package dev.dubhe.torchikoma.registry;
 import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.item.TorchGatling;
 import dev.dubhe.torchikoma.item.TorchLauncher;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.*;
 import org.jetbrains.annotations.NotNull;
 
 public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始化, 否则NPE异常
@@ -33,7 +30,7 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
     public static final Item CLUSTERED_REDSTONE_TORCH = new Item(defaultProperties()).setRegistryName(Torchikoma.getId("clustered_redstone_torch"));
     public static final Item CLUSTERED_PRISMARINE_TORCH = new Item(defaultProperties()).setRegistryName(Torchikoma.getId("clustered_prismarine_torch"));
     public static final Item CLUSTERED_GLOWSTONE_TORCH = new Item(defaultProperties()).setRegistryName(Torchikoma.getId("clustered_glowstone_torch"));
-    public static final Item TORCHIKOMA = new Item(defaultProperties()).setRegistryName(Torchikoma.getId("torchikoma"));
+    public static final Item TORCHIKOMA = new BlockItem(MyBlocks.TORCHIKOMA, defaultProperties()).setRegistryName(Torchikoma.getId("torchikoma"));
 
     private static Item.Properties defaultProperties() {
         return new Item.Properties().tab(TAB);
