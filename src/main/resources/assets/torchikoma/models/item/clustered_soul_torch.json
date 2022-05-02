@@ -1,0 +1,6 @@
+{
+  "parent": "torchikoma:item/template_clustered_torch",
+  "textures": {
+    "torch": "minecraft:block/soul_torch"
+  }
+}
