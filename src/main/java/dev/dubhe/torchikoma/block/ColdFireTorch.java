@@ -33,18 +33,18 @@ public class ColdFireTorch extends Block implements SimpleWaterloggedBlock {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext p_153467_) {
-        FluidState fluidstate = p_153467_.getLevel().getFluidState(p_153467_.getClickedPos());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         BlockState blockstate = this.defaultBlockState();
-        if (blockstate.canSurvive(p_153467_.getLevel(), p_153467_.getClickedPos())) {
+        if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
             return blockstate.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
         }
         return null;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_153490_) {
-        p_153490_.add(WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class ColdFireTorch extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public FluidState getFluidState(BlockState p_153492_) {
-        return p_153492_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_153492_);
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
