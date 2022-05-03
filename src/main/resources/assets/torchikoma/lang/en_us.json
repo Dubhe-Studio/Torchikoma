@@ -7,8 +7,6 @@
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "torchikoma",
 
-  "item.torchikoma.glowstone_torch": "glowstone torch",
-  "item.torchikoma.prismarine_torch": "prismarine torch",
   "item.torchikoma.clustered_torch": "clustered torch",
   "item.torchikoma.clustered_redstone_torch": "clustered redstone torch",
   "item.torchikoma.clustered_soul_torch": "clustered soul torch",
