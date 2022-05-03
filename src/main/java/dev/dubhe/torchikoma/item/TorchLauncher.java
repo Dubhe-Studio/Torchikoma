@@ -9,8 +9,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 public class TorchLauncher extends Item implements ProviderMenu {
 
@@ -32,5 +34,8 @@ public class TorchLauncher extends Item implements ProviderMenu {
             }
         }
         return InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
+    }
+    public @NotNull net.minecraft.world.item.UseAnim getUseAnimation(@NotNull ItemStack pStack) {
+        return UseAnim.BOW;
     }
 }

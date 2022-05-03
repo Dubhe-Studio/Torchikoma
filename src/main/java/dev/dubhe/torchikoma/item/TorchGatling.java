@@ -17,6 +17,7 @@ public class TorchGatling extends ProjectileWeaponItem implements Vanishable {
 
     public static final Predicate<ItemStack> TOUCH_ONLY = item -> item.is(ItemTags.TOUCH);
 
+    @Override
     public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
         return UseAnim.BOW;
     }
