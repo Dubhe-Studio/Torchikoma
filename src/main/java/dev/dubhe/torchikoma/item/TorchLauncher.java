@@ -27,7 +27,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
         if (!pLevel.isClientSide) {
             if (pPlayer.isShiftKeyDown()) {
                 NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
-                        new TextComponent("test"),
+                        this.getDescription(),
                         (id, inv, player) -> new TorchLauncherMenu(id, inv)
                 ));
                 return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));

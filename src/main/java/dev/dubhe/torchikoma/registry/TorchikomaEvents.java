@@ -1,17 +1,23 @@
 package dev.dubhe.torchikoma.registry;
 
 import com.mojang.blaze3d.platform.ScreenManager;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.dubhe.torchikoma.entity.render.TorchRender;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -71,6 +77,18 @@ public class TorchikomaEvents {
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.PRISMARINE_WALL_TORCH, RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_TORCH, RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_WALL_TORCH, RenderType.cutout());
+        }
+    }
+
+    @Mod.EventBusSubscriber
+    static class GlobalForgeEvents {
+        @SubscribeEvent
+        public static void onCommandRegister(RegisterCommandsEvent event) {
+            event.getDispatcher().register(Commands.literal("torchikoma").then(Commands.argument("value", IntegerArgumentType.integer()).executes(ctx -> {
+                TorchLauncherScreen.temp = IntegerArgumentType.getInteger(ctx, "value");
+                ctx.getSource().sendSuccess(new TextComponent("Ok"), false);
+                return Command.SINGLE_SUCCESS;
+            })));
         }
     }
 }
