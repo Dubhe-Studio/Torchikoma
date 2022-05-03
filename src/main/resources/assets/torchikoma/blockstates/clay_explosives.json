@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "torchikoma:block/clay_explosives",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "torchikoma:block/clay_explosives",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "torchikoma:block/clay_explosives",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "torchikoma:block/clay_explosives",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "torchikoma:block/clay_explosives"
+    },
+    "facing=west": {
+      "model": "torchikoma:block/clay_explosives",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

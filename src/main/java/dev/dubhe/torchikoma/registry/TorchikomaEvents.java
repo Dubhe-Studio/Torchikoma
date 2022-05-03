@@ -35,6 +35,7 @@ public class TorchikomaEvents {
             event.getRegistry().register(MyBlocks.TORCHIKOMA);
             event.getRegistry().register(MyBlocks.ELECTRONIC_COMPONENT);
             event.getRegistry().register(MyBlocks.MECHANICAL_COMPONENT);
+            event.getRegistry().register(MyBlocks.CLAY_EXPLOSIVES);
 
         }
 
@@ -53,6 +54,7 @@ public class TorchikomaEvents {
             event.getRegistry().register(MyItems.TORCHIKOMA);
             event.getRegistry().register(MyItems.ELECTRONIC_COMPONENT);
             event.getRegistry().register(MyItems.MECHANICAL_COMPONENT);
+            event.getRegistry().register(MyItems.CLAY_EXPLOSIVES);
         }
         @SubscribeEvent
         public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {

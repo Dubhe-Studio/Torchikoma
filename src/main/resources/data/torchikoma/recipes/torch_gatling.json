@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBA",
+    "BBC",
+    " D "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "B": {
+      "item": "minecraft:powered_rail"
+    },
+    "C": {
+      "item": "minecraft:mechanical_component"
+    },
+    "D": {
+      "item": "minecraft:torch_launcher"
+    }
+  },
+  "result": {
+    "item": "torchikoma:torch_gatling",
+    "count": 1
+  }
+}

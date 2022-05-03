@@ -6,6 +6,7 @@
   "block.torchikoma.prismarine_wall_torch": "墙上的海晶火把",
   "block.torchikoma.glowstone_wall_torch": "墙上的荧石火把",
   "block.torchikoma.torchikoma": "拓奇克玛",
+  "block.torchikoma.clay_explosives": "粘土炸药",
 
   "item.torchikoma.clustered_torch": "集束火把",
   "item.torchikoma.clustered_redstone_torch": "集束红石火把",
@@ -18,6 +19,7 @@
   "item.torchikoma.torchikoma": "拓奇克玛",
   "item.torchikoma.mechanical_component": "机械零件",
   "item.torchikoma.electronic_component": "电子元件",
+  "item.torchikoma.clay_explosives": "粘土炸药",
 
   "entity.torchikoma.torchikoma": "拓奇克玛"
 }

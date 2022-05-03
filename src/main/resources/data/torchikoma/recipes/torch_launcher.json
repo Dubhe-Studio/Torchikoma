@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AB ",
+    "BC ",
+    "  D"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:copper_ingot"
+    },
+    "B": {
+      "item": "minecraft:powered_rail"
+    },
+    "C": {
+      "item": "minecraft:crossbow"
+    },
+    "D": {
+      "item": "minecraft:barrel"
+    }
+  },
+  "result": {
+    "item": "torchikoma:torch_launcher",
+    "count": 1
+  }
+}

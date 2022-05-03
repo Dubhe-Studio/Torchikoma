@@ -6,6 +6,7 @@
   "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "torchikoma",
+  "block.torchikoma.clay_explosives": "clay explosives",
 
   "item.torchikoma.clustered_torch": "clustered torch",
   "item.torchikoma.clustered_redstone_torch": "clustered redstone torch",
@@ -18,6 +19,7 @@
   "item.torchikoma.torchikoma": "torchikoma",
   "item.torchikoma.mechanical_component": "mechanical component",
   "item.torchikoma.electronic_component": "electronic component",
+  "item.torchikoma.clay_explosives": "clay explosives",
 
   "entity.torchikoma.torchikoma": "torchikoma"
 }

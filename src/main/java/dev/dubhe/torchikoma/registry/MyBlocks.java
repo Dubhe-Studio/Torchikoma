@@ -1,10 +1,7 @@
 package dev.dubhe.torchikoma.registry;
 
-import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
+import dev.dubhe.torchikoma.block.*;
 import dev.dubhe.torchikoma.Torchikoma;
-import dev.dubhe.torchikoma.block.ComponentBlock;
-import dev.dubhe.torchikoma.block.TorchikomaBlock;
-import dev.dubhe.torchikoma.block.WallColdFireTorchBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -33,6 +30,9 @@ public class MyBlocks {
     public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("electronic_component"));
+    public static final Block CLAY_EXPLOSIVES = new ClayExplosives(defaultProperties(Material.METAL)
+            .instabreak().sound(SoundType.METAL))
+            .setRegistryName(Torchikoma.getId("clay_explosives"));
 
     private static BlockBehaviour.Properties defaultProperties(Material material) {
         return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F).requiresCorrectToolForDrops();
