@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class TorchikomaEntity extends TamableAnimal {
 
-    protected TorchikomaEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
+    public TorchikomaEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
         super(p_21803_, p_21804_);
     }
 

@@ -23,11 +23,11 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("prismarine_torch"));
     public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties())
             .setRegistryName(Torchikoma.getId("glowstone_torch"));
-    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties())
+    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties().stacksTo(1))
             .setRegistryName(Torchikoma.getId("torch_launcher"));
-    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties())
+    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1))
             .setRegistryName(Torchikoma.getId("torch_gatling"));
-    public static final Item TORCH_CANNON = new TorchGatling(defaultProperties())
+    public static final Item TORCH_CANNON = new TorchGatling(defaultProperties().stacksTo(1))
             .setRegistryName(Torchikoma.getId("torch_cannon"));
     public static final Item CLUSTERED_TORCH = new Item(defaultProperties())
             .setRegistryName(Torchikoma.getId("clustered_torch"));

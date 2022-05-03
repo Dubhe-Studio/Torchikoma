@@ -1,5 +1,6 @@
 package dev.dubhe.torchikoma.item;
 
+import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.menu.ProviderMenu;
 import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
 import net.minecraft.network.chat.TextComponent;
@@ -9,6 +10,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
@@ -30,6 +32,8 @@ public class TorchLauncher extends Item implements ProviderMenu {
                 ));
                 return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
             } else {
+                TorchEntity entity = new TorchEntity(pLevel, pPlayer, new ItemStack(Items.TORCH));
+                pLevel.addFreshEntity(entity);
                 //TODO 发射
             }
         }
