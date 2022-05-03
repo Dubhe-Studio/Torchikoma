@@ -28,10 +28,10 @@ public class MyBlocks {
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("mechanical_component"));
     public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL))
+            .instabreak().sound(SoundType.METAL).noOcclusion())
             .setRegistryName(Torchikoma.getId("electronic_component"));
     public static final Block CLAY_EXPLOSIVES = new ClayExplosivesBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL))
+            .instabreak().sound(SoundType.METAL).noOcclusion())
             .setRegistryName(Torchikoma.getId("clay_explosives"));
 
     private static BlockBehaviour.Properties defaultProperties(Material material) {
