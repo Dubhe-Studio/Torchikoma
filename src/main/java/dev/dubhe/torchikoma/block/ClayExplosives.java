@@ -136,7 +136,6 @@ public class ClayExplosives extends DirectionalBlock implements SimpleWaterlogge
             BlockPos behindBlock = behindBlock(pLevel, pPos);
             pLevel.destroyBlock(pPos, false);
             BlockState blockstate = pLevel.getBlockState(behindBlock);
-            pLevel.addParticle(ParticleTypes.EXPLOSION_EMITTER, behindBlock.getX(), behindBlock.getY(), behindBlock.getZ(), 1.0D, 0.0D, 0.0D);
             if (!blockstate.isAir()) {
                 if (blockstate.getBlock().getExplosionResistance() < 9 && !(blockstate.hasProperty(WATERLOGGED) && blockstate.getValue(WATERLOGGED))) {
                     pLevel.destroyBlock(behindBlock, true);

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:soul_torch"
+    },
+    {
+      "item": "minecraft:soul_torch"
+    },
+    {
+      "item": "minecraft:soul_torch"
+    },
+    {
+      "item": "minecraft:soul_torch"
+    },
+    {
+      "item": "torchikoma:clay_explosives"
+    }
+  ],
+  "result": {
+    "item": "torchikoma:clustered_soul_torch",
+    "count": 1
+  }
+}

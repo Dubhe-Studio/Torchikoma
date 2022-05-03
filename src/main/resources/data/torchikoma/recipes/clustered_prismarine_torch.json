@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "torchikoma:prismarine_torch"
+    },
+    {
+      "item": "torchikoma:prismarine_torch"
+    },
+    {
+      "item": "torchikoma:prismarine_torch"
+    },
+    {
+      "item": "torchikoma:prismarine_torch"
+    },
+    {
+      "item": "torchikoma:clay_explosives"
+    }
+  ],
+  "result": {
+    "item": "torchikoma:clustered_prismarine_torch",
+    "count": 1
+  }
+}

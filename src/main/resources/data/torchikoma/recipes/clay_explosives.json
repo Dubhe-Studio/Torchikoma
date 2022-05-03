@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XY",
+    "YX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:clay_ball"
+    },
+    "Y": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "torchikoma:clay_explosives",
+    "count": 8
+  }
+}
