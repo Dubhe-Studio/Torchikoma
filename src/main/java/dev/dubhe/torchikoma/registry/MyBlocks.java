@@ -30,7 +30,7 @@ public class MyBlocks {
     public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("electronic_component"));
-    public static final Block CLAY_EXPLOSIVES = new ClayExplosives(defaultProperties(Material.METAL)
+    public static final Block CLAY_EXPLOSIVES = new ClayExplosivesBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("clay_explosives"));
 

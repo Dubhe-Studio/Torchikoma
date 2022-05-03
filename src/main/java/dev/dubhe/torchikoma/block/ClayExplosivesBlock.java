@@ -2,7 +2,6 @@ package dev.dubhe.torchikoma.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -35,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class ClayExplosives extends DirectionalBlock implements SimpleWaterloggedBlock {
+public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape Y_AXIS_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 3.0D, 12.0D);
     protected static final VoxelShape Z_AXIS_AABB = Block.box(4.0D, 4.0D, 0.0D, 12.0D, 12.0D, 3.0D);
@@ -44,7 +43,7 @@ public class ClayExplosives extends DirectionalBlock implements SimpleWaterlogge
     protected static final VoxelShape BZ_AXIS_AABB = Block.box(4.0D, 4.0D, 13.0D, 12.0D, 12.0D, 16.0D);
     protected static final VoxelShape BX_AXIS_AABB = Block.box(13.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D);
 
-    public ClayExplosives(Properties p_52591_) {
+    public ClayExplosivesBlock(Properties p_52591_) {
         super(p_52591_);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
     }
