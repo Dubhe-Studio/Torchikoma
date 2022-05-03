@@ -25,8 +25,8 @@ public class ComponentBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 
-    public ComponentBlock(Properties p_49795_) {
-        super(p_49795_);
+    public ComponentBlock(Properties pProperties) {
+        super(pProperties);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.FALSE));
     }
 
