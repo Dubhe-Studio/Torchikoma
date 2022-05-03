@@ -3,7 +3,11 @@ package dev.dubhe.torchikoma.registry;
 import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.item.TorchGatling;
 import dev.dubhe.torchikoma.item.TorchLauncher;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import org.jetbrains.annotations.NotNull;
 
 public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始化, 否则NPE异常
