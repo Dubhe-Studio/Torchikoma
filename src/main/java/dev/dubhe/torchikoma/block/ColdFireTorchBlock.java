@@ -21,12 +21,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
-public class ColdFireTorch extends Block implements SimpleWaterloggedBlock {
+public class ColdFireTorchBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected static final VoxelShape AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
-    public ColdFireTorch(Properties pProperties) {
+    public ColdFireTorchBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
