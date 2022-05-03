@@ -18,6 +18,8 @@
   "item.torchikoma.torch_gatling": "torch gatling",
   "item.torchikoma.torch_cannon": "torch cannon",
   "item.torchikoma.torchikoma": "torchikoma",
+  "item.torchikoma.mechanical_component": "mechanical component",
+  "item.torchikoma.electronic_component": "electronic component",
 
   "entity.torchikoma.torchikoma": "torchikoma"
 }

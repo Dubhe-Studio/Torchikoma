@@ -18,6 +18,8 @@
   "item.torchikoma.torch_gatling": "南无加特林菩萨（火把加特林）",
   "item.torchikoma.torch_cannon": "大慈大悲贫铀弹（火把手炮）",
   "item.torchikoma.torchikoma": "拓奇克玛",
+  "item.torchikoma.mechanical_component": "机械零件",
+  "item.torchikoma.electronic_component": "电子元件",
 
   "entity.torchikoma.torchikoma": "拓奇克玛"
 }
