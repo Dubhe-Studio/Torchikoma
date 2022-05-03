@@ -693,7 +693,7 @@
 		"thirdperson_lefthand": {
 			"rotation": [70.75, 0, 0],
 			"translation": [0, 2.75, -7],
-			"scale": [-0.8, 0.8, 0.8]
+			"scale": [0.8, 0.8, 0.8]
 		},
 		"firstperson_righthand": {
 			"rotation": [10, 0, 0],
@@ -706,6 +706,7 @@
 			"scale": [1.2, 1.2, 0.74219]
 		},
 		"ground": {
+			"translation": [0, 1, 0],
 			"scale": [0.5, 0.5, 0.5]
 		},
 		"gui": {
