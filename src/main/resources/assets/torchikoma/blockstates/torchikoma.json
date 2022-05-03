@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "torchikoma:block/torchikoma"
+    },
+    "facing=east": {
+      "model": "torchikoma:block/torchikoma",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "torchikoma:block/torchikoma",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "torchikoma:block/torchikoma",
+      "y": 270
     }
   }
 }
