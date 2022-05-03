@@ -8,8 +8,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -131,14 +133,13 @@ public class ClayExplosives extends DirectionalBlock implements SimpleWaterlogge
         pLevel.gameEvent(GameEvent.EXPLODE, pPos);
         if (!pLevel.isClientSide) {
             pLevel.playSound(null, pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            pLevel.gameEvent(pEntity, GameEvent.PRIME_FUSE, pPos);
-            pLevel.destroyBlock(pPos, false);
             BlockPos behindBlock = behindBlock(pLevel, pPos);
+            pLevel.destroyBlock(pPos, false);
             BlockState blockstate = pLevel.getBlockState(behindBlock);
+            pLevel.addParticle(ParticleTypes.EXPLOSION_EMITTER, behindBlock.getX(), behindBlock.getY(), behindBlock.getZ(), 1.0D, 0.0D, 0.0D);
             if (!blockstate.isAir()) {
-                if (blockstate.getBlock().getExplosionResistance() < 9) {
+                if (blockstate.getBlock().getExplosionResistance() < 9 && !(blockstate.hasProperty(WATERLOGGED) && blockstate.getValue(WATERLOGGED))) {
                     pLevel.destroyBlock(behindBlock, true);
-                    pLevel.addParticle(ParticleTypes.EXPLOSION_EMITTER, behindBlock.getX(), behindBlock.getY(), behindBlock.getZ(), 1.0D, 0.0D, 0.0D);
                 }
             }
         }
@@ -146,5 +147,18 @@ public class ClayExplosives extends DirectionalBlock implements SimpleWaterlogge
 
     private static BlockPos behindBlock(Level pLevel, BlockPos pPos) {
         return pPos.relative(pLevel.getBlockState(pPos).getValue(FACING).getOpposite());
+    }
+
+    @Override
+    public void onProjectileHit(Level pLevel, @NotNull BlockState pState, @NotNull BlockHitResult pHit, @NotNull Projectile pProjectile) {
+        if (!pLevel.isClientSide) {
+            BlockPos blockpos = pHit.getBlockPos();
+            Entity entity = pProjectile.getOwner();
+            if (pProjectile.isOnFire() && pProjectile.mayInteract(pLevel, blockpos)) {
+                onCaughtFire(pState, pLevel, blockpos, null, entity instanceof LivingEntity ? (LivingEntity)entity : null);
+                pLevel.removeBlock(blockpos, false);
+            }
+        }
+
     }
 }
