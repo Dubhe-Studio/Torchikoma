@@ -12,17 +12,25 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class TorchRender extends EntityRenderer<TorchEntity> {
     private final ItemRenderer itemRenderer;
+//    private final ModelManager modelManager;
 
     public TorchRender(EntityRendererProvider.Context context) {
         super(context);
         this.itemRenderer = context.getItemRenderer();
+//        modelManager = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getModelManager();
     }
 
     @Override
     public void render(TorchEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+//        Item item = pEntity.getItemStack().getItem();
+//        ResourceLocation location = Registry.ITEM.getKey(item);
+//        BakedModel bakedmodel = modelManager.getModel(location);
         ItemStack itemstack = pEntity.getItemStack();
         BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pEntity.level, null, pEntity.getId());
         pMatrixStack.pushPose();
