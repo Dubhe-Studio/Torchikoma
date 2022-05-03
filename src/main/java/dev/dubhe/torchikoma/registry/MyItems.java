@@ -41,6 +41,10 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("clustered_glowstone_torch"));
     public static final Item TORCHIKOMA = new ItemNameBlockItem(MyBlocks.TORCHIKOMA, defaultProperties())
             .setRegistryName(Torchikoma.getId("torchikoma"));
+    public static final Item MECHANICAL_COMPONENT = new ItemNameBlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties())
+            .setRegistryName(Torchikoma.getId("mechanical_component"));
+    public static final Item ELECTRONIC_COMPONENT = new ItemNameBlockItem(MyBlocks.ELECTRONIC_COMPONENT, defaultProperties())
+            .setRegistryName(Torchikoma.getId("electronic_component"));
 
     private static Item.Properties defaultProperties() {
         return new Item.Properties().tab(TAB);

@@ -26,6 +26,12 @@ public class MyBlocks {
     public static final Block TORCHIKOMA = new TorchikomaBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("torchikoma"));
+    public static final Block MECHANICAL_COMPONENT = new Block(defaultProperties(Material.METAL)
+            .instabreak().sound(SoundType.METAL))
+            .setRegistryName(Torchikoma.getId("mechanical_component"));
+    public static final Block ELECTRONIC_COMPONENT = new Block(defaultProperties(Material.METAL)
+            .instabreak().sound(SoundType.METAL))
+            .setRegistryName(Torchikoma.getId("electronic_component"));
 
     private static BlockBehaviour.Properties defaultProperties(Material material) {
         return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F).requiresCorrectToolForDrops();
