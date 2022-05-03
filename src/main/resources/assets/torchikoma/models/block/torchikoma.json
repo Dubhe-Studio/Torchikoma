@@ -1,0 +1,26 @@
+{
+	"credit": "Made by XeKr with Blockbench",
+	"parent": "block/cube",
+	"textures": {
+		"0": "torchikoma:block/torvhikoma_back",
+		"1": "torchikoma:block/torvhikoma_bottom",
+		"2": "torchikoma:block/torvhikoma_front",
+		"3": "torchikoma:block/torvhikoma_side",
+		"4": "torchikoma:block/torvhikoma_top",
+		"particle": "torchikoma:block/torvhikoma_back"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"east": {"uv": [16, 0, 0, 16], "texture": "#3"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"up": {"uv": [16, 16, 0, 0], "texture": "#4"},
+				"down": {"uv": [0, 16, 16, 0], "texture": "#1"}
+			}
+		}
+	]
+}
