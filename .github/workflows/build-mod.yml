@@ -1,13 +1,7 @@
 name: Build Mod
 
 on:
-  push:
-    branches: [ 'main' ]
-    paths:
-      - 'src/*'
-      - 'gradle/*'
-      - '*.gradle'
-      - 'gradle.properties'
+  - push
 
 jobs:
   build:
