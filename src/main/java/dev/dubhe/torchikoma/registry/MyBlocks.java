@@ -2,6 +2,7 @@ package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.block.ComponentBlock;
 import dev.dubhe.torchikoma.block.TorchikomaBlock;
 import dev.dubhe.torchikoma.block.WallColdFireTorchBlock;
 import net.minecraft.world.level.block.Block;
@@ -26,10 +27,10 @@ public class MyBlocks {
     public static final Block TORCHIKOMA = new TorchikomaBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("torchikoma"));
-    public static final Block MECHANICAL_COMPONENT = new Block(defaultProperties(Material.METAL)
+    public static final Block MECHANICAL_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("mechanical_component"));
-    public static final Block ELECTRONIC_COMPONENT = new Block(defaultProperties(Material.METAL)
+    public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("electronic_component"));
 
