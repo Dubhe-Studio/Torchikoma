@@ -119,3 +119,4 @@ run/
 
 # Compiled runtime classpath directory
 bin/
+src/main/resources/assets/torchikoma/models/entity/torchikoma.bbmodel
