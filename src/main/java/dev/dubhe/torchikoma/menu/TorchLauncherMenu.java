@@ -1,6 +1,6 @@
 package dev.dubhe.torchikoma.menu;
 
-import dev.dubhe.torchikoma.item.TorchLauncher;
+import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +11,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,10 +35,21 @@ public class TorchLauncherMenu extends AbstractContainerMenu implements Containe
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                this.addSlot(new Slot(this, j + i * 2, 134 + j * 18, 16 + i * 18));
+                this.addSlot(new Slot(this, j + i * 2, 134 + j * 18, 16 + i * 18) {
+                    @Override
+                    public boolean mayPlace(ItemStack pStack) {
+                        return pStack.getItem() instanceof BlockItem item &&
+                                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
+                    }
+                });
             }
         }
-        this.addSlot(new Slot(this, 4, 51, 25));
+        this.addSlot(new Slot(this, 4, 51, 25) {
+            @Override
+            public boolean mayPlace(ItemStack pStack) {
+                return pStack.getItem() == Items.GUNPOWDER;
+            }
+        });
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
