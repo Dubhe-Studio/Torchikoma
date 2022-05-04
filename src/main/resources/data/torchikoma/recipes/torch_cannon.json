@@ -16,10 +16,10 @@
       "item": "minecraft:cauldron"
     },
     "D": {
-      "item": "minecraft:electronic_component"
+      "item": "torchikoma:electronic_component"
     },
     "E": {
-      "item": "minecraft:torch_launcher"
+      "item": "torchikoma:torch_launcher"
     }
   },
   "result": {

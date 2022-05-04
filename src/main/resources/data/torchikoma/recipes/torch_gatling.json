@@ -13,10 +13,10 @@
       "item": "minecraft:powered_rail"
     },
     "C": {
-      "item": "minecraft:mechanical_component"
+      "item": "torchikoma:mechanical_component"
     },
     "D": {
-      "item": "minecraft:torch_launcher"
+      "item": "torchikoma:torch_launcher"
     }
   },
   "result": {
