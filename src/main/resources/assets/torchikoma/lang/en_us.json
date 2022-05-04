@@ -21,5 +21,8 @@
   "item.torchikoma.electronic_component": "electronic component",
   "item.torchikoma.clay_explosives": "clay explosives",
 
-  "entity.torchikoma.torchikoma": "torchikoma"
+  "entity.torchikoma.torchikoma": "torchikoma",
+
+  "gui.torchikoma.gunpowder": "please translate this: %s"
+
 }

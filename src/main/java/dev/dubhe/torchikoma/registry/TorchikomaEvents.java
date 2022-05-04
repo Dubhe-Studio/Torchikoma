@@ -1,14 +1,16 @@
 package dev.dubhe.torchikoma.registry;
 
-import com.mojang.blaze3d.platform.ScreenManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.dubhe.torchikoma.entity.render.TorchRender;
+import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EntityType;
@@ -16,12 +18,13 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.function.Consumer;
 
 public class TorchikomaEvents {
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -88,11 +91,25 @@ public class TorchikomaEvents {
     static class GlobalForgeEvents {
         @SubscribeEvent
         public static void onCommandRegister(RegisterCommandsEvent event) {
-            event.getDispatcher().register(Commands.literal("torchikoma").then(Commands.argument("value", IntegerArgumentType.integer()).executes(ctx -> {
-                TorchLauncherScreen.temp = IntegerArgumentType.getInteger(ctx, "value");
-                ctx.getSource().sendSuccess(new TextComponent("Ok"), false);
-                return Command.SINGLE_SUCCESS;
-            })));
+            LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("torchikoma");
+            root.then(tempCommand("t1", val -> TorchLauncherScreen.temp1 = val));
+            root.then(tempCommand("t2", val -> TorchLauncherScreen.temp2 = val));
+            root.then(tempCommand("t3", val -> TorchLauncherScreen.temp3 = val));
+            root.then(tempCommand("t4", val -> TorchLauncherScreen.temp4 = val));
+            root.then(tempCommand("m1", val -> TorchLauncherMenu.temp1 = val));
+            root.then(tempCommand("m2", val -> TorchLauncherMenu.temp2 = val));
+            root.then(tempCommand("m3", val -> TorchLauncherMenu.temp3 = val));
+            root.then(tempCommand("m4", val -> TorchLauncherMenu.temp4 = val));
+            event.getDispatcher().register(root);
         }
     }
+
+    private static LiteralArgumentBuilder<CommandSourceStack> tempCommand(String name, Consumer<Integer> consumer) {
+        return Commands.literal(name).then(Commands.argument("value", IntegerArgumentType.integer()).executes(ctx -> {
+            consumer.accept(IntegerArgumentType.getInteger(ctx, "value"));
+            ctx.getSource().sendSuccess(new TextComponent("Ok"), false);
+            return Command.SINGLE_SUCCESS;
+        }));
+    }
+
 }

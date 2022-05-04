@@ -21,5 +21,7 @@
   "item.torchikoma.electronic_component": "电子元件",
   "item.torchikoma.clay_explosives": "粘土炸药",
 
-  "entity.torchikoma.torchikoma": "拓奇克玛"
+  "entity.torchikoma.torchikoma": "拓奇克玛",
+
+  "gui.torchikoma.gunpowder": "发射次数: %s"
 }
