@@ -33,7 +33,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
                 return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
             } else {
                 TorchEntity entity = new TorchEntity(pLevel, pPlayer, new ItemStack(Items.TORCH));
-                entity.setDeltaMovement(pPlayer.getLookAngle());
+                entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
                 pLevel.addFreshEntity(entity);
                 //TODO 发射
             }
