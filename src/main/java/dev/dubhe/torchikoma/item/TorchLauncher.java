@@ -49,25 +49,14 @@ public class TorchLauncher extends Item implements ProviderMenu {
 
     public static void handleGunpowder(ItemStack stack) {
         CompoundTag nbt = stack.getOrCreateTag();
-        int gunpowder = nbt.getInt("Gunpowder");
-        if (gunpowder > 84) return;
-        ListTag torches = nbt.getList("Torches", 10);
-        CompoundTag itemTag = null, temp;
-        int index = 0;
-        for (int i = 0; i < torches.size(); i++) {
-            temp = nbt.getList("Torches", 10).getCompound(i);
-            if (temp.getInt("Slot") == 4) {
-                itemTag = temp;
-                index = i;
-            }
-        }
-        if (itemTag != null) {
-            ItemStack itemStack = ItemStack.of(itemTag);
-            if (!itemStack.isEmpty() && itemStack.getItem() == Items.GUNPOWDER) {
-                itemStack.shrink(1);
-                torches.set(index, itemStack.save(new CompoundTag()));
-                nbt.putInt("Gunpowder", gunpowder + 16);
-            }
+        if (!nbt.contains("Gunpowder")) return;
+        int shoots = nbt.getInt("Shoots");
+        if (shoots > 84) return;
+        ItemStack item = ItemStack.of(nbt.getCompound("Gunpowder"));
+        if (!item.isEmpty() && item.getItem() == Items.GUNPOWDER) {
+            item.shrink(1);
+            nbt.put("Gunpowder", item.save(new CompoundTag()));
+            nbt.putInt("Shoots", shoots + 16);
         }
     }
 }

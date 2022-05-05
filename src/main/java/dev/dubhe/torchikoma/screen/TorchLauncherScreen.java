@@ -9,7 +9,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -57,7 +56,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         int x = (this.width - GUN_WIDTH) / 2 + 76;
         int y = (this.height - GUN_HEIGHT - PLAYER_HEIGHT - 8) / 2 + 31;
         if (pX >= x && pX <= x + 50 && pY >= y && pY <= y + 4) {
-            this.renderTooltip(pPoseStack, List.of(new TranslatableComponent("gui.torchikoma.gunpowder", this.menu.getGunpowder())), Optional.empty(), pX, pY);
+            this.renderTooltip(pPoseStack, List.of(new TranslatableComponent("gui.torchikoma.gunpowder", this.menu.getShoots())), Optional.empty(), pX, pY);
         }
     }
 
@@ -71,7 +70,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         this.blit(pPoseStack, (this.width - PLAYER_WIDTH) / 2, gunY + GUN_HEIGHT + 8, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
         RenderSystem.setShaderTexture(0, GUN_BACKGROUND);
         this.blit(pPoseStack, gunX, gunY, 0, 0, GUN_WIDTH, GUN_HEIGHT);
-        this.blit(pPoseStack, gunX + 76, gunY + 31, GUN_WIDTH, 0, (int)(0.5D * this.menu.getGunpowder()), 4);
+        this.blit(pPoseStack, gunX + 76, gunY + 31, GUN_WIDTH, 0, (int)(0.5D * this.menu.getShoots()), 4);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);

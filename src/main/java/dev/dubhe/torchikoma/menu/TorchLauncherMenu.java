@@ -63,8 +63,8 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public int getGunpowder() {
-        return Math.min(this.itemInventory.gunpowder, 100);
+    public int getShoots() {
+        return Math.min(this.itemInventory.shoots, 100);
     }
 
     @Override
@@ -122,12 +122,14 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
     }
 
     static class ItemInventory extends SimpleContainer {
-        private int gunpowder = 0;
         private final ItemStack itemStack;
+        private ItemStack gunpowder;
+        private int shoots = 0;
 
         private ItemInventory(ItemStack itemStack) {
             super(5);
             this.itemStack = itemStack;
+            this.gunpowder = ItemStack.EMPTY;
             this.loadData();
             this.addListener(container -> {
                 if (container instanceof ItemInventory inv) {
@@ -139,11 +141,10 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         private void loadData() {
             if (itemStack.isEmpty()) return;
             CompoundTag nbt = itemStack.getOrCreateTag();
-            if (!itemStack.hasTag() || !nbt.contains("Torches") || !nbt.contains("Gunpowder")) {
+            if (!itemStack.hasTag() || !nbt.contains("Torches") || !nbt.contains("Shoots")) {
                 nbt.put("Torches", new ListTag());
-                nbt.putInt("Gunpowder", 0);
-                this.items.clear();
-                this.gunpowder = 0;
+                nbt.putInt("Shoots", 0);
+                this.shoots = 0;
             } else {
                 ListTag torches = nbt.getList("Torches", 10);
                 CompoundTag subNbt;
@@ -153,7 +154,8 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                     j = subNbt.getByte("Slot") & 255;
                     if (j < this.items.size()) this.items.set(j, ItemStack.of(subNbt));
                 }
-                this.gunpowder = nbt.getInt("Gunpowder");
+                if (nbt.contains("Gunpowder")) this.gunpowder = ItemStack.of(nbt.getCompound("Gunpowder"));
+                this.shoots = nbt.getInt("Shoots");
             }
         }
 
@@ -162,7 +164,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
             ListTag torches = new ListTag();
             CompoundTag nbt;
             ItemStack item;
-            for (int i = 0; i < this.items.size(); i++) {
+            for (int i = 0; i < this.items.size() - 1; i++) {
                 item = this.items.get(i);
                 if (!item.isEmpty()) {
                     nbt = item.save(new CompoundTag());
@@ -170,8 +172,14 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                     torches.add(nbt);
                 }
             }
-            this.itemStack.getOrCreateTag().put("Torches", torches);
-            this.itemStack.getOrCreateTag().putInt("Gunpowder", this.gunpowder);
+            nbt = this.itemStack.getOrCreateTag();
+            nbt.put("Torches", torches);
+            nbt.putInt("Shoots", this.shoots);
+            if (!this.gunpowder.isEmpty()) {
+                nbt.put("Gunpowder", this.gunpowder.save(new CompoundTag()));
+            } else if (nbt.contains("Gunpowder")) {
+                nbt.remove("Gunpowder");
+            }
         }
 
         @Override
@@ -179,10 +187,10 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
             super.setItem(pIndex, pStack);
             if (pIndex == 4) {
                 ItemStack item = this.items.get(pIndex);
-                if (this.gunpowder <= 84 && !item.isEmpty()) {
-                    int count = Math.min((100 - this.gunpowder) / 16, item.getCount());
+                if (this.shoots <= 84 && !item.isEmpty()) {
+                    int count = Math.min((100 - this.shoots) / 16, item.getCount());
                     item.shrink(count);
-                    this.gunpowder += count * 16;
+                    this.shoots += count * 16;
                 }
             }
         }
