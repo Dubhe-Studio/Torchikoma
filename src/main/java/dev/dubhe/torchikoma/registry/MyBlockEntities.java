@@ -1,20 +1,18 @@
 package dev.dubhe.torchikoma.registry;
 
-import com.mojang.datafixers.types.Type;
+import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.block.entity.BlocklightDetectorBlockEntity;
-import net.minecraft.Util;
-import net.minecraft.util.datafix.fixes.References;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class MyBlockEntities {
-    public static final BlockEntityType<BlocklightDetectorBlockEntity> BLOCKLIGHT_DETECTOR = register("blocklight_detector",
-            BlockEntityType.Builder.of(BlocklightDetectorBlockEntity::new, MyBlocks.BLOCKLIGHT_DETECTOR));
+    public static final BlockEntityType<BlocklightDetectorBlockEntity> BLOCKLIGHT_DETECTOR = register("blocklight_detector", BlocklightDetectorBlockEntity::new, MyBlocks.BLOCKLIGHT_DETECTOR);
 
-    private static <T extends BlockEntity> BlockEntityType<T> register(String pKey, BlockEntityType.Builder<T> pBuilder) {
-        Type<?> type = Util.fetchChoiceType(References.BLOCK_ENTITY, pKey);
-        BlockEntityType<T> blockEntityType = pBuilder.build(type);
-        blockEntityType.setRegistryName(pKey);
-        return blockEntityType;
+    @SuppressWarnings("ConstantConditions")
+    private static <T extends BlockEntity> BlockEntityType<T> register(String pKey, BlockEntityType.BlockEntitySupplier<T> pFactory, Block... pValidBlocks) {
+        BlockEntityType<T> blockEntity = BlockEntityType.Builder.of(pFactory, pValidBlocks).build(null);
+        blockEntity.setRegistryName(Torchikoma.getId(pKey));
+        return blockEntity;
     }
 }
