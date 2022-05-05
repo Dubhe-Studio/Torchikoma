@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.dubhe.torchikoma.entity.render.TorchRender;
+import dev.dubhe.torchikoma.entity.render.TorchikomaRender;
 import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -77,6 +78,7 @@ public class TorchikomaEvents {
             MenuScreens.register(MyMenuTypes.TORCH_LAUNCHER, TorchLauncherScreen::new);
 
             EntityRenderers.register(MyEntities.TORCH, TorchRender::new);
+            EntityRenderers.register(MyEntities.TORCHIKOMA, TorchikomaRender::new);
 
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.PRISMARINE_TORCH, RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(MyBlocks.PRISMARINE_WALL_TORCH, RenderType.cutout());
