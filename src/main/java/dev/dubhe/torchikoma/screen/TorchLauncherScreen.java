@@ -71,8 +71,20 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         RenderSystem.setShaderTexture(0, GUN_BACKGROUND);
         this.blit(pPoseStack, gunX, gunY, 0, 0, GUN_WIDTH, GUN_HEIGHT);
         this.blit(pPoseStack, gunX + 76, gunY + 31, GUN_WIDTH, 0, (int)(0.5D * this.menu.getShoots()), 4);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                this.renderItemBg(pPoseStack, gunX + j * 18 + 135, gunY + i * 18 + 16, GUN_WIDTH + 16, 4, j + i * 2);
+            }
+        }
+        this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
+    }
+
+    private void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
+        if (this.menu.isEmpty(index)) {
+            this.blit(pPoseStack, x, y, u, v, 16, 16);
+        }
     }
 }
