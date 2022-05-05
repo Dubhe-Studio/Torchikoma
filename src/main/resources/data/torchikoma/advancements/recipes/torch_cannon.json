@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "torchikoma:torch_cannon"
+    ]
+  },
+  "criteria": {
+    "has_torch_launcher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "torchikoma:torch_launcher"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "torchikoma:torch_cannon"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_torch_launcher",
+      "has_the_recipe"
+    ]
+  ]
+}

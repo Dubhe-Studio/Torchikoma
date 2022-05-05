@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "torchikoma:glowstone_torch"
+    ]
+  },
+  "criteria": {
+    "has_glowstone_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:glowstone_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "torchikoma:glowstone_torch"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_glowstone_dust",
+      "has_the_recipe"
+    ]
+  ]
+}
