@@ -1,6 +1,6 @@
 package dev.dubhe.torchikoma.menu;
 
-import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
+import dev.dubhe.torchikoma.item.TorchLauncher;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -9,10 +9,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.TorchBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,8 +31,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                 this.addSlot(new Slot(this.itemInventory, j + i * 2, 134 + j * 18, 16 + i * 18) {
                     @Override
                     public boolean mayPlace(ItemStack pStack) {
-                        return pStack.getItem() instanceof BlockItem item &&
-                                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
+                        return TorchLauncher.isTorchItem(pStack);
                     }
                 });
             }
@@ -83,7 +80,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                     if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (this.isTorchItem(itemstack)) {
+                } else if (TorchLauncher.isTorchItem(itemstack)) {
                     if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -103,11 +100,6 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
             slot.onTake(pPlayer, itemstack1);
         }
         return itemstack;
-    }
-
-    private boolean isTorchItem(ItemStack pStack) {
-        return pStack.getItem() instanceof BlockItem item &&
-                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
     }
 
     @Override
