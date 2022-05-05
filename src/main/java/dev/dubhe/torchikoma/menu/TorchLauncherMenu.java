@@ -123,13 +123,11 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
 
     static class ItemInventory extends SimpleContainer {
         private final ItemStack itemStack;
-        private ItemStack gunpowder;
         private int shoots = 0;
 
         private ItemInventory(ItemStack itemStack) {
             super(5);
             this.itemStack = itemStack;
-            this.gunpowder = ItemStack.EMPTY;
             this.loadData();
             this.addListener(container -> {
                 if (container instanceof ItemInventory inv) {
@@ -154,7 +152,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                     j = subNbt.getByte("Slot") & 255;
                     if (j < this.items.size()) this.items.set(j, ItemStack.of(subNbt));
                 }
-                if (nbt.contains("Gunpowder")) this.gunpowder = ItemStack.of(nbt.getCompound("Gunpowder"));
+                if (nbt.contains("Gunpowder")) this.items.set(4, ItemStack.of(nbt.getCompound("Gunpowder")));
                 this.shoots = nbt.getInt("Shoots");
             }
         }
@@ -175,8 +173,9 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
             nbt = this.itemStack.getOrCreateTag();
             nbt.put("Torches", torches);
             nbt.putInt("Shoots", this.shoots);
-            if (!this.gunpowder.isEmpty()) {
-                nbt.put("Gunpowder", this.gunpowder.save(new CompoundTag()));
+            item = this.items.get(4);
+            if (!item.isEmpty()) {
+                nbt.put("Gunpowder", item.save(new CompoundTag()));
             } else if (nbt.contains("Gunpowder")) {
                 nbt.remove("Gunpowder");
             }
