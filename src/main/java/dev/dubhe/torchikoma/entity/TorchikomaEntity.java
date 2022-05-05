@@ -10,11 +10,24 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class TorchikomaEntity extends TamableAnimal {
-
-    public TorchikomaEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
-        super(p_21803_, p_21804_);
+public class TorchikomaEntity extends TamableAnimal implements IAnimatable, IAnimationTickable {
+    private AnimationFactory factory = new AnimationFactory(this);
+    public TorchikomaEntity(EntityType<? extends TamableAnimal> type, Level inLevel) {
+        super(type, inLevel);
+        this.noCulling = true;
+    }
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.start", true));
+        return PlayState.CONTINUE;
     }
 
     @Override
@@ -38,6 +51,11 @@ public class TorchikomaEntity extends TamableAnimal {
         }
     }
 
+    @Override
+    public int tickTimer() {
+        return 0;
+    }
+
     protected float getOwnerDistance() {
         Player player = (Player) this.getOwner();
         if (player != null){
@@ -51,5 +69,15 @@ public class TorchikomaEntity extends TamableAnimal {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
         return null;
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<TorchikomaEntity>(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return this.factory;
     }
 }
