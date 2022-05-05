@@ -4,7 +4,6 @@ import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.menu.ProviderMenu;
 import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -33,12 +32,11 @@ public class TorchLauncher extends Item implements ProviderMenu {
                         (id, inv, player) -> new TorchLauncherMenu(id, inv, item)
                 ), buffer -> buffer.writeItem(item));
                 return InteractionResultHolder.success(item);
-            } else {
+            } else { //TODO 发射
                 TorchEntity entity = new TorchEntity(pLevel, pPlayer, new ItemStack(Items.TORCH));
                 entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
                 pLevel.addFreshEntity(entity);
                 handleGunpowder(item);
-                //TODO 发射
             }
         }
         return InteractionResultHolder.pass(item);
