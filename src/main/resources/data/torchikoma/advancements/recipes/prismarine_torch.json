@@ -1,0 +1,50 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "torchikoma:prismarine_torch"
+    ]
+  },
+  "criteria": {
+    "has_prismarine_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:prismarine_shard"
+            ]
+          }
+        ]
+      }
+    },
+    "has_prismarine_crystals": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:prismarine_crystals"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "torchikoma:prismarine_torch"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_prismarine_crystals",
+      "has_the_recipe"
+    ],
+    [
+      "has_prismarine_shard",
+      "has_the_recipe"
+    ]
+  ]
+}
