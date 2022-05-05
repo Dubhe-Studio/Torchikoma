@@ -68,6 +68,7 @@ public class TorchikomaEvents {
         @SubscribeEvent
         public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
             event.getRegistry().register(MyEntities.TORCH);
+            event.getRegistry().register(MyEntities.TORCHIKOMA);
         }
     }
 
