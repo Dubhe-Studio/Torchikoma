@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
 public class MyEntities {
-    public static final EntityType<TorchEntity> TORCH = register("torch", EntityType.Builder.<TorchEntity>of(TorchEntity::new, MobCategory.MISC)
+    public static final EntityType<TorchEntity> TORCH = create("torch", EntityType.Builder.<TorchEntity>of(TorchEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
 
-    public static final EntityType<TorchikomaEntity> TORCHIKOMA = register("torch", EntityType.Builder.<TorchikomaEntity>of(TorchikomaEntity::new, MobCategory.MISC)
+    public static final EntityType<TorchikomaEntity> TORCHIKOMA = create("torch", EntityType.Builder.of(TorchikomaEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
 
-    public static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
+    public static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {
         EntityType<T> entityType = builder.build(name);
         entityType.setRegistryName(Torchikoma.getId(name));
         return entityType;
