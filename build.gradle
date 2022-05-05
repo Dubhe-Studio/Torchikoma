@@ -82,8 +82,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.15')
+    implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:${geckolib_verison}")
 }
 
 jar {
