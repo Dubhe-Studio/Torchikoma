@@ -1,21 +1,27 @@
 package dev.dubhe.torchikoma.item;
 
+import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.menu.ProviderMenu;
 import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class TorchLauncher extends Item implements ProviderMenu {
 
@@ -33,7 +39,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
                         (id, inv, player) -> new TorchLauncherMenu(id, inv, item)
                 ), buffer -> buffer.writeItem(item));
                 return InteractionResultHolder.success(item);
-            } else return shootTorch(pLevel, pPlayer, item);
+            } else shootTorch(pLevel, pPlayer, item);
         }
         return InteractionResultHolder.pass(item);
     }
@@ -41,29 +47,63 @@ public class TorchLauncher extends Item implements ProviderMenu {
         return UseAnim.BOW;
     }
 
-    public static InteractionResultHolder<ItemStack> shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
+    public static void shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
         CompoundTag nbt = pStack.getOrCreateTag();
         int shoots = nbt.getInt("Shoots");
-        ItemStack[] items = new ItemStack[4];
+        if (shoots == 0) return;
+        NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
         ListTag torches = nbt.getList("Torches", 10);
+        ItemStack item;
+        CompoundTag tag;
         for (int i = 0; i < torches.size(); i++) {
-            CompoundTag itemTag = torches.getCompound(i);
-            items[itemTag.getByte("Slot")] = ItemStack.of(itemTag);
+            tag = torches.getCompound(i);
+            item = ItemStack.of(tag);
+            if (!item.isEmpty() && isTorchItem(item)) items.set(tag.getByte("Slot"), item);
         }
-        if (shoots > 0) {
-            TorchEntity entity = new TorchEntity(pLevel, pPlayer, new ItemStack(Items.TORCH));
-            entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
-            pLevel.addFreshEntity(entity);
-            nbt.putInt("Shoots", --shoots);
+        item = ItemStack.EMPTY;
+        for (ItemStack itemStack : items) {
+            if (!itemStack.isEmpty()) {
+                item = itemStack;
+                break;
+            }
         }
+        if (item.isEmpty()) return;
+        ItemStack stack = item.copy();
+        stack.setCount(1);
+        TorchEntity entity = new TorchEntity(pLevel, pPlayer, stack);
+        entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
+        pLevel.addFreshEntity(entity);
+        item.shrink(1);
+        nbt.putInt("Shoots", --shoots);
+        saveItems(nbt, items);
         if (shoots <= 84 && nbt.contains("Gunpowder")) {
-            ItemStack item = ItemStack.of(nbt.getCompound("Gunpowder"));
+            item = ItemStack.of(nbt.getCompound("Gunpowder"));
             if (!item.isEmpty() && item.getItem() == Items.GUNPOWDER) {
                 item.shrink(1);
                 nbt.put("Gunpowder", item.save(new CompoundTag()));
                 nbt.putInt("Shoots", shoots + 16);
             }
         }
-        return InteractionResultHolder.pass(pStack);
+    }
+
+    public static boolean isTorchItem(ItemStack pStack) {
+        return pStack.getItem() instanceof BlockItem item &&
+                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
+    }
+
+    private static void saveItems(CompoundTag pNbt, List<ItemStack> pStacks) {
+        ListTag torches = new ListTag();
+        CompoundTag nbt;
+        ItemStack item;
+        for (int i = 0; i < pStacks.size(); i++) {
+            item = pStacks.get(i);
+            if (!item.isEmpty()) {
+                nbt = item.save(new CompoundTag());
+                nbt.putByte("Slot", (byte) i);
+                torches.add(nbt);
+            }
+        }
+        pNbt.put("Torches", torches);
+
     }
 }
