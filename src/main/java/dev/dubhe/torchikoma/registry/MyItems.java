@@ -47,6 +47,8 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("electronic_component"));
     public static final Item CLAY_EXPLOSIVES = new ItemNameBlockItem(MyBlocks.CLAY_EXPLOSIVES, defaultProperties())
             .setRegistryName(Torchikoma.getId("clay_explosives"));
+    public static final Item BLOCKLIGHT_DETECTOR = new ItemNameBlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties())
+            .setRegistryName(Torchikoma.getId("blocklight_detector"));
 
     private static Item.Properties defaultProperties() {
         return new Item.Properties().tab(TAB);

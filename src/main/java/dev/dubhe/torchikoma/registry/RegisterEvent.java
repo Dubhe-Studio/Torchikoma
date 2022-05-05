@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +21,7 @@ public class RegisterEvent {
         event.getRegistry().register(MyBlocks.ELECTRONIC_COMPONENT);
         event.getRegistry().register(MyBlocks.MECHANICAL_COMPONENT);
         event.getRegistry().register(MyBlocks.CLAY_EXPLOSIVES);
+        event.getRegistry().register(MyBlocks.BLOCKLIGHT_DETECTOR);
     }
 
     @SubscribeEvent
@@ -38,6 +40,7 @@ public class RegisterEvent {
         event.getRegistry().register(MyItems.ELECTRONIC_COMPONENT);
         event.getRegistry().register(MyItems.MECHANICAL_COMPONENT);
         event.getRegistry().register(MyItems.CLAY_EXPLOSIVES);
+        event.getRegistry().register(MyItems.BLOCKLIGHT_DETECTOR);
     }
     @SubscribeEvent
     public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {
@@ -48,5 +51,10 @@ public class RegisterEvent {
     public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(MyEntities.TORCH);
         event.getRegistry().register(MyEntities.TORCHIKOMA);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterBlockEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
+        event.getRegistry().register(MyBlockEntities.BLOCKLIGHT_DETECTOR);
     }
 }

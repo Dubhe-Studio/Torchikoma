@@ -34,6 +34,10 @@ public class MyBlocks {
             .instabreak().sound(SoundType.METAL))
             .setRegistryName(Torchikoma.getId("clay_explosives"));
 
+    public static final Block BLOCKLIGHT_DETECTOR = new BlcoklightDetectorBlock(defaultProperties(Material.METAL)
+            .instabreak().sound(SoundType.METAL))
+            .setRegistryName(Torchikoma.getId("blocklight_detector"));
+
     private static BlockBehaviour.Properties defaultProperties(Material material) {
         return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F).requiresCorrectToolForDrops();
     }
