@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class RegistryEvents {
+public class RegisterEvent {
     @SubscribeEvent
     public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
         event.getRegistry().register(MyBlocks.PRISMARINE_TORCH);
