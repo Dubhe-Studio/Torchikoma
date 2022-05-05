@@ -2,11 +2,9 @@ package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -61,8 +59,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
 
     @OnlyIn(Dist.CLIENT)
     public boolean isEmpty(int pIndex) {
-        this.itemInventory.loadData();
-        return this.itemInventory.items.get(pIndex).isEmpty();
+        return this.itemInventory.getItem(pIndex).isEmpty();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -70,6 +67,48 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         return Math.min(this.itemInventory.gunpowder, 100);
     }
 
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(pIndex);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (pIndex < this.itemInventory.getContainerSize()) {
+                if (!this.moveItemStackTo(itemstack1, this.itemInventory.getContainerSize(), this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (itemstack.getItem() == Items.GUNPOWDER) {
+                    if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (this.isTorchItem(itemstack)) {
+                    if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex >= 5 && pIndex < 32) {
+                    if (!this.moveItemStackTo(itemstack1, 32, this.slots.size(), false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex >= 32 && pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+            if (itemstack1.isEmpty()) slot.set(ItemStack.EMPTY);
+            else slot.setChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(pPlayer, itemstack1);
+        }
+        return itemstack;
+    }
+
+    private boolean isTorchItem(ItemStack pStack) {
+        return pStack.getItem() instanceof BlockItem item &&
+                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
+    }
 
     @Override
     public boolean stillValid(Player pPlayer) {
@@ -82,14 +121,19 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         this.itemInventory.stopOpen(pPlayer);
     }
 
-    static class ItemInventory implements Container {
-        private final NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
+    static class ItemInventory extends SimpleContainer {
         private int gunpowder = 0;
         private final ItemStack itemStack;
 
         private ItemInventory(ItemStack itemStack) {
+            super(5);
             this.itemStack = itemStack;
             this.loadData();
+            this.addListener(container -> {
+                if (container instanceof ItemInventory inv) {
+                    inv.saveData();
+                }
+            });
         }
 
         private void loadData() {
@@ -131,44 +175,8 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public int getContainerSize() {
-            loadData();
-            return this.items.size();
-        }
-
-        @Override
-        public boolean isEmpty() {
-            loadData();
-            return this.items.isEmpty();
-        }
-
-        @Override
-        public ItemStack getItem(int pIndex) {
-            loadData();
-            return this.items.get(pIndex);
-        }
-
-        @Override
-        public ItemStack removeItem(int pIndex, int pCount) {
-            loadData();
-            ItemStack stack = !this.items.get(pIndex).isEmpty() ? ContainerHelper.removeItem(this.items, pIndex, pCount) : ItemStack.EMPTY;
-            saveData();
-            return stack;
-        }
-
-        @Override
-        public ItemStack removeItemNoUpdate(int pIndex) {
-            loadData();
-            ItemStack itemstack = this.items.get(pIndex);
-            this.items.set(pIndex, ItemStack.EMPTY);
-            saveData();
-            return itemstack;
-        }
-
-        @Override
         public void setItem(int pIndex, ItemStack pStack) {
-            loadData();
-            this.items.set(pIndex, pStack);
+            super.setItem(pIndex, pStack);
             if (pIndex == 4) {
                 ItemStack item = this.items.get(pIndex);
                 if (this.gunpowder <= 84 && !item.isEmpty()) {
@@ -177,23 +185,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
                     this.gunpowder += count * 16;
                 }
             }
-            saveData();
         }
-
-        @Override
-        public void setChanged() {
-        }
-
-        @Override
-        public boolean stillValid(Player pPlayer) {
-            return true;
-        }
-
-        @Override
-        public void clearContent() {
-            this.items.clear();
-        }
-
     }
 
 }
