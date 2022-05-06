@@ -21,6 +21,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,7 +57,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
 
     @Override
     protected void containerTick() {
-        rotateAngle = (rotateAngle + 5) % 360;
+        rotateAngle = (rotateAngle + 2) % 360;
     }
 
     @Override
@@ -93,7 +94,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             }
         }
         this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-        this.renderBigItem(new ItemStack(MyItems.TORCH_LAUNCHER), gunX + 26, gunY + 33, 32.0F);
+        this.renderBigItem(new ItemStack(MyItems.TORCH_LAUNCHER), gunX + 26 +temp1, gunY + 33 + temp2, 48.0F);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
@@ -117,10 +118,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             PoseStack posestack = RenderSystem.getModelViewStack();
             Quaternion quaternion = Vector3f.YP.rotationDegrees(this.rotateAngle);
-            System.out.println(this.rotateAngle - 90);
-            double incremental = Math.cos(Math.toRadians(this.rotateAngle + 60)) * -2;
-            System.out.println(incremental);
-            System.out.println("===");
+            double incremental = Math.cos(Math.toRadians(this.rotateAngle + 60)) * -1;
             posestack.pushPose();
             posestack.translate(x + incremental, y, 100.0F);
             posestack.scale(1.0F, -1.0F, 1.0F);
@@ -133,7 +131,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             if (flag) {
                 Lighting.setupForFlatItems();
             }
-            this.itemRenderer.render(pStack, ItemTransforms.TransformType.GUI, false, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+            this.itemRenderer.render(pStack, ItemTransforms.TransformType.GROUND, false, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
             bufferSource.endBatch();
             RenderSystem.enableDepthTest();
             if (flag) {
