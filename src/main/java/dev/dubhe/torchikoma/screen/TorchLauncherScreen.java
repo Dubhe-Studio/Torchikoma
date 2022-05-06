@@ -56,7 +56,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
 
     @Override
     protected void containerTick() {
-        rotateAngle = (rotateAngle + temp1) % 360;
+        rotateAngle = (rotateAngle + 5) % 360;
     }
 
     @Override
