@@ -2,6 +2,7 @@ package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.item.TorchLauncher;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
+import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.SimpleContainer;
@@ -51,8 +52,8 @@ public class TorchToolMenu extends AbstractContainerMenu {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public float getItemSize() {
-        return itemInventory.itemStack.getItem() instanceof TorchLauncher item ? item.getRenderSize() : 48.0F;
+    public TorchLauncherScreen.RenderSize getItemSize() {
+        return itemInventory.itemStack.getItem() instanceof TorchLauncher item ? item.getRenderSize() : TorchLauncherScreen.RenderSize.DEFAULT;
     }
 
     @OnlyIn(Dist.CLIENT)

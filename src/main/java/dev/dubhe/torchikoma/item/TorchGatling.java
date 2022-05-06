@@ -1,6 +1,7 @@
 package dev.dubhe.torchikoma.item;
 
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
+import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class TorchGatling extends TorchLauncher {
     }
 
     @Override
-    public float getRenderSize() {
-        return 24.0F;
+    public TorchLauncherScreen.RenderSize getRenderSize() {
+        return new TorchLauncherScreen.RenderSize(26, 34, 22.0F);
     }
 }

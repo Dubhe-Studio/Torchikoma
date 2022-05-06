@@ -86,7 +86,9 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> 
             }
         }
         this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-        this.renderBigItem(this.menu.getItemStack(), gunX + 26, gunY + 31, this.menu.getItemSize());
+//        this.renderBigItem(this.menu.getItemStack(), gunX + 26, gunY + 31, this.menu.getItemSize());
+        RenderSize renderSize = this.menu.getItemSize();
+        this.renderBigItem(this.menu.getItemStack(), gunX + renderSize.pX, gunY + renderSize.pY, renderSize.size);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
@@ -132,5 +134,9 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> 
             posestack.popPose();
             RenderSystem.applyModelViewMatrix();
         }
+    }
+
+    public record RenderSize(int pX, int pY, float size) {
+        public static final RenderSize DEFAULT = new RenderSize(26, 31, 48.0F);
     }
 }

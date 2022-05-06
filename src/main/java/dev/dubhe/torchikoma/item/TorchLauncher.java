@@ -4,6 +4,7 @@ import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.menu.ProviderMenu;
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
+import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -117,7 +118,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public float getRenderSize() {
-        return 48.0F;
+    public TorchLauncherScreen.RenderSize getRenderSize() {
+        return TorchLauncherScreen.RenderSize.DEFAULT;
     }
 }
