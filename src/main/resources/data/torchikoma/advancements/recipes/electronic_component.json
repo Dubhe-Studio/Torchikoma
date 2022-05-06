@@ -76,21 +76,9 @@
   "requirements": [
     [
       "has_quartz",
-      "has_the_recipe"
-    ],
-    [
       "has_redstone",
-      "has_the_recipe"
-    ],
-    [
       "has_copper_ingot",
-      "has_the_recipe"
-    ],
-    [
       "has_clock",
-      "has_the_recipe"
-    ],
-    [
       "has_lapis_lazuli",
       "has_the_recipe"
     ]

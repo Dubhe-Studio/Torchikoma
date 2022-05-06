@@ -40,9 +40,6 @@
   "requirements": [
     [
       "has_clay_ball",
-      "has_the_recipe"
-    ],
-    [
       "has_gunpowder",
       "has_the_recipe"
     ]
