@@ -15,18 +15,18 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class TorchLauncher extends Item implements ProviderMenu {
+    private static int Cooldown;
 
     public TorchLauncher(Properties pProperties) {
         super(pProperties);
+        this.setCooldown(20);
     }
 
     @Override
@@ -34,17 +34,25 @@ public class TorchLauncher extends Item implements ProviderMenu {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (pPlayer.isShiftKeyDown()) {
-                NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
-                        this.getDescription(),
-                        (id, inv, player) -> new TorchLauncherMenu(id, inv, item)
-                ), buffer -> buffer.writeItem(item));
+                this.openGUI(pPlayer,item);
                 return InteractionResultHolder.success(item);
-            } else shootTorch(pLevel, pPlayer, item);
+            } else {
+                shootTorch(pLevel, pPlayer, item);
+                pPlayer.getCooldowns().addCooldown(this, Cooldown);
+            }
         }
         return InteractionResultHolder.pass(item);
     }
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
-        return UseAnim.BOW;
+
+    public void openGUI(Player pPlayer, ItemStack item){
+        NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
+                this.getDescription(),
+                (id, inv, player) -> new TorchLauncherMenu(id, inv, item)
+        ), buffer -> buffer.writeItem(item));
+    }
+
+    public void setCooldown(int cooldown){
+        Cooldown = cooldown;
     }
 
     public static void shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {

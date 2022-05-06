@@ -1,34 +1,22 @@
 package dev.dubhe.torchikoma.item;
 
-import dev.dubhe.torchikoma.tags.ItemTags;
+import dev.dubhe.torchikoma.menu.TorchGatlingMenu;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.ProjectileWeaponItem;
-import net.minecraft.world.item.Vanishable;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.network.NetworkHooks;
 
-import java.util.function.Predicate;
-
-public class TorchGatling extends ProjectileWeaponItem implements Vanishable {
-    public static final int DEFAULT_RANGE = 20;
-    public TorchGatling(Properties itemProperties) {
-        super(itemProperties);
-    }
-
-    public static final Predicate<ItemStack> TOUCH_ONLY = item -> item.is(ItemTags.TOUCH);
-
-    @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
-        return UseAnim.BOW;
+public class TorchGatling extends TorchLauncher {
+    public TorchGatling(Properties pProperties) {
+        super(pProperties);
+        this.setCooldown(5);
     }
 
     @Override
-    public @NotNull Predicate<ItemStack> getAllSupportedProjectiles() {
-        return TOUCH_ONLY;
-    }
-
-    @Override
-    public int getDefaultProjectileRange() {
-        return DEFAULT_RANGE;
+    public void openGUI(Player pPlayer, ItemStack item){
+        NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
+                this.getDescription(),
+                (id, inv, player) -> new TorchGatlingMenu(id, inv, item)
+        ), buffer -> buffer.writeItem(item));
     }
 }

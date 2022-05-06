@@ -39,6 +39,8 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
     private static final int PLAYER_WIDTH = 176;
     private static final int PLAYER_HEIGHT = 100;
 
+    private static ItemStack LAUNCHER = new ItemStack(MyItems.TORCH_LAUNCHER);
+
     private final ItemRenderer itemRenderer;
     private int rotateAngle = 0;
 
@@ -47,6 +49,10 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         itemRenderer = Minecraft.getInstance().getItemRenderer();
         this.titleLabelX = 50;
         this.titleLabelY += 7;
+    }
+
+    public static void setLauncher(ItemStack LAUNCHER) {
+        TorchLauncherScreen.LAUNCHER = LAUNCHER;
     }
 
     @Override
@@ -88,7 +94,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             }
         }
         this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-        this.renderBigItem(new ItemStack(MyItems.TORCH_LAUNCHER), gunX + 26, gunY + 25 + 6, 48.0F);
+        this.renderBigItem(LAUNCHER, gunX + 26, gunY + 25 + 6, 48.0F);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
