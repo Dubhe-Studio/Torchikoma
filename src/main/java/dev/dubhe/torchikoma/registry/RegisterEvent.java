@@ -45,8 +45,7 @@ public class RegisterEvent {
 
     @SubscribeEvent
     public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {
-        event.getRegistry().register(MyMenuTypes.TORCH_LAUNCHER);
-        event.getRegistry().register(MyMenuTypes.TORCH_GATLING);
+        event.getRegistry().register(MyMenuTypes.TORCH_TOOL_MENU);
     }
 
     @SubscribeEvent

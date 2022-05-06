@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import dev.dubhe.torchikoma.Torchikoma;
-import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
+import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMenu> {
+public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> {
     private static final ResourceLocation GUN_BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
     private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.getId("textures/gui/player.png");
     private static final int GUN_WIDTH = 178;
@@ -40,7 +40,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
     private final ItemRenderer itemRenderer;
     private int rotateAngle = 0;
 
-    public TorchLauncherScreen(TorchLauncherMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public TorchLauncherScreen(TorchToolMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         itemRenderer = Minecraft.getInstance().getItemRenderer();
         this.titleLabelX = 50;

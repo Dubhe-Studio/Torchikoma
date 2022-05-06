@@ -8,31 +8,19 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TorchLauncherMenu extends AbstractContainerMenu {
+public class TorchToolMenu extends AbstractContainerMenu {
     private final ItemInventory itemInventory;
 
-    private final float itemSize;
-
-    public static TorchLauncherMenu createLauncher(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        return new TorchLauncherMenu(MyMenuTypes.TORCH_LAUNCHER, pContainerId, inventory, itemStack, 48.0F);
-    }
-
-    public static TorchLauncherMenu createGatling(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        return new TorchLauncherMenu(MyMenuTypes.TORCH_GATLING, pContainerId, inventory, itemStack, 36.0F);
-    }
-
-    private TorchLauncherMenu(MenuType<? extends TorchLauncherMenu> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack, float itemSize) {
-        super(pMenuType, pContainerId);
+    public TorchToolMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {
+        super(MyMenuTypes.TORCH_TOOL_MENU, pContainerId);
         this.itemInventory = new ItemInventory(itemStack);
         this.itemInventory.startOpen(inventory.player);
-        this.itemSize = itemSize;
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -64,7 +52,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
 
     @OnlyIn(Dist.CLIENT)
     public float getItemSize() {
-        return itemSize;
+        return 48.0F;
     }
 
     @OnlyIn(Dist.CLIENT)

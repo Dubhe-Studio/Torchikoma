@@ -1,16 +1,14 @@
 package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.Torchikoma;
-import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
+import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.network.IContainerFactory;
 
 public class MyMenuTypes {
-    public static final MenuType<TorchLauncherMenu> TORCH_LAUNCHER = forgeMenu("torch_launcher", (containerId, inv, buffer) -> TorchLauncherMenu.createLauncher(containerId, inv, buffer.readItem()));
-
-    public static final MenuType<TorchLauncherMenu> TORCH_GATLING = forgeMenu("torch_gatling", (containerId, inv, buffer) -> TorchLauncherMenu.createGatling(containerId, inv, buffer.readItem()));
+    public static final MenuType<TorchToolMenu> TORCH_TOOL_MENU = forgeMenu("torch_launcher", (containerId, inv, buffer) -> new TorchToolMenu(containerId, inv, buffer.readItem()));
 
     private static <T extends AbstractContainerMenu> MenuType<T> vanillaMenu(String id, MenuType.MenuSupplier<T> factory) {
         MenuType<T> menuType = new MenuType<>(factory);

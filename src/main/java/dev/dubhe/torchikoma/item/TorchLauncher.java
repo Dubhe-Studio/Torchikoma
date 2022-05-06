@@ -3,7 +3,7 @@ package dev.dubhe.torchikoma.item;
 import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.menu.ProviderMenu;
-import dev.dubhe.torchikoma.menu.TorchLauncherMenu;
+import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -47,7 +47,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
     public void openGUI(Player pPlayer, ItemStack item){
         NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
                 this.getDescription(),
-                (id, inv, player) -> TorchLauncherMenu.createLauncher(id, inv, item)
+                (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));
     }
 
