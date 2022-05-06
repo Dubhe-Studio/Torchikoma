@@ -7,12 +7,16 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -46,10 +50,9 @@ public class TorchEntity extends AbstractArrow {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        BlockPos pos = result.getBlockPos().relative(result.getDirection());
-        if (this.level.getBlockState(pos).isAir() && this.entityData.get(ITEM_STACK).getItem() instanceof BlockItem blockItem) {
-            this.level.setBlock(pos, blockItem.getBlock().defaultBlockState(), 3);
-            this.discard();
+        if (this.getOwner() instanceof Player player && this.entityData.get(ITEM_STACK).getItem() instanceof BlockItem blockItem) {
+            InteractionResult interactionResult = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(blockItem), result));
+            if (interactionResult == InteractionResult.CONSUME) this.discard();
         }
     }
 
