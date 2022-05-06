@@ -1,7 +1,6 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.item.TorchLauncher;
-import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -23,7 +22,7 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         this(MyMenuTypes.TORCH_LAUNCHER, pContainerId, inventory, itemStack);
     }
 
-    public TorchLauncherMenu(MenuType<?> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack) {
+    public TorchLauncherMenu(MenuType<? extends TorchLauncherMenu> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack) {
         super(pMenuType, pContainerId);
         this.itemInventory = new ItemInventory(itemStack);
         this.itemInventory.startOpen(inventory.player);
@@ -64,6 +63,11 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
     @OnlyIn(Dist.CLIENT)
     public int getShoots() {
         return Math.min(this.itemInventory.shoots, 100);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ItemStack getItemStack() {
+        return this.itemInventory.itemStack;
     }
 
     @Override

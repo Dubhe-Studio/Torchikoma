@@ -18,7 +18,7 @@ public class ClientRenderEvent {
     @SubscribeEvent
     public static void onClientSetUpEvent(FMLClientSetupEvent event) {
         MenuScreens.register(MyMenuTypes.TORCH_LAUNCHER, TorchLauncherScreen::new);
-        MenuScreens.register(MyMenuTypes.TORCH_GATLING, TorchGatlingScreen::new);
+        MenuScreens.register(MyMenuTypes.TORCH_GATLING, TorchLauncherScreen::new);
 
         EntityRenderers.register(MyEntities.TORCH, TorchRender::new);
         EntityRenderers.register(MyEntities.TORCHIKOMA, TorchikomaRender::new);
