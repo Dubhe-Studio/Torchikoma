@@ -86,7 +86,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             }
         }
         this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-        this.renderBigItem(this.menu.getItemStack(), gunX + 26, gunY + 25 + 6, 48.0F);
+        this.renderBigItem(this.menu.getItemStack(), gunX + 26, gunY + 31, this.menu.getItemSize());
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);

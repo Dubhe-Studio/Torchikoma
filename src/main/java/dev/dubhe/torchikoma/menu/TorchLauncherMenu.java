@@ -18,14 +18,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TorchLauncherMenu extends AbstractContainerMenu {
     private final ItemInventory itemInventory;
 
-    public TorchLauncherMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        this(MyMenuTypes.TORCH_LAUNCHER, pContainerId, inventory, itemStack);
+    private final float itemSize;
+
+    public static TorchLauncherMenu createLauncher(int pContainerId, Inventory inventory, ItemStack itemStack) {
+        return new TorchLauncherMenu(MyMenuTypes.TORCH_LAUNCHER, pContainerId, inventory, itemStack, 48.0F);
     }
 
-    public TorchLauncherMenu(MenuType<? extends TorchLauncherMenu> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack) {
+    public static TorchLauncherMenu createGatling(int pContainerId, Inventory inventory, ItemStack itemStack) {
+        return new TorchLauncherMenu(MyMenuTypes.TORCH_GATLING, pContainerId, inventory, itemStack, 36.0F);
+    }
+
+    private TorchLauncherMenu(MenuType<? extends TorchLauncherMenu> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack, float itemSize) {
         super(pMenuType, pContainerId);
         this.itemInventory = new ItemInventory(itemStack);
         this.itemInventory.startOpen(inventory.player);
+        this.itemSize = itemSize;
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -53,6 +60,11 @@ public class TorchLauncherMenu extends AbstractContainerMenu {
         for(int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public float getItemSize() {
+        return itemSize;
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -2,7 +2,6 @@ package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.entity.render.TorchRender;
 import dev.dubhe.torchikoma.entity.render.TorchikomaRender;
-import dev.dubhe.torchikoma.screen.TorchGatlingScreen;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

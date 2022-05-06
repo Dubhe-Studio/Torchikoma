@@ -47,7 +47,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
     public void openGUI(Player pPlayer, ItemStack item){
         NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
                 this.getDescription(),
-                (id, inv, player) -> new TorchLauncherMenu(id, inv, item)
+                (id, inv, player) -> TorchLauncherMenu.createLauncher(id, inv, item)
         ), buffer -> buffer.writeItem(item));
     }
 
