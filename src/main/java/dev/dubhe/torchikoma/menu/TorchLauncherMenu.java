@@ -15,10 +15,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TorchLauncherMenu extends AbstractContainerMenu {
-    public static int temp1 = 0;
-    public static int temp2 = 0;
-    public static int temp3 = 0;
-    public static int temp4 = 0;
     private final ItemInventory itemInventory;
 
     public TorchLauncherMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {

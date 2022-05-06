@@ -32,11 +32,6 @@ import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMenu> {
-    public static int temp1 = 0;
-    public static int temp2 = 0;
-    public static int temp3 = 0;
-    public static int temp4 = 0;
-
     private static final ResourceLocation GUN_BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
     private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.getId("textures/gui/player.png");
     private static final int GUN_WIDTH = 178;
@@ -93,7 +88,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             }
         }
         this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-        this.renderBigItem(new ItemStack(MyItems.TORCH_LAUNCHER), gunX + 26 +temp1, gunY + 33 + temp2, 48.0F);
+        this.renderBigItem(new ItemStack(MyItems.TORCH_LAUNCHER), gunX + 26, gunY + 25 + 6, 48.0F);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);

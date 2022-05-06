@@ -42,6 +42,7 @@ public class RegisterEvent {
         event.getRegistry().register(MyItems.CLAY_EXPLOSIVES);
         event.getRegistry().register(MyItems.BLOCKLIGHT_DETECTOR);
     }
+
     @SubscribeEvent
     public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {
         event.getRegistry().register(MyMenuTypes.TORCH_LAUNCHER);
