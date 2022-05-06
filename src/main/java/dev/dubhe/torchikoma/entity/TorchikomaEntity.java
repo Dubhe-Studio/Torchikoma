@@ -101,7 +101,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         super.tick();
         if (this.getOwner() instanceof Player player) {
             float f = getOwnerDistance();
-            if (f > 6.0F) {
+            if (f > 10.0F) {
                 double d0 = (player.getX() - this.getX()) / (double) f;
                 double d1 = (player.getY() - this.getY()) / (double) f;
                 double d2 = (player.getZ() - this.getZ()) / (double) f;
@@ -154,11 +154,12 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
-        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F)) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.packing", false));
-        } else {
+        if (event.isMoving()){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.unpacking", false));
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.walk", true));
+        }
+        else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.packing", false));
         }
         return PlayState.CONTINUE;
     }

@@ -12,7 +12,7 @@ public class MyEntities {
             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
 
     public static final EntityType<TorchikomaEntity> TORCHIKOMA = create("torchikoma", EntityType.Builder.of(TorchikomaEntity::new, MobCategory.MISC)
-            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
+            .sized(1F, 1F).clientTrackingRange(4).updateInterval(1));
 
     public static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {
         EntityType<T> entityType = builder.build(name);
