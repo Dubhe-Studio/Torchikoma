@@ -9,8 +9,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class TorchGatling extends TorchLauncher {
     public TorchGatling(Properties pProperties) {
-        super(pProperties);
-        this.setCooldown(5);
+        super(pProperties, 5);
     }
 
     @Override

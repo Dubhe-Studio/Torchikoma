@@ -7,6 +7,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,11 +24,11 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("prismarine_torch"));
     public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties())
             .setRegistryName(Torchikoma.getId("glowstone_torch"));
-    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties().stacksTo(1))
+    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
             .setRegistryName(Torchikoma.getId("torch_launcher"));
-    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1))
+    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
             .setRegistryName(Torchikoma.getId("torch_gatling"));
-    public static final Item TORCH_CANNON = new TorchGatling(defaultProperties().stacksTo(1))
+    public static final Item TORCH_CANNON = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
             .setRegistryName(Torchikoma.getId("torch_cannon"));
     public static final Item CLUSTERED_TORCH = new Item(defaultProperties())
             .setRegistryName(Torchikoma.getId("clustered_torch"));

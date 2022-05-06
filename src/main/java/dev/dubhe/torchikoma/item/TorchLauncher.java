@@ -25,11 +25,15 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 public class TorchLauncher extends Item implements ProviderMenu {
-    private int Cooldown;
+    private final int cooldown;
 
     public TorchLauncher(Properties pProperties) {
+        this(pProperties, 20);
+    }
+
+    protected TorchLauncher(Properties pProperties, int cooldown) {
         super(pProperties);
-        this.setCooldown(20);
+        this.cooldown = cooldown;
     }
 
     @Override
@@ -40,8 +44,9 @@ public class TorchLauncher extends Item implements ProviderMenu {
                 this.openGUI(pPlayer,item);
                 return InteractionResultHolder.success(item);
             } else {
-                shootTorch(pLevel, pPlayer, item);
-                pPlayer.getCooldowns().addCooldown(this, Cooldown);
+                if (shootTorch(pLevel, pPlayer, item)) {
+                    pPlayer.getCooldowns().addCooldown(this, this.cooldown);
+                }
             }
         }
         return InteractionResultHolder.pass(item);
@@ -54,14 +59,10 @@ public class TorchLauncher extends Item implements ProviderMenu {
         ), buffer -> buffer.writeItem(item));
     }
 
-    public void setCooldown(int cooldown){
-        Cooldown = cooldown;
-    }
-
-    public static void shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
+    public static boolean shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
         CompoundTag nbt = pStack.getOrCreateTag();
         int shoots = nbt.getInt("Shoots");
-        if (shoots == 0) return;
+        if (shoots == 0) return false;
         NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
         ListTag torches = nbt.getList("Torches", 10);
         ItemStack item;
@@ -78,7 +79,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
                 break;
             }
         }
-        if (item.isEmpty()) return;
+        if (item.isEmpty()) return false;
         ItemStack stack = item.copy();
         stack.setCount(1);
         TorchEntity entity = new TorchEntity(pLevel, pPlayer, stack);
@@ -95,6 +96,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
                 nbt.putInt("Shoots", shoots + 16);
             }
         }
+        return true;
     }
 
     public static boolean isTorchItem(ItemStack pStack) {
