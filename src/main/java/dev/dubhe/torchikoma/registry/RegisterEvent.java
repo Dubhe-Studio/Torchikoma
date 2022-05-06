@@ -1,11 +1,14 @@
 package dev.dubhe.torchikoma.registry;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -57,5 +60,10 @@ public class RegisterEvent {
     @SubscribeEvent
     public static void onRegisterBlockEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
         event.getRegistry().register(MyBlockEntities.BLOCKLIGHT_DETECTOR);
+    }
+
+    @SubscribeEvent
+    public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(MyEntities.TORCHIKOMA, Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 80.0D).build());
     }
 }

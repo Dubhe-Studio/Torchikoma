@@ -17,7 +17,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEntity>{
     @Override
     public ResourceLocation getModelLocation(TorchikomaEntity object) {
-        return new ResourceLocation(Torchikoma.ID,"models/entity/torchikoma.geo.json");
+        return new ResourceLocation(Torchikoma.ID,"geo/torchikoma.geo.json");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
     @Override
     public void setLivingAnimations(TorchikomaEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
+        IBone head = this.getAnimationProcessor().getBone("bone00");
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
         head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
