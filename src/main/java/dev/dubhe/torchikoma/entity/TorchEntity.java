@@ -51,7 +51,7 @@ public class TorchEntity extends AbstractArrow {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (this.getOwner() instanceof Player player && this.entityData.get(ITEM_STACK).getItem() instanceof BlockItem blockItem) {
-            InteractionResult interactionResult = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(blockItem), result));
+            InteractionResult interactionResult = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, player.getItemInHand(InteractionHand.MAIN_HAND), result));
             if (interactionResult == InteractionResult.CONSUME) this.discard();
         }
     }
