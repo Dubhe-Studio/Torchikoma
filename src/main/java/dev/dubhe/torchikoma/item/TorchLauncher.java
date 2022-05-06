@@ -17,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.TorchBlock;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
@@ -112,6 +114,10 @@ public class TorchLauncher extends Item implements ProviderMenu {
             }
         }
         pNbt.put("Torches", torches);
+    }
 
+    @OnlyIn(Dist.CLIENT)
+    public float getRenderSize() {
+        return 48.0F;
     }
 }

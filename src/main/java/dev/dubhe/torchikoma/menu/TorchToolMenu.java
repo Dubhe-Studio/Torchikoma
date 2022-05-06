@@ -52,7 +52,7 @@ public class TorchToolMenu extends AbstractContainerMenu {
 
     @OnlyIn(Dist.CLIENT)
     public float getItemSize() {
-        return 48.0F;
+        return itemInventory.itemStack.getItem() instanceof TorchLauncher item ? item.getRenderSize() : 48.0F;
     }
 
     @OnlyIn(Dist.CLIENT)

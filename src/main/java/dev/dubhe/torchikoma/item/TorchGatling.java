@@ -19,4 +19,9 @@ public class TorchGatling extends TorchLauncher {
                 (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));
     }
+
+    @Override
+    public float getRenderSize() {
+        return 24.0F;
+    }
 }
