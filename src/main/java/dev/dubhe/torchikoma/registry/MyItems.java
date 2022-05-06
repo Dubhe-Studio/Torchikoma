@@ -1,6 +1,7 @@
 package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.item.TorchCannon;
 import dev.dubhe.torchikoma.item.TorchGatling;
 import dev.dubhe.torchikoma.item.TorchLauncher;
 import net.minecraft.world.item.CreativeModeTab;
@@ -28,7 +29,7 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("torch_launcher"));
     public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
             .setRegistryName(Torchikoma.getId("torch_gatling"));
-    public static final Item TORCH_CANNON = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
+    public static final Item TORCH_CANNON = new TorchCannon(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
             .setRegistryName(Torchikoma.getId("torch_cannon"));
     public static final Item CLUSTERED_TORCH = new Item(defaultProperties())
             .setRegistryName(Torchikoma.getId("clustered_torch"));
