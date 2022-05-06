@@ -1,6 +1,11 @@
 {
   "itemGroup.torchikoma.tab": "torchikoma",
 
+  "advancements.torchikoma.root.title": "torchikoma",
+  "advancements.torchikoma.root.description": "A mod what about torch",
+  "advancements.torchikoma.physical_transcendence.title": "physical transcendence",
+  "advancements.torchikoma.physical_transcendence.description": "Be merciful to the world",
+
   "block.torchikoma.prismarine_torch": "prismarine torch",
   "block.torchikoma.glowstone_torch": "glowstone torch",
   "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",

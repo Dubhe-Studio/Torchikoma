@@ -1,6 +1,11 @@
 {
   "itemGroup.torchikoma.tab": "火把克玛",
 
+  "advancements.torchikoma.root.title": "火把克玛",
+  "advancements.torchikoma.root.description": "关于火把的更多有趣玩法",
+  "advancements.torchikoma.physical_transcendence.title": "物理超度",
+  "advancements.torchikoma.physical_transcendence.description": "南无加特林菩萨\n六根清净贫铀弹\n一息三千六百转\n大慈大悲渡世人",
+
   "block.torchikoma.prismarine_torch": "海晶火把",
   "block.torchikoma.glowstone_torch": "荧石火把",
   "block.torchikoma.prismarine_wall_torch": "墙上的海晶火把",

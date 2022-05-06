@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Y": {
+      "item": "minecraft:quartz"
+    },
+    "Z": {
+      "item": "torchikoma:electronic_component"
+    }
+  },
+  "result": {
+    "item": "torchikoma:blocklight_detector",
+    "count": 1
+  }
+}

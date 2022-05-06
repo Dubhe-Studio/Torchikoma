@@ -1,0 +1,56 @@
+{
+  "parent": "torchikoma:torchikoma/root",
+  "display": {
+    "icon": {
+      "item": "torchikoma:torch_gatling"
+    },
+    "title": {
+      "translate": "advancements.torchikoma.physical_transcendence.title",
+      "color": "gold"
+    },
+    "description": {
+      "translate": "advancements.torchikoma.physical_transcendence.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "torch_gatling": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "torchikoma:torch_gatling"
+            ],
+            "nbt": "{display:{Name:'{\"text\":\"南无加特林菩萨\"}'}}"
+          }
+        ]
+      }
+    },
+    "torch_cannon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "torchikoma:torch_cannon"
+            ],
+            "nbt": "{display:{Name:'{\"text\":\"六根清净贫铀弹\"}'}}"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "torch_gatling",
+      "torch_cannon"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}
