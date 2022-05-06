@@ -39,7 +39,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
     private static final int PLAYER_WIDTH = 176;
     private static final int PLAYER_HEIGHT = 100;
 
-    private static ItemStack LAUNCHER = new ItemStack(MyItems.TORCH_LAUNCHER);
+    private ItemStack LAUNCHER = new ItemStack(MyItems.TORCH_LAUNCHER);
 
     private final ItemRenderer itemRenderer;
     private int rotateAngle = 0;
@@ -51,8 +51,8 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
         this.titleLabelY += 7;
     }
 
-    public static void setLauncher(ItemStack LAUNCHER) {
-        TorchLauncherScreen.LAUNCHER = LAUNCHER;
+    public void setLauncher(ItemStack Launcher) {
+        this.LAUNCHER = Launcher;
     }
 
     @Override

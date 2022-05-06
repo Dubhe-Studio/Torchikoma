@@ -22,7 +22,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 public class TorchLauncher extends Item implements ProviderMenu {
-    private static int Cooldown;
+    private int Cooldown;
 
     public TorchLauncher(Properties pProperties) {
         super(pProperties);

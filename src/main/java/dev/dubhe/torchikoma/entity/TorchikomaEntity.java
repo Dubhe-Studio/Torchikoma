@@ -20,14 +20,10 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class TorchikomaEntity extends TamableAnimal implements IAnimatable, IAnimationTickable {
-    private AnimationFactory factory = new AnimationFactory(this);
+    AnimationFactory factory = new AnimationFactory(this);
     public TorchikomaEntity(EntityType<? extends TamableAnimal> type, Level inLevel) {
         super(type, inLevel);
         this.noCulling = true;
-    }
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.start", true));
-        return PlayState.CONTINUE;
     }
 
     @Override
@@ -63,6 +59,15 @@ public class TorchikomaEntity extends TamableAnimal implements IAnimatable, IAni
         }else {
             return 0;
         }
+    }
+
+    private <P extends IAnimatable> PlayState predicate(AnimationEvent<P> event) {
+        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("creeper_walk", true));
+        } else {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("creeper_idle", true));
+        }
+        return PlayState.CONTINUE;
     }
 
     @Nullable
