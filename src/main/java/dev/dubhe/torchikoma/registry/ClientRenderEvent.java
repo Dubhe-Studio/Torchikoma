@@ -27,5 +27,6 @@ public class ClientRenderEvent {
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.GLOWSTONE_WALL_TORCH, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.ELECTRONIC_COMPONENT, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.MECHANICAL_COMPONENT, RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MyBlocks.BLOCKLIGHT_DETECTOR, RenderType.cutout());
     }
 }

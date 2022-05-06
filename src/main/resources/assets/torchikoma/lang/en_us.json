@@ -7,6 +7,7 @@
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "torchikoma",
   "block.torchikoma.clay_explosives": "clay explosives",
+  "block.torchikoma.blocklight_detector": "blocklight detector",
 
   "item.torchikoma.clustered_torch": "clustered torch",
   "item.torchikoma.clustered_redstone_torch": "clustered redstone torch",
@@ -20,6 +21,7 @@
   "item.torchikoma.mechanical_component": "mechanical component",
   "item.torchikoma.electronic_component": "electronic component",
   "item.torchikoma.clay_explosives": "clay explosives",
+  "item.torchikoma.blocklight_detector": "blocklight detector",
 
   "entity.torchikoma.torchikoma": "torchikoma",
 
