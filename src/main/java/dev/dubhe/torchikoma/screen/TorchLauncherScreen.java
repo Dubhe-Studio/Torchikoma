@@ -21,7 +21,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -118,7 +117,7 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             PoseStack posestack = RenderSystem.getModelViewStack();
             Quaternion quaternion = Vector3f.YP.rotationDegrees(this.rotateAngle);
-            double incremental = Math.cos(Math.toRadians(this.rotateAngle + 60)) * -1;
+            double incremental = -Math.cos(Math.toRadians(this.rotateAngle + 60)); // 模型中心点与渲染中心点不一致的坐标补偿
             posestack.pushPose();
             posestack.translate(x + incremental, y, 100.0F);
             posestack.scale(1.0F, -1.0F, 1.0F);

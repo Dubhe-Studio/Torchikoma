@@ -10,8 +10,4 @@ public class BlocklightDetectorBlockEntity extends BlockEntity {
     public BlocklightDetectorBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(MyBlockEntities.BLOCKLIGHT_DETECTOR, pWorldPosition, pBlockState);
     }
-
-    public void tick() {
-
-    }
 }

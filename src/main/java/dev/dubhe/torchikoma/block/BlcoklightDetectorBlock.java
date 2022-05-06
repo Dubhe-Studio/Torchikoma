@@ -1,5 +1,6 @@
 package dev.dubhe.torchikoma.block;
 
+import dev.dubhe.torchikoma.block.entity.BlocklightDetectorBlockEntity;
 import dev.dubhe.torchikoma.registry.MyBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.DaylightDetectorBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,6 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class BlcoklightDetectorBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
@@ -48,7 +49,7 @@ public class BlcoklightDetectorBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@Nonnull BlockPos pPos, @Nonnull BlockState pState) {
-        return new DaylightDetectorBlockEntity(pPos, pState);
+        return new BlocklightDetectorBlockEntity(pPos, pState);
     }
 
     @Override
