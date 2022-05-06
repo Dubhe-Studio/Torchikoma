@@ -117,8 +117,12 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchLauncherMe
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             PoseStack posestack = RenderSystem.getModelViewStack();
             Quaternion quaternion = Vector3f.YP.rotationDegrees(this.rotateAngle);
+            System.out.println(this.rotateAngle - 90);
+            double incremental = Math.cos(Math.toRadians(this.rotateAngle + 60)) * -2;
+            System.out.println(incremental);
+            System.out.println("===");
             posestack.pushPose();
-            posestack.translate(x, y, 100.0F);
+            posestack.translate(x + incremental, y, 100.0F);
             posestack.scale(1.0F, -1.0F, 1.0F);
             posestack.scale(size, size, size);
             posestack.mulPose(quaternion);
