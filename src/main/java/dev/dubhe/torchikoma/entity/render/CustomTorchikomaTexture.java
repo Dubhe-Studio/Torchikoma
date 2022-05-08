@@ -3,14 +3,11 @@ package dev.dubhe.torchikoma.entity.render;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mojang.logging.LogUtils;
-import com.mojang.serialization.DataResult;
 import dev.dubhe.torchikoma.Torchikoma;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,12 +17,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class CustomTorchikomaTexture {
-    private final Logger LOGGER = LogUtils.getLogger();
     private final Gson GSON = new GsonBuilder().create();
-    private final TypeToken<Map<ResourceLocation, ResourceLocation>> CUSTOME_TORCHIKOMA_TEXTURE_TYPE = new TypeToken<>() {};
+    private final TypeToken<Map<ResourceLocation, ResourceLocation>> CUSTOME_TORCHIKOMA_TEXTURE_TYPE = new TypeToken<>() {
+    };
     private Map<ResourceLocation, ResourceLocation> itemMap;
 
-    public CustomTorchikomaTexture(ResourceManager pResourceManager) throws IOException {
+    public CustomTorchikomaTexture() {
+    }
+
+    public void reload(ResourceManager pResourceManager) throws IOException {
         Resource resource = pResourceManager.getResource(new ResourceLocation(Torchikoma.ID, "textures/entity/torchikoma/bind.json"));
         try {
             InputStream inputstream = resource.getInputStream();
@@ -50,11 +50,15 @@ public class CustomTorchikomaTexture {
                 throw throwable3;
             }
         } catch (RuntimeException runtimeexception) {
-            LOGGER.warn("Invalid torchikoma:textures/entity/torchikoma/bind.json");
+            Torchikoma.LOGGER.warn("Invalid torchikoma:textures/entity/torchikoma/bind.json");
         }
     }
 
-    public ResourceLocation[] getItemList(){
-            return this.itemMap.keySet().toArray(new ResourceLocation[0]);
+    public Map<ResourceLocation, ResourceLocation> getItemMap(){
+        return this.itemMap;
+    }
+
+    public ResourceLocation[] getItemList() {
+        return this.itemMap.keySet().toArray(new ResourceLocation[0]);
     }
 }

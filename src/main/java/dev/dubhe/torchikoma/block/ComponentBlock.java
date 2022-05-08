@@ -66,6 +66,6 @@ public class ComponentBlock extends HorizontalDirectionalBlock implements Simple
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return canSupportCenter(pLevel, pPos.below(), Direction.UP);
+        return true;
     }
 }
