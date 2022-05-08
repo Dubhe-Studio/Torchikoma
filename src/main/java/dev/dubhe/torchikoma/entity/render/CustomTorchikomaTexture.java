@@ -55,6 +55,6 @@ public class CustomTorchikomaTexture {
     }
 
     public ResourceLocation[] getItemList(){
-            return itemMap.keySet().toArray(new ResourceLocation[0]);
+            return this.itemMap.keySet().toArray(new ResourceLocation[0]);
     }
 }
