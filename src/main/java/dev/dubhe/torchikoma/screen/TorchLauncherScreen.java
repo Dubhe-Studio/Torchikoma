@@ -9,11 +9,8 @@ import com.mojang.math.Vector3f;
 import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
@@ -30,19 +27,12 @@ import java.util.List;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> {
+public class TorchLauncherScreen extends AbstractItemScreen<TorchToolMenu> {
     private static final ResourceLocation GUN_BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
-    private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.getId("textures/gui/player.png");
-    private static final int GUN_WIDTH = 178;
-    private static final int GUN_HEIGHT = 58;
-    private static final int PLAYER_WIDTH = 176;
-    private static final int PLAYER_HEIGHT = 100;
-    private final ItemRenderer itemRenderer;
     private int rotateAngle = 0;
 
     public TorchLauncherScreen(TorchToolMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
-        itemRenderer = Minecraft.getInstance().getItemRenderer();
+        super(pMenu, pPlayerInventory, pTitle, 178, 58);
         this.titleLabelX = 50;
         this.titleLabelY += 7;
     }
@@ -62,8 +52,8 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> 
     @Override
     protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
         super.renderTooltip(pPoseStack, pX, pY);
-        int x = (this.width - GUN_WIDTH) / 2 + 76;
-        int y = (this.height - GUN_HEIGHT - PLAYER_HEIGHT - 8) / 2 + 31;
+        int x = (this.width - this.menuWidth) / 2 + 76;
+        int y = (this.height - this.imageHeight) / 2 + 31;
         if (pX >= x && pX <= x + 50 && pY >= y && pY <= y + 4) {
             this.renderTooltip(pPoseStack, List.of(new TranslatableComponent("gui.torchikoma.gunpowder", this.menu.getShoots())), Optional.empty(), pX, pY);
         }
@@ -71,34 +61,23 @@ public class TorchLauncherScreen extends AbstractContainerScreen<TorchToolMenu> 
 
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        int gunX = (this.width - GUN_WIDTH) / 2;
-        int gunY = (this.height - GUN_HEIGHT - PLAYER_HEIGHT - 8) / 2;
-        RenderSystem.setShaderTexture(0, PLAYER_BACKGROUND);
-        this.blit(pPoseStack, (this.width - PLAYER_WIDTH) / 2, gunY + GUN_HEIGHT + 8, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
+        super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
+        int gunX = (this.width - this.menuWidth) / 2;
+        int gunY = (this.height - this.imageHeight) / 2;
         RenderSystem.setShaderTexture(0, GUN_BACKGROUND);
-        this.blit(pPoseStack, gunX, gunY, 0, 0, GUN_WIDTH, GUN_HEIGHT);
-        this.blit(pPoseStack, gunX + 76, gunY + 31, GUN_WIDTH, 0, (int)(0.5D * this.menu.getShoots()), 4);
+        this.blit(pPoseStack, gunX, gunY, 0, 0, this.menuWidth, this.menuHeight);
+        this.blit(pPoseStack, gunX + 76, gunY + 31, this.menuWidth, 0, (int)(0.5D * this.menu.getShoots()), 4);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                this.renderItemBg(pPoseStack, gunX + j * 18 + 135, gunY + i * 18 + 16, GUN_WIDTH + 16, 4, j + i * 2);
+                this.renderItemBg(pPoseStack, gunX + j * 18 + 135, gunY + i * 18 + 16, this.menuWidth + 16, 4, j + i * 2);
             }
         }
-        this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, GUN_WIDTH, 4, 4);
-//        this.renderBigItem(this.menu.getItemStack(), gunX + 26, gunY + 31, this.menu.getItemSize());
+        this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, this.menuWidth, 4, 4);
         RenderSize renderSize = this.menu.getItemSize();
         this.renderBigItem(this.menu.getItemStack(), gunX + renderSize.pX, gunY + renderSize.pY, renderSize.size);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
         this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
-        if (this.menu.isEmpty(index)) {
-            this.blit(pPoseStack, x, y, u, v, 16, 16);
-        }
     }
 
     @SuppressWarnings({"deprecation", "SameParameterValue"})

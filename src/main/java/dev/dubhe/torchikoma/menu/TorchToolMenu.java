@@ -5,24 +5,27 @@ import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TorchToolMenu extends AbstractContainerMenu {
-    private final ItemInventory itemInventory;
+public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory> {
 
     public TorchToolMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        super(MyMenuTypes.TORCH_TOOL_MENU, pContainerId);
-        this.itemInventory = new ItemInventory(itemStack);
-        this.itemInventory.startOpen(inventory.player);
+        super(MyMenuTypes.TORCH_TOOL_MENU, pContainerId, inventory, itemStack);
+    }
 
+    @Override
+    protected ItemInventory genItemInventory(ItemStack itemStack) {
+        return new ItemInventory(itemStack);
+    }
+
+    @Override
+    protected void initSlot() {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 this.addSlot(new Slot(this.itemInventory, j + i * 2, 134 + j * 18, 16 + i * 18) {
@@ -39,16 +42,6 @@ public class TorchToolMenu extends AbstractContainerMenu {
                 return pStack.getItem() == Items.GUNPOWDER;
             }
         });
-
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
-        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -57,18 +50,8 @@ public class TorchToolMenu extends AbstractContainerMenu {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isEmpty(int pIndex) {
-        return this.itemInventory.getItem(pIndex).isEmpty();
-    }
-
-    @OnlyIn(Dist.CLIENT)
     public int getShoots() {
         return Math.min(this.itemInventory.shoots, 100);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public ItemStack getItemStack() {
-        return this.itemInventory.itemStack;
     }
 
     @Override
@@ -109,33 +92,15 @@ public class TorchToolMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return true;
-    }
-
-    @Override
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
-        this.itemInventory.stopOpen(pPlayer);
-    }
-
-    static class ItemInventory extends SimpleContainer {
-        private final ItemStack itemStack;
+    static class ItemInventory extends AbstractMenuInventory {
         private int shoots = 0;
 
         private ItemInventory(ItemStack itemStack) {
-            super(5);
-            this.itemStack = itemStack;
-            this.loadData();
-            this.addListener(container -> {
-                if (container instanceof ItemInventory inv) {
-                    inv.saveData();
-                }
-            });
+            super(5, itemStack);
         }
 
-        private void loadData() {
+        @Override
+        protected void loadData() {
             if (itemStack.isEmpty()) return;
             CompoundTag nbt = itemStack.getOrCreateTag();
             if (!itemStack.hasTag() || !nbt.contains("Torches") || !nbt.contains("Shoots")) {
@@ -156,7 +121,8 @@ public class TorchToolMenu extends AbstractContainerMenu {
             }
         }
 
-        private void saveData() {
+        @Override
+        protected void saveData() {
             if (this.itemStack.isEmpty()) return;
             ListTag torches = new ListTag();
             CompoundTag nbt;
