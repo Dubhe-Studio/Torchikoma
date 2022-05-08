@@ -19,6 +19,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import javax.annotation.Nonnull;
+
 public class TorchEntity extends AbstractArrow {
     private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(TorchEntity.class, EntityDataSerializers.ITEM_STACK);
 
@@ -41,13 +43,14 @@ public class TorchEntity extends AbstractArrow {
         this.entityData.define(ITEM_STACK, new ItemStack(Items.TORCH));
     }
 
+    @Nonnull
     @Override
     protected ItemStack getPickupItem() {
         return this.entityData.get(ITEM_STACK);
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
+    protected void onHitBlock(@Nonnull BlockHitResult result) {
         super.onHitBlock(result);
         if (this.getOwner() instanceof Player player && this.entityData.get(ITEM_STACK).getItem() instanceof BlockItem blockItem) {
             InteractionResult interactionResult = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(blockItem), result));
@@ -55,6 +58,7 @@ public class TorchEntity extends AbstractArrow {
         } else this.discard();
     }
 
+    @Nonnull
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.WOOD_BREAK;
