@@ -1,7 +1,7 @@
 {
-  "itemGroup.torchikoma.tab": "torchikoma",
+  "itemGroup.torchikoma.tab": "Torchikoma",
 
-  "advancements.torchikoma.root.title": "torchikoma",
+  "advancements.torchikoma.root.title": "Torchikoma",
   "advancements.torchikoma.root.description": "A mod what about torch",
   "advancements.torchikoma.physical_transcendence.title": "physical transcendence",
   "advancements.torchikoma.physical_transcendence.description": "Be merciful to the world",
@@ -10,7 +10,7 @@
   "block.torchikoma.glowstone_torch": "glowstone torch",
   "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
-  "block.torchikoma.torchikoma": "torchikoma",
+  "block.torchikoma.torchikoma": "Torchikoma",
   "block.torchikoma.clay_explosives": "clay explosives",
   "block.torchikoma.blocklight_detector": "blocklight detector",
 
@@ -22,7 +22,7 @@
   "item.torchikoma.torch_launcher": "torch launcher",
   "item.torchikoma.torch_gatling": "torch gatling",
   "item.torchikoma.torch_cannon": "torch cannon",
-  "item.torchikoma.torchikoma": "torchikoma",
+  "item.torchikoma.torchikoma": "Torchikoma",
   "item.torchikoma.mechanical_component": "mechanical component",
   "item.torchikoma.electronic_component": "electronic component",
   "item.torchikoma.clay_explosives": "clay explosives",
@@ -30,6 +30,9 @@
 
   "entity.torchikoma.torchikoma": "torchikoma",
 
-  "gui.torchikoma.gunpowder": "please translate this: %s"
+  "gui.torchikoma.gunpowder": "please translate this: %s",
+  
+  "key.category.torchikoma": "Torchikoma",
+  "key.torchikoma.open_gui": "open guns GUI"
 
 }

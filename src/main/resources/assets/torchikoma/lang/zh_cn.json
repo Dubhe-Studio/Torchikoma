@@ -1,7 +1,7 @@
 {
-  "itemGroup.torchikoma.tab": "火把克玛",
+  "itemGroup.torchikoma.tab": "拓奇科马",
 
-  "advancements.torchikoma.root.title": "火把克玛",
+  "advancements.torchikoma.root.title": "拓奇科马",
   "advancements.torchikoma.root.description": "关于火把的更多有趣玩法",
   "advancements.torchikoma.physical_transcendence.title": "物理超度",
   "advancements.torchikoma.physical_transcendence.description": "南无加特林菩萨\n六根清净贫铀弹\n一息三千六百转\n大慈大悲渡世人",
@@ -10,7 +10,7 @@
   "block.torchikoma.glowstone_torch": "荧石火把",
   "block.torchikoma.prismarine_wall_torch": "墙上的海晶火把",
   "block.torchikoma.glowstone_wall_torch": "墙上的荧石火把",
-  "block.torchikoma.torchikoma": "拓奇克玛",
+  "block.torchikoma.torchikoma": "拓奇科马",
   "block.torchikoma.clay_explosives": "粘土炸药",
   "block.torchikoma.blocklight_detector": "方块光探测器",
 
@@ -22,13 +22,16 @@
   "item.torchikoma.torch_launcher": "火把发射器",
   "item.torchikoma.torch_gatling": "火把加特林",
   "item.torchikoma.torch_cannon": "火把手炮",
-  "item.torchikoma.torchikoma": "拓奇克玛",
+  "item.torchikoma.torchikoma": "拓奇科马",
   "item.torchikoma.mechanical_component": "机械零件",
   "item.torchikoma.electronic_component": "电子元件",
   "item.torchikoma.clay_explosives": "粘土炸药",
   "item.torchikoma.blocklight_detector": "方块光探测器",
 
-  "entity.torchikoma.torchikoma": "拓奇克玛",
+  "entity.torchikoma.torchikoma": "拓奇科马",
 
-  "gui.torchikoma.gunpowder": "发射次数: %s"
+  "gui.torchikoma.gunpowder": "发射次数: %s",
+  
+  "key.category.torchikoma": "拓奇科马",
+  "key.torchikoma.open_gui": "打开枪械GUI"
 }
