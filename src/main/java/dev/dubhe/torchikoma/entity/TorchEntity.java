@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class TorchEntity extends AbstractArrow {
@@ -53,7 +54,7 @@ public class TorchEntity extends AbstractArrow {
         if (this.getOwner() instanceof Player player && this.entityData.get(ITEM_STACK).getItem() instanceof BlockItem blockItem) {
             InteractionResult interactionResult = blockItem.place(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(blockItem), result));
             if (interactionResult == InteractionResult.CONSUME) this.discard();
-        }
+        } else this.discard();
     }
 
     @Override
