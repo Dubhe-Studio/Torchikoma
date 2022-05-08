@@ -30,8 +30,8 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWaterloggedBlock {
@@ -55,9 +55,9 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
         return this.defaultBlockState().setValue(FACING, pContext.getClickedFace()).setValue(WATERLOGGED, flag);
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public BlockState updateShape(BlockState pState, @NotNull Direction pDirection, @NotNull BlockState pNeighborState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pNeighborPos) {
+    public BlockState updateShape(BlockState pState, @Nonnull Direction pDirection, @Nonnull BlockState pNeighborState, @Nonnull LevelAccessor pLevel, @Nonnull BlockPos pCurrentPos, @Nonnull BlockPos pNeighborPos) {
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
@@ -65,15 +65,15 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
         return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public VoxelShape getShape(BlockState p_154346_, @NotNull BlockGetter p_154347_, @NotNull BlockPos p_154348_, @NotNull CollisionContext p_154349_) {
+    public VoxelShape getShape(BlockState p_154346_, @Nonnull BlockGetter p_154347_, @Nonnull BlockPos p_154348_, @Nonnull CollisionContext p_154349_) {
         return switch (p_154346_.getValue(FACING)) {
             case EAST -> X_AXIS_AABB;
             case WEST -> BX_AXIS_AABB;
@@ -84,14 +84,14 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
         };
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public BlockState rotate(BlockState p_154354_, Rotation p_154355_) {
         return p_154354_.setValue(FACING, p_154355_.rotate(p_154354_.getValue(FACING)));
     }
 
     @Override
-    public boolean isPathfindable(@NotNull BlockState p_154341_, @NotNull BlockGetter p_154342_, @NotNull BlockPos p_154343_, @NotNull PathComputationType p_154344_) {
+    public boolean isPathfindable(@Nonnull BlockState p_154341_, @Nonnull BlockGetter p_154342_, @Nonnull BlockPos p_154343_, @Nonnull PathComputationType p_154344_) {
         return false;
     }
 
@@ -105,9 +105,9 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
         explode(world, pos, igniter);
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    public InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
+    public InteractionResult use(@Nonnull BlockState pState, @Nonnull Level pLevel, @Nonnull BlockPos pPos, Player pPlayer, @Nonnull InteractionHand pHand, @Nonnull BlockHitResult pHit) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (!itemstack.is(Items.FLINT_AND_STEEL) && !itemstack.is(Items.FIRE_CHARGE)) {
             return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
@@ -148,7 +148,7 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
     }
 
     @Override
-    public void onProjectileHit(Level pLevel, @NotNull BlockState pState, @NotNull BlockHitResult pHit, @NotNull Projectile pProjectile) {
+    public void onProjectileHit(Level pLevel, @Nonnull BlockState pState, @Nonnull BlockHitResult pHit, @Nonnull Projectile pProjectile) {
         if (!pLevel.isClientSide) {
             BlockPos blockpos = pHit.getBlockPos();
             Entity entity = pProjectile.getOwner();

@@ -30,13 +30,9 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
         return new ResourceLocation(Torchikoma.ID,"animations/entity/torchikoma.animation.json");
     }
 
-    @SuppressWarnings({ "unchecked", "unused"})
+    @SuppressWarnings({"unused"})
     @Override
     public void setLivingAnimations(TorchikomaEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("bone00");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
-        head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
     }
 }

@@ -10,11 +10,12 @@ import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始化, 否则NPE异常
     private static final CreativeModeTab TAB = new CreativeModeTab(Torchikoma.ID + ".tab") {
-        @NotNull
+        @Nonnull
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(TORCH_LAUNCHER);

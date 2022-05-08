@@ -130,8 +130,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
     }
 
-    public void setOwnerUUID(@Nullable UUID p_21817_) {
-        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(p_21817_));
+    public void setOwnerUUID(@Nullable UUID Owner) {
+        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(Owner));
     }
 
     @Nullable
