@@ -17,6 +17,9 @@ import dev.dubhe.torchikoma.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -37,11 +40,13 @@ import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable {
     AnimationFactory factory = new AnimationFactory(this);
+    private Item painting;
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
         super(type, inLevel);
         this.noCulling = true;
+        this.setPainting(Items.AIR);
     }
 
     @Override
@@ -50,6 +55,14 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         if (this.getOwnerUUID() != null) {
             pCompound.putUUID("Owner", this.getOwnerUUID());
         }
+    }
+
+    public void setPainting(Item itemStack){
+        this.painting = itemStack;
+    }
+
+    public Item getPainting(){
+        return this.painting;
     }
 
     @Override
