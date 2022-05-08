@@ -27,8 +27,8 @@ public class BlcoklightDetectorBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
 
-    public BlcoklightDetectorBlock(Properties p_49224_) {
-        super(p_49224_);
+    public BlcoklightDetectorBlock(Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(POWER, 0));
     }
     @Override

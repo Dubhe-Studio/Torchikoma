@@ -43,8 +43,8 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
     protected static final VoxelShape BZ_AXIS_AABB = Block.box(4.0D, 4.0D, 13.0D, 12.0D, 12.0D, 16.0D);
     protected static final VoxelShape BX_AXIS_AABB = Block.box(13.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D);
 
-    public ClayExplosivesBlock(Properties p_52591_) {
-        super(p_52591_);
+    public ClayExplosivesBlock(Properties pProperties) {
+        super(pProperties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
     }
 
@@ -73,8 +73,8 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
 
     @Nonnull
     @Override
-    public VoxelShape getShape(BlockState p_154346_, @Nonnull BlockGetter p_154347_, @Nonnull BlockPos p_154348_, @Nonnull CollisionContext p_154349_) {
-        return switch (p_154346_.getValue(FACING)) {
+    public VoxelShape getShape(BlockState pState, @Nonnull BlockGetter blockGetter, @Nonnull BlockPos pPos, @Nonnull CollisionContext pContext) {
+        return switch (pState.getValue(FACING)) {
             case EAST -> X_AXIS_AABB;
             case WEST -> BX_AXIS_AABB;
             case SOUTH -> Z_AXIS_AABB;
@@ -86,12 +86,12 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
 
     @Nonnull
     @Override
-    public BlockState rotate(BlockState p_154354_, Rotation p_154355_) {
-        return p_154354_.setValue(FACING, p_154355_.rotate(p_154354_.getValue(FACING)));
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
+        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
 
     @Override
-    public boolean isPathfindable(@Nonnull BlockState p_154341_, @Nonnull BlockGetter p_154342_, @Nonnull BlockPos p_154343_, @Nonnull PathComputationType p_154344_) {
+    public boolean isPathfindable(@Nonnull BlockState pState, @Nonnull BlockGetter blockGetter, @Nonnull BlockPos pPos, @Nonnull PathComputationType pType) {
         return false;
     }
 
@@ -117,7 +117,7 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
             Item item = itemstack.getItem();
             if (!pPlayer.isCreative()) {
                 if (itemstack.is(Items.FLINT_AND_STEEL)) {
-                    itemstack.hurtAndBreak(1, pPlayer, (p_57425_) -> p_57425_.broadcastBreakEvent(pHand));
+                    itemstack.hurtAndBreak(1, pPlayer, (player) -> player.broadcastBreakEvent(pHand));
                 } else {
                     itemstack.shrink(1);
                 }
