@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -40,13 +39,12 @@ import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable {
     AnimationFactory factory = new AnimationFactory(this);
-    private Item painting;
+    private EntityDataAccessor<String> PAINTING = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
         super(type, inLevel);
         this.noCulling = true;
-        this.setPainting(Items.AIR);
     }
 
     @Override
@@ -55,14 +53,17 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         if (this.getOwnerUUID() != null) {
             pCompound.putUUID("Owner", this.getOwnerUUID());
         }
+        if (this.getPainting() != null){
+            pCompound.putString("PaintingItem", this.getPainting());
+        }
     }
 
-    public void setPainting(Item itemStack){
-        this.painting = itemStack;
+    public void setPainting(String itemName){
+        this.entityData.set(PAINTING, itemName);
     }
 
-    public Item getPainting(){
-        return this.painting;
+    public String getPainting(){
+        return this.entityData.get(PAINTING);
     }
 
     @Override
@@ -75,7 +76,12 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
             String s = pCompound.getString("Owner");
             uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
         }
-
+        String painting = getPainting();
+        if (painting != null) {
+            try {
+                this.setPainting(painting);
+            }catch (Throwable ignored){}
+        }
         if (uuid != null) {
             try {
                 this.setOwnerUUID(uuid);
