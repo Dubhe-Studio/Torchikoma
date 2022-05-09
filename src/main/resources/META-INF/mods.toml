@@ -7,7 +7,7 @@ modId = "torchikoma"
 version = "${file.jarVersion}"
 displayName = "Torchikoma"
 displayURL="https://torch.dubhe.dev/"
-logoFile="pack.png"
+logoFile="banner.png"
 authors = "DubheStudio"
 description = "A mod what about torch"
 
