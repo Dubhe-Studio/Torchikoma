@@ -28,7 +28,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
     protected void initSlot() {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                this.addSlot(new Slot(this.itemInventory, j + i * 2, 134 + j * 18, 16 + i * 18) {
+                this.addSlot(new Slot(this.itemInventory, j + i * 2, 135 + j * 18, 16 + i * 18) {
                     @Override
                     public boolean mayPlace(ItemStack pStack) {
                         return TorchLauncher.isTorchItem(pStack);
@@ -36,7 +36,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                 });
             }
         }
-        this.addSlot(new Slot(this.itemInventory, 4, 51, 25) {
+        this.addSlot(new Slot(this.itemInventory, 4, 52, 25) {
             @Override
             public boolean mayPlace(ItemStack pStack) {
                 return pStack.getItem() == Items.GUNPOWDER;
@@ -93,10 +93,11 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
     }
 
     static class ItemInventory extends AbstractMenuInventory {
-        private int shoots = 0;
+        private int shoots;
 
         private ItemInventory(ItemStack itemStack) {
             super(5, itemStack);
+            System.out.println(shoots);
         }
 
         @Override
@@ -117,7 +118,9 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                     if (j < this.items.size()) this.items.set(j, ItemStack.of(subNbt));
                 }
                 if (nbt.contains("Gunpowder")) this.items.set(4, ItemStack.of(nbt.getCompound("Gunpowder")));
+                System.out.println(nbt);
                 this.shoots = nbt.getInt("Shoots");
+                System.out.println(shoots);
             }
         }
 

@@ -43,13 +43,6 @@ public class TorchLauncherScreen extends AbstractItemScreen<TorchToolMenu> {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
-    }
-
-    @Override
     protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
         super.renderTooltip(pPoseStack, pX, pY);
         int x = (this.width - this.menuWidth) / 2 + 76;

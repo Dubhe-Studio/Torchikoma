@@ -24,12 +24,12 @@ public abstract class AbstractItemMenu<T extends AbstractMenuInventory> extends 
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 84 + i * 18));
             }
         }
 
         for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(inventory, i, 9 + i * 18, 142));
         }
 
     }
