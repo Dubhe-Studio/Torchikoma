@@ -17,7 +17,7 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
         try {
             this.customTexture.reload(new ResourceListener().registerReloadListener());
         } catch (IOException e) {
-            Torchikoma.LOGGER.warn("Fail load torchikoma entity model");
+            Torchikoma.LOGGER.warn("Fail load torchikoma entity custom texture");
         }
     }
 
