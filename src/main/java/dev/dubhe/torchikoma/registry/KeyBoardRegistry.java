@@ -35,20 +35,25 @@ public class KeyBoardRegistry {
     static class KeyInput {
         @SubscribeEvent
         public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
-            if (MESSAGE_KEY.isDown()) {
-                assert Minecraft.getInstance().player != null;
-                Screen screen = Minecraft.getInstance().screen;
-                System.out.println(screen);
-                if (screen == null) {
-                    Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, -1));
-                } else if (screen instanceof AbstractContainerScreen<?> menuScreen){
-                    Slot slot = menuScreen.getSlotUnderMouse();
-                    if (Minecraft.getInstance().player.containerMenu.getCarried().isEmpty() && slot != null && slot.hasItem()) {
-                        Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, slot.getSlotIndex()));
-                    }
-                }
+            if (MESSAGE_KEY.isDown()) onMessageKeyPressed();
+        }
+    }
+
+    private static void onMessageKeyPressed() {
+        assert Minecraft.getInstance().player != null;
+        Screen screen = Minecraft.getInstance().screen;
+        System.out.println(screen);
+        if (screen == null) {
+            Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, -1));
+        } else if (screen instanceof AbstractContainerScreen<?> menuScreen){
+            Slot slot = menuScreen.getSlotUnderMouse();
+            if (Minecraft.getInstance().player.containerMenu.getCarried().isEmpty() && slot != null && slot.hasItem()) {
+                System.out.println(slot.getSlotIndex());
+                System.out.println("send");
+                Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, slot.getSlotIndex()));
             }
         }
+
     }
 
     public static KeyMapping createKey(String id, int key) {

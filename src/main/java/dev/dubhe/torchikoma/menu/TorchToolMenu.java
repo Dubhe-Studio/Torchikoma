@@ -97,7 +97,6 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
 
         private ItemInventory(ItemStack itemStack) {
             super(5, itemStack);
-            System.out.println(shoots);
         }
 
         @Override
@@ -118,9 +117,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                     if (j < this.items.size()) this.items.set(j, ItemStack.of(subNbt));
                 }
                 if (nbt.contains("Gunpowder")) this.items.set(4, ItemStack.of(nbt.getCompound("Gunpowder")));
-                System.out.println(nbt);
                 this.shoots = nbt.getInt("Shoots");
-                System.out.println(shoots);
             }
         }
 

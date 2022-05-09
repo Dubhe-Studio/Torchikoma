@@ -54,7 +54,7 @@ public class TorchLauncher extends Item implements ScreenProvider {
 
     @Override
     public void openGUI(Player pPlayer, ItemStack item){
-        NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
+        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenuProvider(
                 this.getDescription(),
                 (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));
