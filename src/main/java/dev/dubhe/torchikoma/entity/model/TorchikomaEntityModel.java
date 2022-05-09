@@ -28,10 +28,7 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
 
     @Override
     public ResourceLocation getTextureLocation(TorchikomaEntity entity) {
-        String painting = entity.getPainting();
-        if (painting != null && !painting.equals("minecraft:air")) {
-            this.setPaiting(painting);
-        }
+        this.setPaiting(entity.getPainting());
         return new ResourceLocation(Torchikoma.ID, "textures/entity/" + texture + ".png");
     }
 
