@@ -1,4 +1,6 @@
 # Torchikoma
+![banner](src/main/resources/banner.png)
+
 A mod what about torch
 
 [![Support](https://img.shields.io/badge/Support-0-a5d439)](https://afdian.net/@Gugle)
