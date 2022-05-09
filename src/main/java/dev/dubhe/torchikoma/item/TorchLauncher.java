@@ -2,7 +2,7 @@ package dev.dubhe.torchikoma.item;
 
 import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.entity.TorchEntity;
-import dev.dubhe.torchikoma.menu.ProviderMenu;
+import dev.dubhe.torchikoma.screen.ScreenProvider;
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.core.NonNullList;
@@ -24,7 +24,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class TorchLauncher extends Item implements ProviderMenu {
+public class TorchLauncher extends Item implements ScreenProvider {
     private final int cooldown;
 
     public TorchLauncher(Properties pProperties) {
@@ -52,6 +52,7 @@ public class TorchLauncher extends Item implements ProviderMenu {
         return InteractionResultHolder.pass(item);
     }
 
+    @Override
     public void openGUI(Player pPlayer, ItemStack item){
         NetworkHooks.openGui((ServerPlayer) pPlayer, getMenuProvider(
                 this.getDescription(),

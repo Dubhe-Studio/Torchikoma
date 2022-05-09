@@ -7,15 +7,14 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class RegisterEvent {
+public class RegistryEvent {
     @SubscribeEvent
-    public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
+    public static void onRegisterBlock(net.minecraftforge.event.RegistryEvent.Register<Block> event) {
         event.getRegistry().register(MyBlocks.PRISMARINE_TORCH);
         event.getRegistry().register(MyBlocks.PRISMARINE_WALL_TORCH);
         event.getRegistry().register(MyBlocks.GLOWSTONE_TORCH);
@@ -28,7 +27,7 @@ public class RegisterEvent {
     }
 
     @SubscribeEvent
-    public static void onRegisterItem(RegistryEvent.Register<Item> event) {
+    public static void onRegisterItem(net.minecraftforge.event.RegistryEvent.Register<Item> event) {
         event.getRegistry().register(MyItems.PRISMARINE_TORCH);
         event.getRegistry().register(MyItems.GLOWSTONE_TORCH);
         event.getRegistry().register(MyItems.TORCH_LAUNCHER);
@@ -47,18 +46,18 @@ public class RegisterEvent {
     }
 
     @SubscribeEvent
-    public static void onRegisterMenu(RegistryEvent.Register<MenuType<?>> event) {
+    public static void onRegisterMenu(net.minecraftforge.event.RegistryEvent.Register<MenuType<?>> event) {
         event.getRegistry().register(MyMenuTypes.TORCH_TOOL_MENU);
     }
 
     @SubscribeEvent
-    public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
+    public static void onRegisterEntity(net.minecraftforge.event.RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(MyEntities.TORCH);
         event.getRegistry().register(MyEntities.TORCHIKOMA);
     }
 
     @SubscribeEvent
-    public static void onRegisterBlockEntity(RegistryEvent.Register<BlockEntityType<?>> event) {
+    public static void onRegisterBlockEntity(net.minecraftforge.event.RegistryEvent.Register<BlockEntityType<?>> event) {
         event.getRegistry().register(MyBlockEntities.BLOCKLIGHT_DETECTOR);
     }
 

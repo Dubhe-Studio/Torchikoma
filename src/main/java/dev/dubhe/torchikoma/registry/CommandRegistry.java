@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber
-public class CommandEvent {
+public class CommandRegistry {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("torchikoma");

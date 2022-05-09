@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ClientRenderEvent {
+public class RenderRegistry {
     @SubscribeEvent
     public static void onClientSetUpEvent(FMLClientSetupEvent event) {
         MenuScreens.register(MyMenuTypes.TORCH_TOOL_MENU, TorchLauncherScreen::new);

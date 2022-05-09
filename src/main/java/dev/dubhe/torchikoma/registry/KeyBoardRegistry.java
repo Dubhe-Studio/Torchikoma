@@ -2,9 +2,13 @@ package dev.dubhe.torchikoma.registry;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.network.C2SKeyPacket;
+import dev.dubhe.torchikoma.network.Network;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
@@ -15,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
-public class KeyBoardEvent {
+public class KeyBoardRegistry {
     public static final String CATEGORY = "key.category." + Torchikoma.ID;
     public static final KeyMapping MESSAGE_KEY = createKey("key.torchikoma.open_gui", GLFW.GLFW_KEY_R);
 
@@ -33,8 +37,16 @@ public class KeyBoardEvent {
         public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
             if (MESSAGE_KEY.isDown()) {
                 assert Minecraft.getInstance().player != null;
-                System.out.println("test");
-                Minecraft.getInstance().player.sendMessage(new TextComponent("pressed"), Minecraft.getInstance().player.getUUID());
+                Screen screen = Minecraft.getInstance().screen;
+                System.out.println(screen);
+                if (screen == null) {
+                    Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, -1));
+                } else if (screen instanceof AbstractContainerScreen<?> menuScreen){
+                    Slot slot = menuScreen.getSlotUnderMouse();
+                    if (Minecraft.getInstance().player.containerMenu.getCarried().isEmpty() && slot != null && slot.hasItem()) {
+                        Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, slot.getSlotIndex()));
+                    }
+                }
             }
         }
     }
