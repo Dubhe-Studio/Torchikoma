@@ -1,4 +1,4 @@
-package dev.dubhe.torchikoma.entity.render;
+package dev.dubhe.torchikoma.entity.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,13 +16,13 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class CustomTorchikomaTexture {
+public class TorchikomaCustomTexture {
     private final Gson GSON = new GsonBuilder().create();
-    private final TypeToken<Map<ResourceLocation, ResourceLocation>> CUSTOME_TORCHIKOMA_TEXTURE_TYPE = new TypeToken<>() {
+    private final TypeToken<Map<String, String>> TORCHIKOMA_CUSTOME_TEXTURE_TYPE = new TypeToken<>() {
     };
-    private Map<ResourceLocation, ResourceLocation> itemMap;
+    private Map<String, String> itemMap;
 
-    public CustomTorchikomaTexture() {
+    public TorchikomaCustomTexture() {
     }
 
     public void reload(ResourceManager pResourceManager) throws IOException {
@@ -32,7 +32,7 @@ public class CustomTorchikomaTexture {
             try {
                 Reader reader = new InputStreamReader(inputstream, StandardCharsets.UTF_8);
                 try {
-                    this.itemMap = GsonHelper.fromJson(GSON, reader, CUSTOME_TORCHIKOMA_TEXTURE_TYPE);
+                    this.itemMap = GsonHelper.fromJson(GSON, reader, TORCHIKOMA_CUSTOME_TEXTURE_TYPE);
                 } catch (Throwable throwable2) {
                     try {
                         reader.close();
@@ -54,11 +54,15 @@ public class CustomTorchikomaTexture {
         }
     }
 
-    public Map<ResourceLocation, ResourceLocation> getItemMap(){
+    public Map<String, String> getItemMap(){
         return this.itemMap;
     }
 
-    public ResourceLocation[] getItemList() {
-        return this.itemMap.keySet().toArray(new ResourceLocation[0]);
+    public boolean has(String pKey){
+        return this.itemMap.getOrDefault(pKey,null) != null;
+    }
+
+    public String[] getItemList() {
+        return this.itemMap.keySet().toArray(new String[0]);
     }
 }
