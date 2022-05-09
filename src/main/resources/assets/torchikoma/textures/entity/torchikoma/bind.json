@@ -1,3 +1,6 @@
 {
-  "minecraft:blaze_powder": "torchikoma_fire"
+  "minecraft:blaze_powder": "torchikoma_fire",
+  "minecraft:jungle_leaves": "torchikoma_camo",
+  "minecraft:sand": "torchikoma_desert_camo",
+  "minecraft:snow_block": "torchikoma_snow_camo"
 }
