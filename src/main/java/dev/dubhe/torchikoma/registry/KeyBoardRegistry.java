@@ -8,7 +8,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
@@ -48,6 +50,7 @@ public class KeyBoardRegistry {
         } else if (screen instanceof AbstractContainerScreen<?> menuScreen){
             Slot slot = menuScreen.getSlotUnderMouse();
             if (Minecraft.getInstance().player.containerMenu.getCarried().isEmpty() && slot != null && slot.hasItem()) {
+                if (screen instanceof CreativeModeInventoryScreen creativeScreen && creativeScreen.getSelectedTab() != CreativeModeTab.TAB_INVENTORY.getId() && slot.getSlotIndex() >= 9) return;
                 System.out.println(slot.getSlotIndex());
                 System.out.println("send");
                 Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI, slot.getSlotIndex()));
