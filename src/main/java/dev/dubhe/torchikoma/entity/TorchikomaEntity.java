@@ -19,8 +19,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -41,7 +39,7 @@ import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable {
     AnimationFactory factory = new AnimationFactory(this);
-    private EntityDataAccessor<String> PAINTING = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
+    protected static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
@@ -61,11 +59,11 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public void setPainting(String itemName){
-        this.entityData.set(PAINTING, itemName);
+        this.entityData.set(PAINTING_ITEM, itemName);
     }
 
     public String getPainting(){
-        return this.entityData.get(PAINTING);
+        return this.entityData.get(PAINTING_ITEM);
     }
 
     @Override
@@ -78,7 +76,12 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
             String s = pCompound.getString("Owner");
             uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
         }
-        String painting = getPainting();
+        String painting;
+        if (pCompound.getString("PaintingItem") != null){
+            painting = pCompound.getString("PaintingItem");
+        } else {
+            painting = "minecraft:air";
+        }
         if (painting != null) {
             try {
                 this.setPainting(painting);
@@ -149,6 +152,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(PAINTING_ITEM, "minecraft:blaze_powder");
     }
 
     public void setOwnerUUID(@Nullable UUID Owner) {
