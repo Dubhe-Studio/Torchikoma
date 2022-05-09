@@ -1,6 +1,6 @@
 # 方块光探测器 <font color="gray">blocklight detector</font>
 
-![blocklight detector](./img/blocklight_detector.png)
+<img src="./img/blocklight_detector.png" height="64">
 
 输出与所处位置的方块光强度相同强度的红石信号
 
