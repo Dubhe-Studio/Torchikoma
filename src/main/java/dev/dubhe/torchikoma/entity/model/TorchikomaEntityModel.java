@@ -49,6 +49,8 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
     public void setPaiting(String itmeID) {
         if (this.customTexture.has(itmeID)) {
             this.texture = this.customTexture.getItemMap().get(itmeID);
+        } else {
+            this.texture = "torchikoma";
         }
     }
 }
