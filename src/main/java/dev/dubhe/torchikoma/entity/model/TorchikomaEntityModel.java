@@ -1,9 +1,14 @@
 package dev.dubhe.torchikoma.entity.model;
 
+import com.mojang.brigadier.StringReader;
 import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import dev.dubhe.torchikoma.resource.ResourceListener;
+import net.minecraft.commands.arguments.item.ItemArgument;
+import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
@@ -44,8 +49,9 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
     }
 
     public void setPaiting(String itmeID) {
-        if (this.customTexture.has(itmeID)) {
-            this.texture = "torchikoma/"+this.customTexture.getItemMap().get(itmeID);
+        String texture = this.customTexture.get(itmeID);
+        if (texture != null) {
+            this.texture = "torchikoma/" + texture;
         } else {
             this.texture = "torchikoma";
         }
