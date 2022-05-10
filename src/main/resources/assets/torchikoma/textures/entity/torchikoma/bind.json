@@ -2,5 +2,8 @@
   "minecraft:blaze_powder": "torchikoma_fire",
   "#minecraft:leaves": "torchikoma_camo",
   "minecraft:sand": "torchikoma_desert_camo",
-  "minecraft:snow_block": "torchikoma_snow_camo"
+  "minecraft:snow_block": "torchikoma_snow_camo",
+  "minecraft:light_blue_bed": "torchikoma_tachikoma",
+  "minecraft:white_glazed_terracotta": "torchikoma_gundam",
+  "minecraft:allium": "torchikoma_eva"
 }
