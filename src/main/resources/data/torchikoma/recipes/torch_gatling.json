@@ -1,26 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "BBA",
-    "BBC",
-    " D "
-  ],
-  "key": {
-    "A": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "B": {
-      "item": "minecraft:powered_rail"
-    },
-    "C": {
-      "item": "torchikoma:mechanical_component"
-    },
-    "D": {
-      "item": "torchikoma:torch_launcher"
-    }
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "torchikoma:torch_launcher"
+  },
+  "addition": {
+    "item": "torchikoma:mechanical_component"
   },
   "result": {
-    "item": "torchikoma:torch_gatling",
-    "count": 1
+    "item": "torchikoma:torch_gatling"
   }
 }

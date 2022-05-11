@@ -22,7 +22,7 @@ public class MyBlocks {
             .setRegistryName(Torchikoma.getId("glowstone_wall_torch"));
 
     public static final Block TORCHIKOMA = new TorchikomaBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL))
+            .instabreak().sound(SoundType.METAL).noOcclusion())
             .setRegistryName(Torchikoma.getId("torchikoma"));
     public static final Block MECHANICAL_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL).noOcclusion())
@@ -39,6 +39,6 @@ public class MyBlocks {
             .setRegistryName(Torchikoma.getId("blocklight_detector"));
 
     private static BlockBehaviour.Properties defaultProperties(Material material) {
-        return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F).requiresCorrectToolForDrops();
+        return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F);
     }
 }

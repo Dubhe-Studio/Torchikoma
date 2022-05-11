@@ -28,5 +28,6 @@ public class RenderRegistry {
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.ELECTRONIC_COMPONENT, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.MECHANICAL_COMPONENT, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(MyBlocks.BLOCKLIGHT_DETECTOR, RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(MyBlocks.TORCHIKOMA, RenderType.cutout());
     }
 }
