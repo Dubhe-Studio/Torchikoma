@@ -4,13 +4,14 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import dev.dubhe.torchikoma.entity.ai.goal.FollowOwnerGoal;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -39,22 +41,52 @@ import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable {
     AnimationFactory factory = new AnimationFactory(this);
-    protected static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
-    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Byte> DATA_ID_FLAGS = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
+
+    private final SimpleContainer inventory;
+    private boolean following;
+    private boolean inSitu;
+    private boolean sleeping;
+    private int energy;
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
         super(type, inLevel);
         this.noCulling = true;
+        this.inventory = new SimpleContainer(15);
     }
 
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        if (this.getOwnerUUID() != null) {
-            pCompound.putUUID("Owner", this.getOwnerUUID());
+        if (this.getOwnerUUID() != null) pCompound.putUUID("Owner", this.getOwnerUUID());
+        pCompound.putString("PaintingItem", this.getPainting());
+        ListTag list = new ListTag();
+        for(int i = 0; i < this.inventory.getContainerSize(); ++i) {
+            ItemStack itemstack = this.inventory.getItem(i);
+            if (!itemstack.isEmpty()) {
+                CompoundTag compoundtag = new CompoundTag();
+                compoundtag.putByte("Slot", (byte)i);
+                itemstack.save(compoundtag);
+                list.add(compoundtag);
+            }
         }
-        if (this.getPainting() != null){
-            pCompound.putString("PaintingItem", this.getPainting());
+        pCompound.put("Items", list);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        this.setOwnerUUID(pCompound.hasUUID("Owner") ? pCompound.getUUID("Owner") : null);
+        this.setPainting(pCompound.contains("PaintingItem") ? pCompound.getString("PaintingItem") : "minecraft:air");
+        ListTag listtag = pCompound.getList("Items", 10);
+        for(int i = 0; i < listtag.size(); ++i) {
+            CompoundTag compoundtag = listtag.getCompound(i);
+            int j = compoundtag.getByte("Slot") & 255;
+            if (j >= 2 && j < this.inventory.getContainerSize()) {
+                this.inventory.setItem(j, ItemStack.of(compoundtag));
+            }
         }
     }
 
@@ -64,35 +96,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public String getPainting(){
         return this.entityData.get(PAINTING_ITEM);
-    }
-
-    @Override
-    public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        UUID uuid;
-        if (pCompound.hasUUID("Owner")) {
-            uuid = pCompound.getUUID("Owner");
-        } else {
-            String s = pCompound.getString("Owner");
-            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
-        }
-        String painting;
-        if (pCompound.getString("PaintingItem") != null){
-            painting = pCompound.getString("PaintingItem");
-        } else {
-            painting = "minecraft:air";
-        }
-        if (painting != null) {
-            try {
-                this.setPainting(painting);
-            }catch (Throwable ignored){}
-        }
-        if (uuid != null) {
-            try {
-                this.setOwnerUUID(uuid);
-            } catch (Throwable ignored) {
-            }
-        }
     }
 
     public boolean isOwnedBy(LivingEntity pEntity) {
@@ -145,18 +148,18 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     @Nullable
     public UUID getOwnerUUID() {
-        return this.entityData.get(DATA_OWNERUUID_ID).orElse((UUID) null);
+        return this.entityData.get(OWNER).orElse(null);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(OWNER, Optional.empty());
         this.entityData.define(PAINTING_ITEM, "minecraft:blaze_powder");
     }
 
     public void setOwnerUUID(@Nullable UUID Owner) {
-        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(Owner));
+        this.entityData.set(OWNER, Optional.ofNullable(Owner));
     }
 
     @Nullable
@@ -201,7 +204,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController<TorchikomaEntity> controller = new AnimationController<TorchikomaEntity>(this, "controller", 0, this::predicate);
+        AnimationController<TorchikomaEntity> controller = new AnimationController<>(this, "controller", 0, this::predicate);
         controller.registerCustomInstructionListener(this::customListener);
         data.addAnimationController(controller);
     }
@@ -225,5 +228,26 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public boolean isInSitu() {
+        return inSitu;
+    }
+
+    @Override
+    public boolean isSleeping() {
+        return sleeping;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public SimpleContainer getInventory() {
+        return inventory;
     }
 }
