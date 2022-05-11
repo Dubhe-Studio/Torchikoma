@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:mechanical_component"
+      "item": "torchikoma:mechanical_component"
     },
     "Y": {
       "item": "minecraft:shulker_shell"
