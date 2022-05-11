@@ -5,7 +5,11 @@ import dev.dubhe.torchikoma.Torchikoma;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
+
+import java.util.function.ToIntFunction;
 
 public class MyBlocks {
     public static final Block PRISMARINE_TORCH = new ColdFireTorchBlock(defaultProperties(Material.DECORATION)
@@ -25,10 +29,10 @@ public class MyBlocks {
             .instabreak().sound(SoundType.METAL).noOcclusion())
             .setRegistryName(Torchikoma.getId("torchikoma"));
     public static final Block MECHANICAL_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion())
+            .instabreak().sound(SoundType.METAL).noOcclusion(), 1)
             .setRegistryName(Torchikoma.getId("mechanical_component"));
     public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion())
+            .instabreak().sound(SoundType.METAL).noOcclusion().lightLevel(litBlockEmission(2)), 0)
             .setRegistryName(Torchikoma.getId("electronic_component"));
     public static final Block CLAY_EXPLOSIVES = new ClayExplosivesBlock(defaultProperties(Material.METAL)
             .instabreak().sound(SoundType.METAL))
@@ -40,5 +44,9 @@ public class MyBlocks {
 
     private static BlockBehaviour.Properties defaultProperties(Material material) {
         return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F);
+    }
+
+    private static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
+        return (p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
     }
 }
