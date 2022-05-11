@@ -10,10 +10,10 @@
       "item": "minecraft:iron_ingot"
     },
     "Y": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:electronic_component"
     },
     "Z": {
-      "item": "torchikoma:electronic_component"
+      "item": "torchikoma:daylight_detector"
     }
   },
   "result": {
