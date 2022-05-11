@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Map;
 
 public class TorchikomaCustomTexture {
@@ -68,10 +67,6 @@ public class TorchikomaCustomTexture {
 
     public boolean has(String pKey) {
         return this.itemMap.getOrDefault(pKey, null) != null;
-    }
-
-    public String[] getItemList() {
-        return this.itemMap.keySet().toArray(new String[0]);
     }
 
     private static String removeCharAt(String s, int pos) {
