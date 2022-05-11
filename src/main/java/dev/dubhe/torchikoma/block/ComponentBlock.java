@@ -7,7 +7,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -87,6 +86,7 @@ public class ComponentBlock extends HorizontalDirectionalBlock implements Simple
         }
     }
 
+    @Override
     public void neighborChanged(@Nonnull BlockState pState, Level pLevel, @Nonnull BlockPos pPos, @Nonnull Block pBlock, @Nonnull BlockPos pFromPos, boolean pIsMoving) {
         if (!pLevel.isClientSide) {
             boolean flag = pState.getValue(LIT);
@@ -97,10 +97,10 @@ public class ComponentBlock extends HorizontalDirectionalBlock implements Simple
                     pLevel.setBlock(pPos, pState.cycle(LIT), 2);
                 }
             }
-
         }
     }
 
+    @Override
     public void stepOn(@Nonnull Level pLevel, @Nonnull BlockPos pPos,BlockState pState, @Nonnull Entity pEntity) {
         if (pState.getValue(LIT) && pEntity instanceof LivingEntity) {
             pEntity.hurt(DamageSource.GENERIC, (float)this.damage);
