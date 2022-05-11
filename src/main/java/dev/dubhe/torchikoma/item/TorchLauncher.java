@@ -40,13 +40,8 @@ public class TorchLauncher extends Item implements ScreenProvider {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
-            if (pPlayer.isShiftKeyDown()) {
-                this.openGUI(pPlayer,item);
-                return InteractionResultHolder.success(item);
-            } else {
-                if (shootTorch(pLevel, pPlayer, item)) {
-                    pPlayer.getCooldowns().addCooldown(this, this.cooldown);
-                }
+            if (shootTorch(pLevel, pPlayer, item)) {
+                pPlayer.getCooldowns().addCooldown(this, this.cooldown);
             }
         }
         return InteractionResultHolder.pass(item);
