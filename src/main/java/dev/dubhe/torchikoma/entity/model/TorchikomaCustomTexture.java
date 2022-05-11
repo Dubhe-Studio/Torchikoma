@@ -51,10 +51,6 @@ public class TorchikomaCustomTexture {
         return this.itemMap.getOrDefault(pKey, null) != null;
     }
 
-    private static String removeCharAt(String s, int pos) {
-        return s.substring(0, pos) + s.substring(pos + 1);
-    }
-
     public String get(String pKey) {
         if (this.has(pKey)) {
             return this.getItemMap().get(pKey);
@@ -71,7 +67,7 @@ public class TorchikomaCustomTexture {
             for (Map.Entry<String, String> entry : this.itemMap.entrySet()) {
                 if (entry.getKey().charAt(0) != '#') continue;
                 try {
-                    TagKey<Item> itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(), 0))));
+                    TagKey<Item> itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(entry.getKey().substring(1))));
                     if (itemStack.is(itemTag)) return entry.getValue();
                 } catch (NullPointerException | CommandSyntaxException e) {
                     Torchikoma.LOGGER.error(entry.getKey() + " is not a approved tag");
