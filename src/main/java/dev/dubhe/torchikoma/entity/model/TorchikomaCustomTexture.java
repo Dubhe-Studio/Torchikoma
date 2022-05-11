@@ -2,6 +2,7 @@ package dev.dubhe.torchikoma.entity.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -34,16 +35,11 @@ public class TorchikomaCustomTexture {
 
     public void reload(ResourceManager pResourceManager) throws IOException {
         Resource resource = pResourceManager.getResource(new ResourceLocation(Torchikoma.ID, "textures/entity/torchikoma/bind.json"));
-        try {
-            InputStream inputstream = resource.getInputStream();
-            Reader reader = new InputStreamReader(inputstream, StandardCharsets.UTF_8);
+        try (InputStream inputStream = resource.getInputStream(); Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
             this.itemMap = GsonHelper.fromJson(GSON, reader, TORCHIKOMA_CUSTOME_TEXTURE_TYPE);
-            reader.close();
-            inputstream.close();
-        } catch (RuntimeException runtimeException) {
+        } catch (JsonParseException e) {
             Torchikoma.LOGGER.error("Invalid torchikoma:textures/entity/torchikoma/bind.json");
-        } catch (IOException ioException){
-            Torchikoma.LOGGER.warn("ioException");
+            e.printStackTrace();
         }
     }
 
@@ -66,25 +62,20 @@ public class TorchikomaCustomTexture {
         ItemParser itemParser = new ItemParser(new StringReader(pKey), false);
         try {
             itemParser.readItem();
-        } catch (CommandSyntaxException exception) {
+        } catch (CommandSyntaxException e) {
             Torchikoma.LOGGER.error("Read Item Faild");
+            e.printStackTrace();
         }
         ItemStack itemStack = new ItemStack(itemParser.getItem());
         if (itemStack.getTags().toList().size() != 0) {
             for (Map.Entry<String, String> entry : this.itemMap.entrySet()) {
                 if (entry.getKey().charAt(0) != '#') continue;
-                TagKey<Item> itemTag;
                 try {
-                    itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(), 0))));
-                    try {
-                        if (itemStack.is(itemTag)) {
-                            return entry.getValue();
-                        }
-                    } catch (NullPointerException ignored) {
-                        Torchikoma.LOGGER.error(entry.getKey() + " is not a approved tag");
-                    }
-                } catch (CommandSyntaxException ignored) {
-                    Torchikoma.LOGGER.warn(entry.getKey() + " is not a approved tag");
+                    TagKey<Item> itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(), 0))));
+                    if (itemStack.is(itemTag)) return entry.getValue();
+                } catch (NullPointerException | CommandSyntaxException e) {
+                    Torchikoma.LOGGER.error(entry.getKey() + " is not a approved tag");
+                    e.printStackTrace();
                 }
             }
         }
