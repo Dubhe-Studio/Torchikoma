@@ -80,21 +80,21 @@ public class TorchikomaCustomTexture {
 
     public String get(String pKey) {
         if(this.has(pKey)){return this.getItemMap().get(pKey);}
-        ItemParser itemParser1 = new ItemParser(new StringReader(pKey), false);
+        ItemParser itemParser = new ItemParser(new StringReader(pKey), false);
         try {
-            itemParser1.readItem();
+            itemParser.readItem();
         }catch (CommandSyntaxException exception){
             Torchikoma.LOGGER.error("Read Item Faild");
         }
-        ItemStack i = new ItemStack(itemParser1.getItem());
-        if (i.getTags().toList().size() != 0) {
+        ItemStack itemStack = new ItemStack(itemParser.getItem());
+        if (itemStack.getTags().toList().size() != 0) {
             for (Map.Entry<String, String> entry : this.itemMap.entrySet()) {
                 if (entry.getKey().charAt(0) != '#') continue;
-                TagKey<Item> item;
+                TagKey<Item> itemTag;
                 try {
-                    item = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(),0))));
+                    itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(),0))));
                     try{
-                        if (i.is(item)) {
+                        if (itemStack.is(itemTag)) {
                             return entry.getValue();
                         }
                     }catch (NullPointerException ignored){
