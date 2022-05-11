@@ -5,8 +5,7 @@
       "item": "torchikoma:torch_launcher"
     },
     "title": {
-      "translate": "advancements.torchikoma.times_have_changed.title",
-      "color": "gold"
+      "translate": "advancements.torchikoma.times_have_changed.title"
     },
     "description": {
       "translate": "advancements.torchikoma.times_have_changed.description"
