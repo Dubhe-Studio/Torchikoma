@@ -93,10 +93,10 @@ public class TorchikomaCustomTexture {
                             return entry.getValue();
                         }
                     }catch (NullPointerException ignored){
-                        Torchikoma.LOGGER.error("NullPointerException");
+                        Torchikoma.LOGGER.error(entry.getKey()+" is not a approved tag");
                     }
                 }catch (CommandSyntaxException ignored){
-                    Torchikoma.LOGGER.warn(entry.getKey()+"is not a approved tag");
+                    Torchikoma.LOGGER.warn(entry.getKey()+" is not a approved tag");
                 }
             }
         }
