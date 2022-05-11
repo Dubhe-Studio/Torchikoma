@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Map;
 
 public class TorchikomaCustomTexture {
@@ -37,28 +36,14 @@ public class TorchikomaCustomTexture {
         Resource resource = pResourceManager.getResource(new ResourceLocation(Torchikoma.ID, "textures/entity/torchikoma/bind.json"));
         try {
             InputStream inputstream = resource.getInputStream();
-            try {
-                Reader reader = new InputStreamReader(inputstream, StandardCharsets.UTF_8);
-                try {
-                    this.itemMap = GsonHelper.fromJson(GSON, reader, TORCHIKOMA_CUSTOME_TEXTURE_TYPE);
-                } catch (Throwable throwable2) {
-                    try {
-                        reader.close();
-                    } catch (Throwable throwable1) {
-                        throwable2.addSuppressed(throwable1);
-                    }
-                    throw throwable2;
-                }
-            } catch (Throwable throwable3) {
-                try {
-                    inputstream.close();
-                } catch (Throwable throwable) {
-                    throwable3.addSuppressed(throwable);
-                }
-                throw throwable3;
-            }
-        } catch (RuntimeException runtimeexception) {
-            Torchikoma.LOGGER.warn("Invalid torchikoma:textures/entity/torchikoma/bind.json");
+            Reader reader = new InputStreamReader(inputstream, StandardCharsets.UTF_8);
+            this.itemMap = GsonHelper.fromJson(GSON, reader, TORCHIKOMA_CUSTOME_TEXTURE_TYPE);
+            reader.close();
+            inputstream.close();
+        } catch (RuntimeException runtimeException) {
+            Torchikoma.LOGGER.error("Invalid torchikoma:textures/entity/torchikoma/bind.json");
+        } catch (IOException ioException){
+            Torchikoma.LOGGER.warn("ioException");
         }
     }
 
@@ -70,38 +55,36 @@ public class TorchikomaCustomTexture {
         return this.itemMap.getOrDefault(pKey, null) != null;
     }
 
-    public String[] getItemList() {
-        return this.itemMap.keySet().toArray(new String[0]);
-    }
-
     private static String removeCharAt(String s, int pos) {
         return s.substring(0, pos) + s.substring(pos + 1);
     }
 
     public String get(String pKey) {
-        if(this.has(pKey)){return this.getItemMap().get(pKey);}
-        ItemParser itemParser1 = new ItemParser(new StringReader(pKey), false);
+        if (this.has(pKey)) {
+            return this.getItemMap().get(pKey);
+        }
+        ItemParser itemParser = new ItemParser(new StringReader(pKey), false);
         try {
-            itemParser1.readItem();
-        }catch (CommandSyntaxException exception){
+            itemParser.readItem();
+        } catch (CommandSyntaxException exception) {
             Torchikoma.LOGGER.error("Read Item Faild");
         }
-        ItemStack i = new ItemStack(itemParser1.getItem());
-        if (i.getTags().toList().size() != 0) {
+        ItemStack itemStack = new ItemStack(itemParser.getItem());
+        if (itemStack.getTags().toList().size() != 0) {
             for (Map.Entry<String, String> entry : this.itemMap.entrySet()) {
                 if (entry.getKey().charAt(0) != '#') continue;
-                TagKey<Item> item;
+                TagKey<Item> itemTag;
                 try {
-                    item = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(),0))));
-                    try{
-                        if (i.is(item)) {
+                    itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(removeCharAt(entry.getKey(), 0))));
+                    try {
+                        if (itemStack.is(itemTag)) {
                             return entry.getValue();
                         }
-                    }catch (NullPointerException ignored){
-                        Torchikoma.LOGGER.error("NullPointerException");
+                    } catch (NullPointerException ignored) {
+                        Torchikoma.LOGGER.error(entry.getKey() + " is not a approved tag");
                     }
-                }catch (CommandSyntaxException ignored){
-                    Torchikoma.LOGGER.warn(entry.getKey()+"is not a approved tag");
+                } catch (CommandSyntaxException ignored) {
+                    Torchikoma.LOGGER.warn(entry.getKey() + " is not a approved tag");
                 }
             }
         }

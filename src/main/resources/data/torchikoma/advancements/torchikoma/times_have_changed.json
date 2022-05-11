@@ -1,22 +1,33 @@
 {
-  "parent": "torchikoma:torchikoma/times_have_changed",
+  "parent": "torchikoma:torchikoma/root",
   "display": {
     "icon": {
-      "item": "torchikoma:torch_gatling"
+      "item": "torchikoma:torch_launcher"
     },
     "title": {
-      "translate": "advancements.torchikoma.physical_transcendence.title",
-      "color": "gold"
+      "translate": "advancements.torchikoma.times_have_changed.title"
     },
     "description": {
-      "translate": "advancements.torchikoma.physical_transcendence.description"
+      "translate": "advancements.torchikoma.times_have_changed.description"
     },
-    "frame": "challenge",
+    "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": true
+    "hidden": false
   },
   "criteria": {
+    "torch_launcher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "torchikoma:torch_launcher"
+            ]
+          }
+        ]
+      }
+    },
     "torch_gatling": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -24,8 +35,7 @@
           {
             "items": [
               "torchikoma:torch_gatling"
-            ],
-            "nbt": "{display:{Name:'{\"text\":\"南无加特林菩萨\"}'}}"
+            ]
           }
         ]
       }
@@ -37,8 +47,7 @@
           {
             "items": [
               "torchikoma:torch_cannon"
-            ],
-            "nbt": "{display:{Name:'{\"text\":\"六根清净贫铀弹\"}'}}"
+            ]
           }
         ]
       }
@@ -47,10 +56,8 @@
   "requirements": [
     [
       "torch_gatling",
-      "torch_cannon"
+      "torch_cannon",
+      "torch_launcher"
     ]
-  ],
-  "rewards": {
-    "experience": 100
-  }
+  ]
 }

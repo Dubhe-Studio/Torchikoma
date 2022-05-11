@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "XZX",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "torchikoma:mechanical_component"
+    },
+    "Y": {
+      "item": "minecraft:shulker_shell"
+    },
+    "Z": {
+      "item": "torchikoma:blocklight_detector"
+    }
+  },
+  "result": {
+    "item": "torchikoma:torchikoma",
+    "count": 1
+  }
+}

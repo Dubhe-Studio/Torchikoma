@@ -3,20 +3,23 @@
   "pattern": [
     "BAB",
     "CDC",
-    "BAB"
+    "EEE"
   ],
   "key": {
     "A": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_block"
     },
     "B": {
-      "item": "minecraft:iron_nugget"
+      "item": "minecraft:iron_ingot"
     },
     "C": {
-      "item": "minecraft:copper_ingot"
+      "item": "minecraft:copper_block"
     },
     "D": {
       "item": "minecraft:compass"
+    },
+    "E": {
+      "item": "minecraft:basalt"
     }
   },
   "result": {

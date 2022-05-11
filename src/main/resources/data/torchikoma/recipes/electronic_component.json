@@ -7,19 +7,19 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:quartz"
+      "item": "minecraft:redstone_block"
     },
     "B": {
-      "item": "minecraft:redstone"
+      "item": "minecraft:quartz"
     },
     "C": {
-      "item": "minecraft:copper_ingot"
+      "item": "minecraft:copper_block"
     },
     "D": {
       "item": "minecraft:clock"
     },
     "E": {
-      "item": "minecraft:lapis_lazuli"
+      "item": "minecraft:lapis_block"
     }
   },
   "result": {

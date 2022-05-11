@@ -1,29 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "  A",
-    "BCD",
-    " E "
-  ],
-  "key": {
-    "A": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "B": {
-      "item": "minecraft:powered_rail"
-    },
-    "C": {
-      "item": "minecraft:cauldron"
-    },
-    "D": {
-      "item": "torchikoma:electronic_component"
-    },
-    "E": {
-      "item": "torchikoma:torch_launcher"
-    }
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "torchikoma:torch_launcher"
+  },
+  "addition": {
+    "item": "torchikoma:electronic_component"
   },
   "result": {
-    "item": "torchikoma:torch_cannon",
-    "count": 1
+    "item": "torchikoma:torch_cannon"
   }
 }
