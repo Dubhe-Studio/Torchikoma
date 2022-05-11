@@ -16,16 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory> {
 
     public TorchToolMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        super(MyMenuTypes.TORCH_TOOL_MENU, pContainerId, inventory, itemStack);
-    }
+        super(MyMenuTypes.TORCH_TOOL, pContainerId, inventory, itemStack);
 
-    @Override
-    protected ItemInventory genItemInventory(ItemStack itemStack) {
-        return new ItemInventory(itemStack);
-    }
-
-    @Override
-    protected void initSlot() {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 this.addSlot(new Slot(this.itemInventory, j + i * 2, 135 + j * 18, 16 + i * 18) {
@@ -36,12 +28,29 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                 });
             }
         }
+
         this.addSlot(new Slot(this.itemInventory, 4, 52, 25) {
             @Override
             public boolean mayPlace(ItemStack pStack) {
                 return pStack.getItem() == Items.GUNPOWDER;
             }
         });
+
+        for(int i = 0; i < 3; ++i) {
+            for(int j = 0; j < 9; ++j) {
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 84 + i * 18));
+            }
+        }
+
+        for(int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(inventory, i, 9 + i * 18, 142));
+        }
+
+    }
+
+    @Override
+    protected ItemInventory genItemInventory(ItemStack itemStack) {
+        return new ItemInventory(itemStack);
     }
 
     @OnlyIn(Dist.CLIENT)
