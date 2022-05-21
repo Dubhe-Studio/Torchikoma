@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class TorchLauncherScreen extends AbstractItemScreen<TorchToolMenu> {
-    private static final ResourceLocation GUN_BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
+public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> {
+    private static final ResourceLocation BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
     private int rotateAngle = 0;
 
-    public TorchLauncherScreen(TorchToolMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle, 178, 58);
+    public TorchLauncherScreen(TorchToolMenu pMenu, Inventory inventory, Component pTitle) {
+        super(pMenu, inventory, pTitle, 178, 58);
         this.titleLabelX = 50;
         this.titleLabelY += 7;
     }
@@ -57,7 +57,7 @@ public class TorchLauncherScreen extends AbstractItemScreen<TorchToolMenu> {
         super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
         int gunX = (this.width - this.menuWidth) / 2;
         int gunY = (this.height - this.imageHeight) / 2;
-        RenderSystem.setShaderTexture(0, GUN_BACKGROUND);
+        RenderSystem.setShaderTexture(0, BACKGROUND);
         this.blit(pPoseStack, gunX, gunY, 0, 0, this.menuWidth, this.menuHeight);
         this.blit(pPoseStack, gunX + 76, gunY + 31, this.menuWidth, 0, (int)(0.5D * this.menu.getShoots()), 4);
         for (int i = 0; i < 2; i++) {
@@ -105,6 +105,13 @@ public class TorchLauncherScreen extends AbstractItemScreen<TorchToolMenu> {
             }
             posestack.popPose();
             RenderSystem.applyModelViewMatrix();
+        }
+    }
+
+    @Override
+    protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
+        if (this.menu.isEmpty(index)) {
+            super.renderItemBg(pPoseStack, x, y, u, v, index);
         }
     }
 

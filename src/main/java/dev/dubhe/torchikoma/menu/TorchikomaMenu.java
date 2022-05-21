@@ -1,14 +1,11 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
-import dev.dubhe.torchikoma.item.TorchLauncher;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -17,6 +14,8 @@ import javax.annotation.Nonnull;
 
 public class TorchikomaMenu extends AbstractContainerMenu {
 
+    public static int t1;
+
     private final TorchikomaEntity entity;
 
     public TorchikomaMenu(int pContainerId, Inventory inventory, @Nonnull TorchikomaEntity entity) {
@@ -24,33 +23,25 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         this.entity = entity;
         this.entity.getInventory().startOpen(inventory.player);
 
-        //TODO 还没定位
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                this.addSlot(new Slot(this.entity.getInventory(), j + i * 2, 135 + j * 18, 16 + i * 18) {
-                    @Override
-                    public boolean mayPlace(ItemStack pStack) {
-                        return TorchLauncher.isTorchItem(pStack);
-                    }
-                });
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                this.addSlot(new Slot(this.entity.getInventory(), j + i * 2, 99 + j * 18, 16 + i * 18));
             }
         }
 
-        this.addSlot(new Slot(this.entity.getInventory(), 4, 52, 25) {
-            @Override
-            public boolean mayPlace(ItemStack pStack) {
-                return pStack.getItem() == Items.GUNPOWDER;
-            }
-        });
+        for (int i = 0; i < 3; i++) {
+            this.addSlot(new Slot(this.entity.getInventory(), 12 + i, 9, 16 + i * 18));
+        }
+
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(inventory, j + i * 9 + 9, 9 + j * 18, 132 + i * 18));
             }
         }
 
         for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 9 + i * 18, 142));
+            this.addSlot(new Slot(inventory, i, 9 + i * 18, 190));
         }
 
     }
@@ -86,7 +77,7 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         return switch (index) {
             case 1 -> this.entity.isFollowing();
             case 2 -> this.entity.isInSitu();
-            case 3 -> this.entity.isSleeping();
+            case 3 -> this.entity.isStandby();
             default -> throw new IllegalArgumentException("Invalid index: " + index);
         };
     }

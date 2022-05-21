@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.network.IContainerFactory;
 
+@SuppressWarnings("ConstantConditions")
 public class MyMenuTypes {
     public static final MenuType<TorchToolMenu> TORCH_TOOL = forgeMenu("torch_tool", (containerId, inv, buffer) -> new TorchToolMenu(containerId, inv, buffer.readItem()));
     public static final MenuType<TorchikomaMenu> TORCHIKOMA = forgeMenu("torchikoma", (containerId, inv, buffer) -> new TorchikomaMenu(containerId, inv, (TorchikomaEntity) inv.player.level.getEntity(buffer.readInt())));

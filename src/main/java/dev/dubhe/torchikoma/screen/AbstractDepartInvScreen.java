@@ -3,14 +3,14 @@ package dev.dubhe.torchikoma.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.dubhe.torchikoma.Torchikoma;
-import dev.dubhe.torchikoma.menu.AbstractItemMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
-public abstract class AbstractItemScreen<T extends AbstractItemMenu<?>> extends AbstractContainerScreen<T> {
+public abstract class AbstractDepartInvScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
     private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.getId("textures/gui/player.png");
     protected static final int PLAYER_WIDTH = 176;
@@ -18,7 +18,7 @@ public abstract class AbstractItemScreen<T extends AbstractItemMenu<?>> extends 
     protected final int menuWidth;
     protected final int menuHeight;
 
-    protected AbstractItemScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, int width, int height) {
+    protected AbstractDepartInvScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, int width, int height) {
         super(pMenu, pPlayerInventory, pTitle);
         this.menuWidth = width;
         this.menuHeight = height;
@@ -42,8 +42,6 @@ public abstract class AbstractItemScreen<T extends AbstractItemMenu<?>> extends 
     }
 
     protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
-        if (this.menu.isEmpty(index)) {
-            this.blit(pPoseStack, x, y, u, v, 16, 16);
-        }
+        this.blit(pPoseStack, x, y, u, v, 16, 16);
     }
 }

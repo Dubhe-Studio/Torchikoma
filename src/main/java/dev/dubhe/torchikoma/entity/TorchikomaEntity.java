@@ -1,16 +1,23 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.menu.TorchToolMenu;
+import dev.dubhe.torchikoma.menu.TorchikomaMenu;
+import dev.dubhe.torchikoma.screen.ScreenProvider;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -19,11 +26,14 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -39,7 +49,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable {
+public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider {
     AnimationFactory factory = new AnimationFactory(this);
     private static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -48,7 +58,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private final SimpleContainer inventory;
     private boolean following;
     private boolean inSitu;
-    private boolean sleeping;
+    private boolean standby;
     private int energy;
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
@@ -124,6 +134,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
 
+    @Override
     public void tick() {
         super.tick();
         if (this.getOwner() instanceof Player player) {
@@ -192,6 +203,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         return PlayState.CONTINUE;
     }
 
+    @Override
     public void die(@Nonnull DamageSource pCause) {
         net.minecraft.network.chat.Component deathMessage = this.getCombatTracker().getDeathMessage();
         super.die(pCause);
@@ -226,6 +238,14 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if (!this.level.isClientSide && pPlayer.isSecondaryUseActive()) {
+            this.openGUI(pPlayer, ItemStack.EMPTY);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        } else return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
     public AnimationFactory getFactory() {
         return this.factory;
     }
@@ -238,9 +258,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         return inSitu;
     }
 
-    @Override
-    public boolean isSleeping() {
-        return sleeping;
+    public boolean isStandby() {
+        return standby;
     }
 
     public int getEnergy() {
@@ -249,5 +268,13 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public SimpleContainer getInventory() {
         return inventory;
+    }
+
+    @Override
+    public void openGUI(Player pPlayer, ItemStack item) {
+        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenuProvider(
+                this.getDisplayName(),
+                (id, inv, player) -> new TorchikomaMenu(id, inv, this)
+        ), buffer -> buffer.writeInt(this.getId()));
     }
 }

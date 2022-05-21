@@ -3,6 +3,7 @@ package dev.dubhe.torchikoma.registry;
 import dev.dubhe.torchikoma.entity.render.TorchRender;
 import dev.dubhe.torchikoma.entity.render.TorchikomaRender;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
+import dev.dubhe.torchikoma.screen.TorchikomaScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -17,6 +18,7 @@ public class RenderRegistry {
     @SubscribeEvent
     public static void onClientSetUpEvent(FMLClientSetupEvent event) {
         MenuScreens.register(MyMenuTypes.TORCH_TOOL, TorchLauncherScreen::new);
+        MenuScreens.register(MyMenuTypes.TORCHIKOMA, TorchikomaScreen::new);
 
         EntityRenderers.register(MyEntities.TORCH, TorchRender::new);
         EntityRenderers.register(MyEntities.TORCHIKOMA, TorchikomaRender::new);
