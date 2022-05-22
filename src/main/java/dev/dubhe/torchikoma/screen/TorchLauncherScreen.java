@@ -55,22 +55,20 @@ public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> 
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
-        int gunX = (this.width - this.menuWidth) / 2;
-        int gunY = (this.height - this.imageHeight) / 2;
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        this.blit(pPoseStack, gunX, gunY, 0, 0, this.menuWidth, this.menuHeight);
-        this.blit(pPoseStack, gunX + 76, gunY + 31, this.menuWidth, 0, (int)(0.5D * this.menu.getShoots()), 4);
+        this.blit(pPoseStack, this.leftPos, this.topPos, 0, 0, this.menuWidth, this.menuHeight);
+        this.blit(pPoseStack, this.leftPos + 76, this.topPos + 31, this.menuWidth, 0, (int)(0.5D * this.menu.getShoots()), 4);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                this.renderItemBg(pPoseStack, gunX + j * 18 + 135, gunY + i * 18 + 16, this.menuWidth + 16, 4, j + i * 2);
+                this.renderItemBg(pPoseStack, this.leftPos + j * 18 + 135, this.topPos + i * 18 + 16, this.menuWidth + 16, 4, j + i * 2);
             }
         }
-        this.renderItemBg(pPoseStack, gunX + 52, gunY + 25, this.menuWidth, 4, 4);
+        this.renderItemBg(pPoseStack, this.leftPos + 52, this.topPos + 25, this.menuWidth, 4, 4);
         RenderSize renderSize = this.menu.getItemSize();
-        this.renderBigItem(this.menu.getItemStack(), gunX + renderSize.pX, gunY + renderSize.pY, renderSize.size);
-        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), gunX + 76, gunY + 38);
-        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), gunX + 100, gunY + 36);
-        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), gunX + 104, gunY + 36);
+        this.renderBigItem(this.menu.getItemStack(), this.leftPos + renderSize.pX, this.topPos + renderSize.pY, renderSize.size);
+        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.GUNPOWDER), this.leftPos + 76, this.topPos + 38);
+        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.TORCH), this.leftPos + 100, this.topPos + 36);
+        this.itemRenderer.renderAndDecorateItem(new ItemStack(Items.SOUL_TORCH), this.leftPos + 104, this.topPos + 36);
     }
 
     @SuppressWarnings({"deprecation", "SameParameterValue"})
@@ -108,6 +106,7 @@ public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> 
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
         if (this.menu.isEmpty(index)) {
             this.blit(pPoseStack, x, y, u, v, 16, 16);
