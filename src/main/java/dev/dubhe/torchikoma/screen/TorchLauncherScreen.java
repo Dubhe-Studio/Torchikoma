@@ -108,10 +108,9 @@ public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> 
         }
     }
 
-    @Override
     protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
         if (this.menu.isEmpty(index)) {
-            super.renderItemBg(pPoseStack, x, y, u, v, index);
+            this.blit(pPoseStack, x, y, u, v, 16, 16);
         }
     }
 

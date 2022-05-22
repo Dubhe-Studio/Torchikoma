@@ -40,8 +40,4 @@ public abstract class AbstractDepartInvScreen<T extends AbstractContainerMenu> e
         RenderSystem.setShaderTexture(0, PLAYER_BACKGROUND);
         this.blit(pPoseStack, (this.width - PLAYER_WIDTH) / 2, (this.height - PLAYER_HEIGHT + this.menuHeight) / 2 + 4, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
-
-    protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
-        this.blit(pPoseStack, x, y, u, v, 16, 16);
-    }
 }

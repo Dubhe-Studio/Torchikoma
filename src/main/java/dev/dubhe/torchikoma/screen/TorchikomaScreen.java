@@ -23,17 +23,26 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
         super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
         int bgX = (this.width - this.menuWidth) / 2;
         int bgY = (this.height - this.imageHeight) / 2;
+        byte status = this.menu.getEntity().getStatus();
+        int healLength = (int) (80 * this.menu.getEntity().getHealth() / this.menu.getEntity().getMaxHealth());
+        int energyLength = (int) (80 * this.menu.getEntity().getEnergy() / 200.0F);
+        if (status < 0 || status > 2) throw new IllegalArgumentException("Invalid status index: " + status);
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        this.blit(pPoseStack, bgX, bgY, 0, 0, this.menuWidth, this.menuHeight);
+        this.blit(pPoseStack, bgX, bgY, 0, 0, this.menuWidth, this.menuHeight); // 背景板
         for (int i = 0; i < 3; i++) {
-            this.renderItemBg(pPoseStack, bgX + 9, bgY + i * 18 + 16, this.menuWidth, i * 16, i);
-            this.blit(pPoseStack, bgX + i * 18 + 8, bgY + 16 + 67, i * 18, this.menuHeight, 18, 16);
+            this.renderItemBg(pPoseStack, bgX + 9, bgY + i * 18 + 16, this.menuWidth, i * 16, i); // 物品背景
         }
+        this.blit(pPoseStack, bgX + status * 18 + 8, bgY + 16 + 67, status * 18, this.menuHeight, 18, 16); // 三个按钮
 
-        this.blit(pPoseStack, bgX + 89, bgY + 84, 54, this.menuHeight, 80, 4);
-        this.blit(pPoseStack, bgX + 89, bgY + 94, 54, this.menuHeight + 4, 80, 4);
+        this.blit(pPoseStack, bgX + 89, bgY + 84, 54, this.menuHeight, energyLength, 4); // 血条
+        this.blit(pPoseStack, bgX + 89, bgY + 94, 54, this.menuHeight + 4, healLength, 4); // 能量条
         // 51 60
         InventoryScreen.renderEntityInInventory(bgX + 62, bgY + 57, 17, bgX + 62 - pMouseX, bgY + 42 - pMouseY, this.menu.getEntity());
     }
 
+    protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
+        if (this.menu.isEmpty(index + 12)) {
+            this.blit(pPoseStack, x, y, u, v, 16, 16);
+        }
+    }
 }

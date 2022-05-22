@@ -75,7 +75,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         super.defineSynchedData();
         this.entityData.define(OWNER, Optional.empty());
         this.entityData.define(ENERGY_DATA, 0);
-        this.entityData.define(STATUS_FLAG, (byte) 0);
+        this.entityData.define(STATUS_FLAG, (byte) 1); // 默认原地警戒
         this.entityData.define(PAINTING_ITEM, "minecraft:blaze_powder");
     }
 
@@ -142,9 +142,9 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setOwnerUUID(pCompound.hasUUID("Owner") ? pCompound.getUUID("Owner") : null);
-        this.setPainting(pCompound.getString("PaintingItem"));
-        this.setEnergy(pCompound.getInt("Energy"));
-        this.setStatus(pCompound.getByte("Status"));
+        if (pCompound.contains("PaintingItem")) this.setPainting(pCompound.getString("PaintingItem"));
+        if (pCompound.contains("Energy")) this.setEnergy(pCompound.getInt("Energy"));
+        if (pCompound.contains("Status")) this.setStatus(pCompound.getByte("Status"));
         ListTag listtag = pCompound.getList("Items", 10);
         for(int i = 0; i < listtag.size(); ++i) {
             CompoundTag compoundtag = listtag.getCompound(i);

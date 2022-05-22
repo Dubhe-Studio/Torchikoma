@@ -65,19 +65,4 @@ public class TorchikomaMenu extends AbstractContainerMenu {
     public boolean isEmpty(int pIndex) {
         return this.entity.getInventory().getItem(pIndex).isEmpty();
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public float getHealth() {
-        return this.entity.getHealth();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getEnergy() {
-        return this.entity.getEnergy();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public byte getStatus() {
-        return this.entity.getStatus();
-    }
 }
