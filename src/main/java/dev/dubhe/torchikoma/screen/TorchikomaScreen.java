@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -27,15 +28,15 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     @Override
     protected void init() {
         super.init();
-        this.addButton(8, 83, 0);
-        this.addButton(26, 83, 1);
-        this.addButton(44, 83, 2);
+        this.addButton(8, 83, new TranslatableComponent("torchikoma.mode.following"), 0);
+        this.addButton(26, 83, new TranslatableComponent("torchikoma.mode.situ"), 1);
+        this.addButton(44, 83, new TranslatableComponent("torchikoma.mode.standby"), 2);
         this.updateButtons();
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void addButton(int pX, int pY, int index) {
-        TorchikomaButton button = new TorchikomaButton(this.leftPos + pX, this.topPos + pY, index);
+    private void addButton(int pX, int pY, Component tooltip, int index) {
+        TorchikomaButton button = new TorchikomaButton(this.leftPos + pX, this.topPos + pY, tooltip, index);
         this.addRenderableWidget(button);
         this.buttons[index] = button;
     }
@@ -50,6 +51,14 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
         int index = this.menu.getEntity().getStatus();
         for (TorchikomaButton button : this.buttons) {
             button.setSelected(button.index == index);
+        }
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
+        super.renderTooltip(pPoseStack, pX, pY);
+        for (TorchikomaButton button : buttons) {
+            if (button.isHoveredOrFocused()) this.renderTooltip(pPoseStack, button.tooltip, pX, pY);
         }
     }
 
@@ -81,10 +90,12 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     }
 
     class TorchikomaButton extends AbstractButton {
+        private final Component tooltip;
         private final int index;
         private boolean isSelected;
-        public TorchikomaButton(int pX, int pY, int index) {
+        public TorchikomaButton(int pX, int pY, Component tooltip, int index) {
             super(pX, pY, 18, 16, TextComponent.EMPTY);
+            this.tooltip = tooltip;
             this.index = index;
         }
 

@@ -35,5 +35,9 @@
   "gui.torchikoma.gunpowder": "发射次数: %s",
   
   "key.category.torchikoma": "拓奇科马",
-  "key.torchikoma.open_gui": "打开枪械GUI"
+  "key.torchikoma.open_gui": "打开枪械GUI",
+
+  "torchikoma.mode.following": "跟随",
+  "torchikoma.mode.situ": "原地警戒",
+  "torchikoma.mode.standby": "休眠"
 }
