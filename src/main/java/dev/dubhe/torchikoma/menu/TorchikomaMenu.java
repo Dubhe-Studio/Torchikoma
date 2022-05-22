@@ -46,6 +46,10 @@ public class TorchikomaMenu extends AbstractContainerMenu {
 
     }
 
+    public TorchikomaEntity getEntity() {
+        return this.entity;
+    }
+
     @Override
     public boolean stillValid(Player pPlayer) {
         return true;
@@ -73,12 +77,7 @@ public class TorchikomaMenu extends AbstractContainerMenu {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean buttonIsOn(int index) {
-        return switch (index) {
-            case 1 -> this.entity.isFollowing();
-            case 2 -> this.entity.isInSitu();
-            case 3 -> this.entity.isStandby();
-            default -> throw new IllegalArgumentException("Invalid index: " + index);
-        };
+    public byte getStatus() {
+        return this.entity.getStatus();
     }
 }

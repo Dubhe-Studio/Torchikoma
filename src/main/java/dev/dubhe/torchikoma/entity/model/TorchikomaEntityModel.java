@@ -1,22 +1,16 @@
 package dev.dubhe.torchikoma.entity.model;
 
-import com.mojang.brigadier.StringReader;
 import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import dev.dubhe.torchikoma.resource.ResourceListener;
-import net.minecraft.commands.arguments.item.ItemArgument;
-import net.minecraft.commands.arguments.item.ItemInput;
-import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
 import java.io.IOException;
 
 public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEntity> {
-    private String texture = "torchikoma";
-    private TorchikomaCustomTexture customTexture = new TorchikomaCustomTexture();
+    private final TorchikomaCustomTexture customTexture = new TorchikomaCustomTexture();
 
     public TorchikomaEntityModel() {
         try {
@@ -33,7 +27,8 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
 
     @Override
     public ResourceLocation getTextureLocation(TorchikomaEntity entity) {
-        this.setPaiting(entity.getPainting());
+        String texture = this.customTexture.get(entity.getPainting());
+        texture = texture == null ? "torchikoma" : "torchikoma/" + texture;
         return new ResourceLocation(Torchikoma.ID, "textures/entity/" + texture + ".png");
     }
 
@@ -46,14 +41,5 @@ public class TorchikomaEntityModel extends AnimatedTickingGeoModel<TorchikomaEnt
     @Override
     public void setLivingAnimations(TorchikomaEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-    }
-
-    public void setPaiting(String itmeID) {
-        String texture = this.customTexture.get(itmeID);
-        if (texture != null) {
-            this.texture = "torchikoma/" + texture;
-        } else {
-            this.texture = "torchikoma";
-        }
     }
 }
