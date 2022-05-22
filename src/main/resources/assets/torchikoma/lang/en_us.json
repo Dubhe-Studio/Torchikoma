@@ -37,7 +37,7 @@
   "key.category.torchikoma": "Torchikoma",
   "key.torchikoma.open_gui": "open guns GUI",
 
-  "torchikoma.mode.following": "跟随模式",
-  "torchikoma.mode.situ": "原地警戒模式",
-  "torchikoma.mode.standby": "休眠模式"
+  "torchikoma.mode.following": "following mode",
+  "torchikoma.mode.situ": "situ mode",
+  "torchikoma.mode.standby": "standby mode"
 }
