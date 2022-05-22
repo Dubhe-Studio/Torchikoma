@@ -28,9 +28,9 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     @Override
     protected void init() {
         super.init();
-        this.addButton(8, 83, new TranslatableComponent("torchikoma.mode.following"), 0);
-        this.addButton(26, 83, new TranslatableComponent("torchikoma.mode.situ"), 1);
-        this.addButton(44, 83, new TranslatableComponent("torchikoma.mode.standby"), 2);
+        this.addButton(8, 83, new TranslatableComponent("btn.torchikoma.mode.following"), 0);
+        this.addButton(26, 83, new TranslatableComponent("btn.torchikoma.mode.situ"), 1);
+        this.addButton(44, 83, new TranslatableComponent("btn.torchikoma.mode.standby"), 2);
         this.updateButtons();
     }
 
