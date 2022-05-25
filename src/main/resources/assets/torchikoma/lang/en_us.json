@@ -13,6 +13,10 @@
   "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "Torchikoma",
+  "item.torchikoma.redstone_energy_core": "redstone energy core",
+  "item.torchikoma.beacon_energy_core": "beacon energy core",
+  "item.torchikoma.creative_energy_core": "creative energy core",
+
   "block.torchikoma.clay_explosives": "clay explosives",
   "block.torchikoma.blocklight_detector": "blocklight detector",
 
@@ -33,7 +37,9 @@
   "entity.torchikoma.torchikoma": "torchikoma",
 
   "gui.torchikoma.gunpowder": "please translate this: %s",
-  
+  "gui.torchikoma.energy": "Energy: %s",
+  "gui.torchikoma.health": "Health: %s",
+
   "key.category.torchikoma": "Torchikoma",
   "key.torchikoma.open_gui": "open guns GUI",
 

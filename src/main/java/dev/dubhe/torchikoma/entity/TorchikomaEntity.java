@@ -42,6 +42,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -52,6 +53,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
+
+    private static final DecimalFormat TRANS_FORMAT = new DecimalFormat("0.00#");
 
     private final AnimationFactory factory = new AnimationFactory(this);
     private final SimpleContainer inventory;
@@ -250,6 +253,10 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public int getEnergy() {
         return Math.min(this.entityData.get(ENERGY_DATA), 20000);
+    }
+
+    public String getFormatEnergy() {
+        return TRANS_FORMAT.format(getEnergy() / 100F);
     }
 
     public void setEnergy(int energy) {

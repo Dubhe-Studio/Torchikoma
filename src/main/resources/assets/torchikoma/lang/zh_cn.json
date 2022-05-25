@@ -25,6 +25,9 @@
   "item.torchikoma.torch_gatling": "火把加特林",
   "item.torchikoma.torch_cannon": "火把手炮",
   "item.torchikoma.torchikoma": "拓奇科马",
+  "item.torchikoma.redstone_energy_core": "红石能量核心",
+  "item.torchikoma.beacon_energy_core": "信标能量核心",
+  "item.torchikoma.creative_energy_core": "创造能量核心",
   "item.torchikoma.mechanical_component": "机械零件",
   "item.torchikoma.electronic_component": "电子元件",
   "item.torchikoma.clay_explosives": "粘土炸药",
@@ -33,7 +36,9 @@
   "entity.torchikoma.torchikoma": "拓奇科马",
 
   "gui.torchikoma.gunpowder": "发射次数: %s",
-  
+  "gui.torchikoma.energy": "能量: %s",
+  "gui.torchikoma.health": "血量: %s",
+
   "key.category.torchikoma": "拓奇科马",
   "key.torchikoma.open_gui": "打开枪械GUI",
 

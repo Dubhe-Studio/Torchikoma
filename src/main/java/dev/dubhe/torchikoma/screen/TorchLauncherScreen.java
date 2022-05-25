@@ -45,9 +45,7 @@ public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> 
     @Override
     protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
         super.renderTooltip(pPoseStack, pX, pY);
-        int x = (this.width - this.menuWidth) / 2 + 76;
-        int y = (this.height - this.imageHeight) / 2 + 31;
-        if (pX >= x && pX <= x + 50 && pY >= y && pY <= y + 4) {
+        if (pX >= this.leftPos + 76 && pX <= this.leftPos + 126 && pY >= this.topPos + 31 && pY <= this.topPos + 35) {
             this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.gunpowder", this.menu.getShoots()), pX, pY);
         }
     }

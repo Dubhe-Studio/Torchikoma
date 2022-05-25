@@ -80,7 +80,7 @@ public class TorchikomaMenu extends AbstractContainerMenu {
                     if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack.getItem() instanceof EnergyCore) { // 是能源核心
+                } else if (itemstack.getItem() instanceof EnergyCore) {
                     if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
                         return ItemStack.EMPTY;
                     }

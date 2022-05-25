@@ -57,6 +57,12 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     @Override
     protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
         super.renderTooltip(pPoseStack, pX, pY);
+        if (pX >= this.leftPos + 89 && pX <= this.leftPos + 169 && pY >= this.topPos + 84 && pY <= this.topPos + 88) {
+            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.energy", this.menu.getEntity().getFormatEnergy()), pX, pY);
+        }
+        if (pX >= this.leftPos + 89 && pX <= this.leftPos + 169 && pY >= this.topPos + 94 && pY <= this.topPos + 98) {
+            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.health", this.menu.getEntity().getHealth()), pX, pY);
+        }
         for (TorchikomaButton button : buttons) {
             if (button.isHoveredOrFocused()) this.renderTooltip(pPoseStack, button.tooltip, pX, pY);
         }
