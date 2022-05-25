@@ -1,5 +1,6 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.item.EnergyCore;
 import dev.dubhe.torchikoma.menu.TorchikomaMenu;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import net.minecraft.Util;
@@ -82,6 +83,12 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void tick() {
         super.tick();
+
+        ItemStack itemStack = this.inventory.getItem(13);
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof EnergyCore item) {
+            this.addEnergy(item.getRecovery());
+        }
+
         if (this.getOwner() instanceof Player player) {
             float f = getOwnerDistance();
             if (f > 10.0F) {
@@ -242,11 +249,19 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public int getEnergy() {
-        return this.entityData.get(ENERGY_DATA);
+        return Math.min(this.entityData.get(ENERGY_DATA), 20000);
     }
 
     public void setEnergy(int energy) {
         this.entityData.set(ENERGY_DATA, energy);
+    }
+
+    public void addEnergy(int energy) {
+        this.setEnergy(Math.min(this.getEnergy() + energy, 20000));
+    }
+
+    public void decEnergy(int energy) {
+        this.setEnergy(Math.max(this.getEnergy() - energy, 0));
     }
 
     public byte getStatus() {

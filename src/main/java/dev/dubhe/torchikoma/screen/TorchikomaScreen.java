@@ -67,7 +67,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
         super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
         byte status = this.menu.getEntity().getStatus();
         int healLength = (int) (80 * this.menu.getEntity().getHealth() / this.menu.getEntity().getMaxHealth());
-        int energyLength = (int) (80 * this.menu.getEntity().getEnergy() / 200.0F);
+        int energyLength = (int) (80 * this.menu.getEntity().getEnergy() / 20000F);
         if (status < 0 || status > 2) throw new IllegalArgumentException("Invalid status index: " + status);
         RenderSystem.setShaderTexture(0, BACKGROUND);
         this.blit(pPoseStack, this.leftPos, this.topPos, 0, 0, this.menuWidth, this.menuHeight); // 背景板

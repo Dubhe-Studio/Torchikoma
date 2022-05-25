@@ -1,6 +1,7 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
+import dev.dubhe.torchikoma.item.EnergyCore;
 import dev.dubhe.torchikoma.item.TorchLauncher;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,13 +42,13 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.entity.getInventory(), 13, 9, 34) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 能量
-                return true;
+                return pStack.getItem() instanceof EnergyCore;
             }
         });
         this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 染料
-                return true;
+                return pStack.getItem() instanceof DyeItem;
             }
         });
 
@@ -79,11 +80,11 @@ public class TorchikomaMenu extends AbstractContainerMenu {
                     if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (false) { // 是能源核心
+                } else if (itemstack.getItem() instanceof EnergyCore) { // 是能源核心
                     if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack.getItem() instanceof DyeItem) { // 是染料
+                } else if (itemstack.getItem() instanceof DyeItem) {
                     if (!this.moveItemStackTo(itemstack1, 14, 15, false)) {
                         return ItemStack.EMPTY;
                     }

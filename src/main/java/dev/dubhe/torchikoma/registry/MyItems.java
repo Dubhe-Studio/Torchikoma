@@ -1,6 +1,7 @@
 package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.item.EnergyCore;
 import dev.dubhe.torchikoma.item.TorchCannon;
 import dev.dubhe.torchikoma.item.TorchGatling;
 import dev.dubhe.torchikoma.item.TorchLauncher;
@@ -26,12 +27,6 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("prismarine_torch"));
     public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties())
             .setRegistryName(Torchikoma.getId("glowstone_torch"));
-    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_launcher"));
-    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_gatling"));
-    public static final Item TORCH_CANNON = new TorchCannon(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_cannon"));
     public static final Item CLUSTERED_TORCH = new Item(defaultProperties())
             .setRegistryName(Torchikoma.getId("clustered_torch"));
     public static final Item CLUSTERED_SOUL_TORCH = new Item(defaultProperties())
@@ -42,6 +37,18 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
             .setRegistryName(Torchikoma.getId("clustered_prismarine_torch"));
     public static final Item CLUSTERED_GLOWSTONE_TORCH = new Item(defaultProperties())
             .setRegistryName(Torchikoma.getId("clustered_glowstone_torch"));
+    public static final Item TORCH_LAUNCHER = new TorchLauncher(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
+            .setRegistryName(Torchikoma.getId("torch_launcher"));
+    public static final Item TORCH_GATLING = new TorchGatling(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
+            .setRegistryName(Torchikoma.getId("torch_gatling"));
+    public static final Item TORCH_CANNON = new TorchCannon(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
+            .setRegistryName(Torchikoma.getId("torch_cannon"));
+    public static final Item REDSTONE_ENERGY_CORE = new EnergyCore(1, defaultProperties().stacksTo(1))
+            .setRegistryName(Torchikoma.getId("redstone_energy_core"));
+    public static final Item BEACON_ENERGY_CORE = new EnergyCore(5, defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
+            .setRegistryName(Torchikoma.getId("beacon_energy_core"));
+    public static final Item CREATIVE_ENERGY_CORE = new EnergyCore(100, defaultProperties().stacksTo(1).rarity(Rarity.EPIC))
+            .setRegistryName(Torchikoma.getId("creative_energy_core"));
     public static final Item TORCHIKOMA = new ItemNameBlockItem(MyBlocks.TORCHIKOMA, defaultProperties())
             .setRegistryName(Torchikoma.getId("torchikoma"));
     public static final Item MECHANICAL_COMPONENT = new ItemNameBlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties())
