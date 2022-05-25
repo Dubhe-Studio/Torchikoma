@@ -264,11 +264,17 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public void addEnergy(int energy) {
-        this.setEnergy(Math.min(this.getEnergy() + energy, 20000));
+        int now = this.getEnergy();
+        if (now != 20000) this.setEnergy(Math.min(now + energy, 20000));
     }
 
-    public void decEnergy(int energy) {
-        this.setEnergy(Math.max(this.getEnergy() - energy, 0));
+    public boolean decEnergy(int energy) {
+        int now = this.getEnergy();
+        if (now >= energy) {
+            this.setEnergy(Math.max(now - energy, 0));
+            return true;
+        }
+        return false;
     }
 
     public byte getStatus() {
