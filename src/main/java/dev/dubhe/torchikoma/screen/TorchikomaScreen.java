@@ -3,6 +3,7 @@ package dev.dubhe.torchikoma.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import dev.dubhe.torchikoma.menu.TorchikomaMenu;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -17,10 +18,12 @@ import net.minecraft.world.entity.player.Inventory;
 public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     private static final ResourceLocation BACKGROUND = Torchikoma.getId("textures/gui/torchikoma.png");
 
+    private final TorchikomaEntity entity;
     private final TorchikomaButton[] buttons = new TorchikomaButton[3];
 
     public TorchikomaScreen(TorchikomaMenu pMenu, Inventory inventory, Component pTitle) {
         super(pMenu, inventory, pTitle, 178, 106);
+        this.entity = pMenu.getEntity();
         this.inventoryLabelY += 48;
         this.titleLabelY += 66;
     }
@@ -48,7 +51,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     }
 
     private void updateButtons() {
-        int index = this.menu.getEntity().getStatus();
+        int index = this.entity.getStatus();
         for (TorchikomaButton button : this.buttons) {
             button.setSelected(button.index == index);
         }
@@ -58,10 +61,10 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
         super.renderTooltip(pPoseStack, pX, pY);
         if (pX >= this.leftPos + 89 && pX <= this.leftPos + 169 && pY >= this.topPos + 84 && pY <= this.topPos + 88) {
-            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.energy", this.menu.getEntity().getFormatEnergy()), pX, pY);
+            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.energy", this.entity.getFormatEnergy()), pX, pY);
         }
         if (pX >= this.leftPos + 89 && pX <= this.leftPos + 169 && pY >= this.topPos + 94 && pY <= this.topPos + 98) {
-            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.health", this.menu.getEntity().getHealth()), pX, pY);
+            this.renderTooltip(pPoseStack, new TranslatableComponent("gui.torchikoma.health", this.entity.getHealth()), pX, pY);
         }
         for (TorchikomaButton button : buttons) {
             if (button.isHoveredOrFocused()) this.renderTooltip(pPoseStack, button.tooltip, pX, pY);
@@ -71,9 +74,9 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(pPoseStack, pPartialTick, pMouseX, pMouseY);
-        byte status = this.menu.getEntity().getStatus();
-        int healLength = (int) (80 * this.menu.getEntity().getHealth() / this.menu.getEntity().getMaxHealth());
-        int energyLength = (int) (80 * this.menu.getEntity().getEnergy() / 20000F);
+        byte status = this.entity.getStatus();
+        int healLength = (int) (80 * this.entity.getHealth() / this.entity.getMaxHealth());
+        int energyLength = (int) (80 * this.entity.getEnergy() / 20000F);
         if (status < 0 || status > 2) throw new IllegalArgumentException("Invalid status index: " + status);
         RenderSystem.setShaderTexture(0, BACKGROUND);
         this.blit(pPoseStack, this.leftPos, this.topPos, 0, 0, this.menuWidth, this.menuHeight); // 背景板
@@ -82,7 +85,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
         }
         this.blit(pPoseStack, this.leftPos + 89, this.topPos + 84, 54, this.menuHeight, energyLength, 4); // 能量条
         this.blit(pPoseStack, this.leftPos + 89, this.topPos + 94, 54, this.menuHeight + 4, healLength, 4); // 血条
-        InventoryScreen.renderEntityInInventory(this.leftPos + 62, this.topPos + 57, 17, this.leftPos + 62 - pMouseX, this.topPos + 42 - pMouseY, this.menu.getEntity());
+        InventoryScreen.renderEntityInInventory(this.leftPos + 62, this.topPos + 57, 17, this.leftPos + 62 - pMouseX, this.topPos + 42 - pMouseY, this.entity);
     }
 
     protected void renderItemBg(PoseStack pPoseStack, int x, int y, int u, int v, int index) {
@@ -103,7 +106,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
 
         @Override
         public void onPress() {
-            if (!this.isSelected) TorchikomaScreen.this.menu.getEntity().setStatus((byte) this.index);
+            if (!this.isSelected) TorchikomaScreen.this.entity.setStatus((byte) this.index);
         }
 
         @Override
