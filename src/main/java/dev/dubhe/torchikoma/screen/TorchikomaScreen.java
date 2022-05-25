@@ -75,8 +75,6 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
             this.renderItemBg(pPoseStack, this.leftPos + 9, this.topPos + i * 18 + 16, this.menuWidth, i * 16, i); // 物品背景
         }
 
-//        this.blit(pPoseStack, this.leftPos + status * 18 + 8, this.topPos + 83, status * 18, this.menuHeight, 18, 16); // 三个按钮
-
         this.blit(pPoseStack, this.leftPos + 89, this.topPos + 84, 54, this.menuHeight, energyLength, 4); // 血条
         this.blit(pPoseStack, this.leftPos + 89, this.topPos + 94, 54, this.menuHeight + 4, healLength, 4); // 能量条
         // 51 60

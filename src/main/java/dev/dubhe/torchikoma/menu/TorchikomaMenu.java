@@ -1,11 +1,13 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
+import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -29,10 +31,24 @@ public class TorchikomaMenu extends AbstractContainerMenu {
             }
         }
 
-        for (int i = 0; i < 3; i++) {
-            this.addSlot(new Slot(this.entity.getInventory(), 12 + i, 9, 16 + i * 18));
-        }
-
+        this.addSlot(new Slot(this.entity.getInventory(), 12, 9, 16) {
+            @Override
+            public boolean mayPlace(ItemStack pStack) { // 三种枪
+                return pStack.is(MyItems.TORCH_LAUNCHER) || pStack.is(MyItems.TORCH_GATLING) || pStack.is(MyItems.TORCH_CANNON);
+            }
+        });
+        this.addSlot(new Slot(this.entity.getInventory(), 13, 9, 34) {
+            @Override
+            public boolean mayPlace(ItemStack pStack) { // 能量
+                return true;
+            }
+        });
+        this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52) {
+            @Override
+            public boolean mayPlace(ItemStack pStack) { // 染料
+                return true;
+            }
+        });
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
