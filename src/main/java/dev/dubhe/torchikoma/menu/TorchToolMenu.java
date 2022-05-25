@@ -70,8 +70,8 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
         if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (pIndex < this.itemInventory.getContainerSize()) {
-                if (!this.moveItemStackTo(itemstack1, this.itemInventory.getContainerSize(), this.slots.size(), false)) {
+            if (pIndex < 5) {
+                if (!this.moveItemStackTo(itemstack1, 5, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
@@ -83,11 +83,11 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                     if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 5 && pIndex < 32) {
+                } else if (pIndex < 32) {
                     if (!this.moveItemStackTo(itemstack1, 32, this.slots.size(), false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 32 && pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
+                } else if (pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
                     return ItemStack.EMPTY;
                 }
             }

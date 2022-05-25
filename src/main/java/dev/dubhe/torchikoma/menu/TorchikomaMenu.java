@@ -1,15 +1,14 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
-import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.item.TorchLauncher;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,7 +35,7 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.entity.getInventory(), 12, 9, 16) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 三种枪
-                return pStack.is(MyItems.TORCH_LAUNCHER) || pStack.is(MyItems.TORCH_GATLING) || pStack.is(MyItems.TORCH_CANNON);
+                return pStack.getItem() instanceof TorchLauncher;
             }
         });
         this.addSlot(new Slot(this.entity.getInventory(), 13, 9, 34) {
@@ -71,24 +70,28 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (pIndex < 12) {
-                if (!this.moveItemStackTo(itemstack1, 12, this.slots.size(), false)) {
+            if (pIndex < 15) {
+                if (!this.moveItemStackTo(itemstack1, 15, this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (itemstack.getItem() == Items.GUNPOWDER) {
-                    if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
+                if (itemstack.getItem() instanceof TorchLauncher) {
+                    if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (TorchLauncher.isTorchItem(itemstack)) {
-                    if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
+                } else if (false) { // 是能源核心
+                    if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 5 && pIndex < 32) {
-                    if (!this.moveItemStackTo(itemstack1, 32, this.slots.size(), false)) {
+                } else if (itemstack.getItem() instanceof DyeItem) { // 是染料
+                    if (!this.moveItemStackTo(itemstack1, 14, 15, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex >= 32 && pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 5, 32, false)) {
+                } else if (pIndex < 42) {
+                    if (!this.moveItemStackTo(itemstack1, 42, this.slots.size(), false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 15, 42, false)) {
                     return ItemStack.EMPTY;
                 }
             }
