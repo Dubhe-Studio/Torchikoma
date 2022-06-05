@@ -44,6 +44,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -169,7 +170,7 @@ public class TorchEntity extends Projectile {
                         entityHit = null;
                     }
                 }
-                if (hit != null && hit.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hit)) {
+                if (hit != null && hit.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hit)) {
                     this.onHit(hit);
                     this.hasImpulse = true;
                 }
@@ -228,12 +229,6 @@ public class TorchEntity extends Projectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         Entity hitEntity = pResult.getEntity();
-        float length = (float)this.getDeltaMovement().length();
-        int damage = Mth.ceil(Mth.clamp((double)length * this.baseDamage, 0.0D, 2.147483647E9D));
-        System.out.println(this.baseDamage);
-        System.out.println(this.getDeltaMovement());
-        System.out.println(length);
-        System.out.println(damage);
         Entity owner = this.getOwner();
         DamageSource damagesource;
         if (owner == null) {
@@ -247,7 +242,7 @@ public class TorchEntity extends Projectile {
         boolean hitEnderman = hitEntity.getType() == EntityType.ENDERMAN;
         int fireTicks = hitEntity.getRemainingFireTicks();
         if (this.isOnFire() && !hitEnderman) hitEntity.setSecondsOnFire(5);
-        if (hitEntity.hurt(damagesource, (float)damage)) {
+        if (hitEntity.hurt(damagesource, (float) this.baseDamage)) {
             if (hitEnderman) return;
             if (hitEntity instanceof LivingEntity livingentity) {
                 if (!this.level.isClientSide && owner instanceof LivingEntity) {
