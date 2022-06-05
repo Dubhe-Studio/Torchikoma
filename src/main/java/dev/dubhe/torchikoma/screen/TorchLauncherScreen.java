@@ -23,9 +23,6 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.List;
-import java.util.Optional;
-
 @OnlyIn(Dist.CLIENT)
 public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> {
     private static final ResourceLocation BACKGROUND = Torchikoma.getId("textures/gui/gun.png");

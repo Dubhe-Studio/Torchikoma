@@ -41,7 +41,7 @@ public class TorchLauncher extends Item implements ScreenProvider {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (shootTorch(pLevel, pPlayer, item)) {
-                pPlayer.getCooldowns().addCooldown(this, this.cooldown);
+//                pPlayer.getCooldowns().addCooldown(this, this.cooldown);
             }
         }
         return InteractionResultHolder.pass(item);
@@ -79,7 +79,7 @@ public class TorchLauncher extends Item implements ScreenProvider {
         ItemStack stack = item.copy();
         stack.setCount(1);
         TorchEntity entity = new TorchEntity(pPlayer, stack);
-        entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
+        entity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 2.0F, 1.0F);
         pLevel.addFreshEntity(entity);
         item.shrink(1);
         nbt.putInt("Shoots", --shoots);
