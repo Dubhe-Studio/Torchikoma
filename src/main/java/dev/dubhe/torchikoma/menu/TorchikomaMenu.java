@@ -18,8 +18,6 @@ import javax.annotation.Nonnull;
 
 public class TorchikomaMenu extends AbstractContainerMenu {
 
-    public static int t1;
-
     private final TorchikomaEntity entity;
 
     public TorchikomaMenu(int pContainerId, Inventory inventory, @Nonnull TorchikomaEntity entity) {

@@ -78,7 +78,7 @@ public class TorchLauncher extends Item implements ScreenProvider {
         if (item.isEmpty()) return false;
         ItemStack stack = item.copy();
         stack.setCount(1);
-        TorchEntity entity = new TorchEntity(pLevel, pPlayer, stack);
+        TorchEntity entity = new TorchEntity(pPlayer, stack);
         entity.setDeltaMovement(pPlayer.getLookAngle().multiply(2,2,2));
         pLevel.addFreshEntity(entity);
         item.shrink(1);

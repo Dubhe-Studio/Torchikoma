@@ -18,7 +18,7 @@ public class CommandRegistry {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("torchikoma");
-        root.then(tempCommand("t1", val -> TorchikomaMenu.t1 = val));
+//        root.then(tempCommand("t1", val -> TorchikomaMenu.t1 = val));
 //        root.then(tempCommand("t2", val -> TorchLauncherScreen.temp2 = val));
 //        root.then(tempCommand("t3", val -> TorchLauncherScreen.temp3 = val));
 //        root.then(tempCommand("t4", val -> TorchLauncherScreen.temp4 = val));
