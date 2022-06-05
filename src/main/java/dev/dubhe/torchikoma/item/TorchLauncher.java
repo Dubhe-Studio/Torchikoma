@@ -41,7 +41,7 @@ public class TorchLauncher extends Item implements ScreenProvider {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (shootTorch(pLevel, pPlayer, item)) {
-//                pPlayer.getCooldowns().addCooldown(this, this.cooldown);
+                pPlayer.getCooldowns().addCooldown(this, this.cooldown);
             }
         }
         return InteractionResultHolder.pass(item);

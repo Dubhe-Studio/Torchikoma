@@ -394,7 +394,6 @@ public class TorchEntity extends Projectile {
         } else {
             this.entityData.set(ID_FLAGS, (byte)(b0 & ~p_36738_));
         }
-
     }
 
     public void setAllowBurn(boolean pCritical) {
