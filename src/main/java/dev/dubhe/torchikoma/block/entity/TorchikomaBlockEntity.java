@@ -5,7 +5,6 @@ import dev.dubhe.torchikoma.registry.MyBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.ContainerHelper;
@@ -27,7 +26,6 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
     private String painting;
     private float health;
     private int energy;
-    private byte status;
 
     public TorchikomaBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(MyBlockEntities.TORCHIKOMA, pPos, pBlockState);
@@ -35,7 +33,6 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         this.painting = "minecraft:blaze_powder";
         this.health = 80.0F;
         this.energy = 0;
-        this.status = 1;
     }
     public TorchikomaBlockEntity(BlockPos pPos, BlockState pBlockState, TorchikomaEntity entity) {
         super(MyBlockEntities.TORCHIKOMA, pPos, pBlockState);
@@ -43,7 +40,6 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         this.painting = entity.getPainting();
         this.health = entity.getHealth();
         this.energy = entity.getEnergy();
-        this.status = entity.getStatus();
         for (int i = 0; i < entity.getInventory().getContainerSize(); i++) {
             this.items.set(i, entity.getInventory().getItem(i));
         }
@@ -61,7 +57,6 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         if (pTag.contains("PaintingItem")) this.painting = pTag.getString("PaintingItem");
         if (pTag.contains("Energy")) this.energy = pTag.getInt("Energy");
         if (pTag.contains("Health")) this.health = pTag.getInt("Health");
-        if (pTag.contains("Status")) this.status = pTag.getByte("Status");
         ContainerHelper.loadAllItems(pTag, this.items);
     }
 
@@ -72,7 +67,6 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         pTag.putString("PaintingItem", this.painting);
         pTag.putInt("Energy", this.energy);
         pTag.putFloat("Health", this.health);
-        pTag.putByte("Status", this.status);
         ContainerHelper.saveAllItems(pTag, this.items);
     }
 
