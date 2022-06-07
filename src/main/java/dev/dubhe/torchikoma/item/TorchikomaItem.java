@@ -19,9 +19,9 @@ public class TorchikomaItem extends ItemNameBlockItem {
     @Override
     protected boolean updateCustomBlockEntityTag(BlockPos pPos, Level pLevel, @Nullable Player pPlayer, ItemStack pStack, BlockState pState) {
         boolean result = super.updateCustomBlockEntityTag(pPos, pLevel, pPlayer, pStack, pState);
-        if (result && pLevel.getBlockEntity(pPos) instanceof TorchikomaBlockEntity blockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof TorchikomaBlockEntity blockEntity) {
             blockEntity.setOwner(pPlayer == null ? null : pPlayer.getUUID());
             return true;
-        } else return false;
+        } else return result;
     }
 }

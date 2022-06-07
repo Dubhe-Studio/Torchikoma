@@ -63,7 +63,7 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        if (this.owner != null) pTag.putUUID("owner", this.owner);
+        if (this.owner != null) pTag.putUUID("Owner", this.owner);
         pTag.putString("PaintingItem", this.painting);
         pTag.putInt("Energy", this.energy);
         pTag.putFloat("Health", this.health);
