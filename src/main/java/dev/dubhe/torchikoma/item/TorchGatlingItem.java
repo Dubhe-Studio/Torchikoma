@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkHooks;
 
-public class TorchCannon extends TorchLauncher {
-    public TorchCannon(Properties pProperties) {
-        super(pProperties, 20);
+public class TorchGatlingItem extends TorchLauncherItem {
+    public TorchGatlingItem(Properties pProperties) {
+        super(pProperties, 5);
     }
 
     @Override
@@ -22,6 +22,6 @@ public class TorchCannon extends TorchLauncher {
 
     @Override
     public TorchLauncherScreen.RenderSize getRenderSize() {
-        return new TorchLauncherScreen.RenderSize(26, 34, 32.0F);
+        return new TorchLauncherScreen.RenderSize(26, 34, 22.0F);
     }
 }

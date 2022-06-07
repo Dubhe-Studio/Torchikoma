@@ -1,8 +1,8 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
-import dev.dubhe.torchikoma.item.EnergyCore;
-import dev.dubhe.torchikoma.item.TorchLauncher;
+import dev.dubhe.torchikoma.item.EnergyCoreItem;
+import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -34,13 +34,13 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.entity.getInventory(), 12, 9, 16) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 三种枪
-                return pStack.getItem() instanceof TorchLauncher;
+                return pStack.getItem() instanceof TorchLauncherItem;
             }
         });
         this.addSlot(new Slot(this.entity.getInventory(), 13, 9, 34) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 能量
-                return pStack.getItem() instanceof EnergyCore;
+                return pStack.getItem() instanceof EnergyCoreItem;
             }
         });
         this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52) {
@@ -74,11 +74,11 @@ public class TorchikomaMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (itemstack.getItem() instanceof TorchLauncher) {
+                if (itemstack.getItem() instanceof TorchLauncherItem) {
                     if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack.getItem() instanceof EnergyCore) {
+                } else if (itemstack.getItem() instanceof EnergyCoreItem) {
                     if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
                         return ItemStack.EMPTY;
                     }

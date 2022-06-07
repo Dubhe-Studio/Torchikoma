@@ -63,6 +63,7 @@ public class RegistryEvent {
     @SubscribeEvent
     public static void onRegisterBlockEntity(net.minecraftforge.event.RegistryEvent.Register<BlockEntityType<?>> event) {
         event.getRegistry().register(MyBlockEntities.BLOCKLIGHT_DETECTOR);
+        event.getRegistry().register(MyBlockEntities.TORCHIKOMA);
     }
 
     @SubscribeEvent

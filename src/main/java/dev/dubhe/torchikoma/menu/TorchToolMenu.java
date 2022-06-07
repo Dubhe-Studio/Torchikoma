@@ -1,6 +1,6 @@
 package dev.dubhe.torchikoma.menu;
 
-import dev.dubhe.torchikoma.item.TorchLauncher;
+import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +23,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                 this.addSlot(new Slot(this.itemInventory, j + i * 2, 135 + j * 18, 16 + i * 18) {
                     @Override
                     public boolean mayPlace(ItemStack pStack) {
-                        return TorchLauncher.isTorchItem(pStack);
+                        return TorchLauncherItem.isTorchItem(pStack);
                     }
                 });
             }
@@ -55,7 +55,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
 
     @OnlyIn(Dist.CLIENT)
     public TorchLauncherScreen.RenderSize getItemSize() {
-        return itemInventory.itemStack.getItem() instanceof TorchLauncher item ? item.getRenderSize() : TorchLauncherScreen.RenderSize.DEFAULT;
+        return itemInventory.itemStack.getItem() instanceof TorchLauncherItem item ? item.getRenderSize() : TorchLauncherScreen.RenderSize.DEFAULT;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -79,7 +79,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                     if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (TorchLauncher.isTorchItem(itemstack)) {
+                } else if (TorchLauncherItem.isTorchItem(itemstack)) {
                     if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
                         return ItemStack.EMPTY;
                     }

@@ -1,6 +1,6 @@
 package dev.dubhe.torchikoma.entity;
 
-import dev.dubhe.torchikoma.item.EnergyCore;
+import dev.dubhe.torchikoma.item.EnergyCoreItem;
 import dev.dubhe.torchikoma.menu.TorchikomaMenu;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import net.minecraft.Util;
@@ -53,9 +53,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
-
     private static final DecimalFormat TRANS_FORMAT = new DecimalFormat("0.00#");
-
     private final AnimationFactory factory = new AnimationFactory(this);
     private final SimpleContainer inventory;
 
@@ -88,7 +86,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         super.tick();
 
         ItemStack itemStack = this.inventory.getItem(13);
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof EnergyCore item) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof EnergyCoreItem item) {
             this.addEnergy(item.getRecovery());
         }
 

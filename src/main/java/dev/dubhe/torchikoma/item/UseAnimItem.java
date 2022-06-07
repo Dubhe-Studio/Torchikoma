@@ -1,5 +1,5 @@
 package dev.dubhe.torchikoma.item;
 
-public enum UseAnim {
+public enum UseAnimItem {
     TORCH_GATLING;
 }

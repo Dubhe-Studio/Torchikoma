@@ -24,14 +24,14 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class TorchLauncher extends Item implements ScreenProvider {
+public class TorchLauncherItem extends Item implements ScreenProvider {
     private final int cooldown;
 
-    public TorchLauncher(Properties pProperties) {
+    public TorchLauncherItem(Properties pProperties) {
         this(pProperties, 20);
     }
 
-    protected TorchLauncher(Properties pProperties, int cooldown) {
+    protected TorchLauncherItem(Properties pProperties, int cooldown) {
         super(pProperties);
         this.cooldown = cooldown;
     }
