@@ -1,0 +1,7 @@
+{
+	"parent": "torchikoma:block/redstone_energy_core",
+	"textures": {
+		"0": "torchikoma:block/beacon_energy_core",
+		"particle": "torchikoma:block/beacon_energy_core"
+	}
+}
