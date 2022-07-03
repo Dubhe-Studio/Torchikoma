@@ -13,9 +13,9 @@
   "block.torchikoma.prismarine_wall_torch": "prismarine wall torch",
   "block.torchikoma.glowstone_wall_torch": "glowstone wall torch",
   "block.torchikoma.torchikoma": "Torchikoma",
-  "item.torchikoma.redstone_energy_core": "redstone energy core",
-  "item.torchikoma.beacon_energy_core": "beacon energy core",
-  "item.torchikoma.creative_energy_core": "creative energy core",
+  "block.torchikoma.redstone_energy_core": "redstone energy core",
+  "block.torchikoma.beacon_energy_core": "beacon energy core",
+  "block.torchikoma.creative_energy_core": "creative energy core",
 
   "block.torchikoma.clay_explosives": "clay explosives",
   "block.torchikoma.blocklight_detector": "blocklight detector",
@@ -33,6 +33,9 @@
   "item.torchikoma.electronic_component": "electronic component",
   "item.torchikoma.clay_explosives": "clay explosives",
   "item.torchikoma.blocklight_detector": "blocklight detector",
+  "item.torchikoma.redstone_energy_core": "redstone energy core",
+  "item.torchikoma.beacon_energy_core": "beacon energy core",
+  "item.torchikoma.creative_energy_core": "creative energy core",
 
   "entity.torchikoma.torchikoma": "torchikoma",
 

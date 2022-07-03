@@ -24,6 +24,9 @@ public class RegistryEvent {
         event.getRegistry().register(MyBlocks.MECHANICAL_COMPONENT);
         event.getRegistry().register(MyBlocks.CLAY_EXPLOSIVES);
         event.getRegistry().register(MyBlocks.BLOCKLIGHT_DETECTOR);
+        event.getRegistry().register(MyBlocks.BEACON_ENERGY_CORE);
+        event.getRegistry().register(MyBlocks.CREATIVE_ENERGY_CORE);
+        event.getRegistry().register(MyBlocks.REDSTONE_ENERGY_CORE);
     }
 
     @SubscribeEvent
@@ -46,6 +49,9 @@ public class RegistryEvent {
         event.getRegistry().register(MyItems.MECHANICAL_COMPONENT);
         event.getRegistry().register(MyItems.CLAY_EXPLOSIVES);
         event.getRegistry().register(MyItems.BLOCKLIGHT_DETECTOR);
+        event.getRegistry().register(MyItems.BEACON_ENERGY_CORE);
+        event.getRegistry().register(MyItems.CREATIVE_ENERGY_CORE);
+        event.getRegistry().register(MyItems.REDSTONE_ENERGY_CORE);
     }
 
     @SubscribeEvent

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "torchikoma:block/redstone_energy_core"
+    }
+  }
+}

@@ -20,6 +20,12 @@ public class MyBlocks {
     public static final Block CLAY_EXPLOSIVES = create("clay_explosives", new ClayExplosivesBlock(defaultProperties()));
     public static final Block BLOCKLIGHT_DETECTOR = create("blocklight_detector", new BlcoklightDetectorBlock(defaultProperties().noOcclusion()));
 
+    public static final Block REDSTONE_ENERGY_CORE = create("redstone_energy_core", new EnergyCoreBlock(defaultProperties().noOcclusion().lightLevel(state -> 15)));
+
+    public static final Block BEACON_ENERGY_CORE = create("beacon_energy_core", new EnergyCoreBlock(defaultProperties().noOcclusion().lightLevel(state -> 15)));
+
+    public static final Block CREATIVE_ENERGY_CORE = create("creative_energy_core", new EnergyCoreBlock(defaultProperties().noOcclusion().lightLevel(state -> 15)));
+
     public static <T extends ForgeRegistryEntry<T>> T create(String id, T entry) {
         return entry.setRegistryName(Torchikoma.getId(id));
     }

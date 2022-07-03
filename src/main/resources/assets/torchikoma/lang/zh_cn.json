@@ -15,6 +15,9 @@
   "block.torchikoma.torchikoma": "拓奇科马",
   "block.torchikoma.clay_explosives": "粘土炸药",
   "block.torchikoma.blocklight_detector": "方块光探测器",
+  "block.torchikoma.redstone_energy_core": "红石能量核心",
+  "block.torchikoma.beacon_energy_core": "信标能量核心",
+  "block.torchikoma.creative_energy_core": "创造能量核心",
 
   "item.torchikoma.clustered_torch": "集束火把",
   "item.torchikoma.clustered_redstone_torch": "集束红石火把",
@@ -25,13 +28,13 @@
   "item.torchikoma.torch_gatling": "火把加特林",
   "item.torchikoma.torch_cannon": "火把手炮",
   "item.torchikoma.torchikoma": "拓奇科马",
-  "item.torchikoma.redstone_energy_core": "红石能量核心",
-  "item.torchikoma.beacon_energy_core": "信标能量核心",
-  "item.torchikoma.creative_energy_core": "创造能量核心",
   "item.torchikoma.mechanical_component": "机械零件",
   "item.torchikoma.electronic_component": "电子元件",
   "item.torchikoma.clay_explosives": "粘土炸药",
   "item.torchikoma.blocklight_detector": "方块光探测器",
+  "item.torchikoma.redstone_energy_core": "红石能量核心",
+  "item.torchikoma.beacon_energy_core": "信标能量核心",
+  "item.torchikoma.creative_energy_core": "创造能量核心",
 
   "entity.torchikoma.torchikoma": "拓奇科马",
 

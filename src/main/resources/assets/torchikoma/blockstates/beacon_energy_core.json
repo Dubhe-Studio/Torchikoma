@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "torchikoma:block/beacon_energy_core"
+    }
+  }
+}
