@@ -3,6 +3,7 @@ package dev.dubhe.torchikoma.registry;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.dubhe.torchikoma.Torchikoma;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
@@ -25,6 +26,10 @@ public class CommandRegistry {
 //        root.then(tempCommand("m2", val -> TorchLauncherMenu.temp2 = val));
 //        root.then(tempCommand("m3", val -> TorchLauncherMenu.temp3 = val));
 //        root.then(tempCommand("m4", val -> TorchLauncherMenu.temp4 = val));
+        root.then(Commands.literal("t").executes(ctx -> {
+            Torchikoma.LOGGER.info("test");
+            return Command.SINGLE_SUCCESS;
+        }));
         event.getDispatcher().register(root);
     }
 
