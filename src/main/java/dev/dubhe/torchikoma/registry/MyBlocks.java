@@ -5,48 +5,30 @@ import dev.dubhe.torchikoma.Torchikoma;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
-
-import java.util.function.ToIntFunction;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class MyBlocks {
-    public static final Block PRISMARINE_TORCH = new ColdFireTorchBlock(defaultProperties(Material.DECORATION)
-            .noCollission().instabreak().sound(SoundType.WOOD).lightLevel(state -> 15))
-            .setRegistryName(Torchikoma.getId("prismarine_torch"));
-    public static final Block PRISMARINE_WALL_TORCH = new WallColdFireTorchBlock(defaultProperties(Material.DECORATION)
-            .noCollission().instabreak().sound(SoundType.WOOD).lootFrom(() -> PRISMARINE_TORCH).lightLevel(state -> 15))
-            .setRegistryName(Torchikoma.getId("prismarine_wall_torch"));
-    public static final Block GLOWSTONE_TORCH = new ColdFireTorchBlock(defaultProperties(Material.DECORATION)
-            .noCollission().instabreak().sound(SoundType.WOOD).lightLevel(state -> 15))
-            .setRegistryName(Torchikoma.getId("glowstone_torch"));
-    public static final Block GLOWSTONE_WALL_TORCH = new WallColdFireTorchBlock(defaultProperties(Material.DECORATION)
-            .noCollission().instabreak().sound(SoundType.WOOD).lootFrom(() -> GLOWSTONE_TORCH).lightLevel(state -> 15))
-            .setRegistryName(Torchikoma.getId("glowstone_wall_torch"));
+    public static final Block PRISMARINE_TORCH = create("prismarine_torch", new ColdFireTorchBlock(properties(Material.DECORATION, SoundType.WOOD).noCollission().lightLevel(state -> 15)));
+    public static final Block PRISMARINE_WALL_TORCH = create("prismarine_wall_torch", new WallColdFireTorchBlock(properties(Material.DECORATION, SoundType.WOOD).noCollission().lightLevel(state -> 15).lootFrom(() -> PRISMARINE_TORCH)));
+    public static final Block GLOWSTONE_TORCH = create("glowstone_torch", new ColdFireTorchBlock(properties(Material.DECORATION, SoundType.WOOD).noCollission().lightLevel(state -> 15)));
+    public static final Block GLOWSTONE_WALL_TORCH = create("glowstone_wall_torch", new WallColdFireTorchBlock(properties(Material.DECORATION, SoundType.WOOD).noCollission().lightLevel(state -> 15).lootFrom(() -> GLOWSTONE_TORCH)));
+    public static final Block TORCHIKOMA = create("torchikoma", new TorchikomaBlock(defaultProperties().noOcclusion()));
+    public static final Block MECHANICAL_COMPONENT = create("mechanical_component", new ComponentBlock(defaultProperties().noOcclusion(), 1));
+    public static final Block ELECTRONIC_COMPONENT = create("electronic_component", new ComponentBlock(defaultProperties().noOcclusion().lightLevel((p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? 2 : 0), 0));
+    public static final Block CLAY_EXPLOSIVES = create("clay_explosives", new ClayExplosivesBlock(defaultProperties()));
+    public static final Block BLOCKLIGHT_DETECTOR = create("blocklight_detector", new BlcoklightDetectorBlock(defaultProperties().noOcclusion()));
 
-    public static final Block TORCHIKOMA = new TorchikomaBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion())
-            .setRegistryName(Torchikoma.getId("torchikoma"));
-    public static final Block MECHANICAL_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion(), 1)
-            .setRegistryName(Torchikoma.getId("mechanical_component"));
-    public static final Block ELECTRONIC_COMPONENT = new ComponentBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion().lightLevel(litBlockEmission(2)), 0)
-            .setRegistryName(Torchikoma.getId("electronic_component"));
-    public static final Block CLAY_EXPLOSIVES = new ClayExplosivesBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL))
-            .setRegistryName(Torchikoma.getId("clay_explosives"));
-
-    public static final Block BLOCKLIGHT_DETECTOR = new BlcoklightDetectorBlock(defaultProperties(Material.METAL)
-            .instabreak().sound(SoundType.METAL).noOcclusion())
-            .setRegistryName(Torchikoma.getId("blocklight_detector"));
-
-    private static BlockBehaviour.Properties defaultProperties(Material material) {
-        return BlockBehaviour.Properties.of(material).sound(SoundType.METAL).strength(5.0F);
+    public static <T extends ForgeRegistryEntry<T>> T create(String id, T entry) {
+        return entry.setRegistryName(Torchikoma.getId(id));
     }
 
-    private static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
-        return (p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
+    private static BlockBehaviour.Properties defaultProperties() {
+        return properties(Material.METAL, SoundType.METAL);
+    }
+
+    private static BlockBehaviour.Properties properties(Material material, SoundType sound) {
+        return BlockBehaviour.Properties.of(material).sound(sound);
     }
 }

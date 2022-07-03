@@ -18,19 +18,23 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class TestTickEvent {
-
+    private static boolean rayed = false;
     @SubscribeEvent
     public static void TickEvent(TickEvent.PlayerTickEvent event) {
         if (event.player instanceof ServerPlayer player) {
-            LivingEntity entity = rayItem(player, Mob.class);
+            LivingEntity entity = rayEntity(player, Mob.class);
             if (entity != null) {
+                rayed = true;
                 player.displayClientMessage(new TextComponent(entity.getHealth() + "/" + entity.getMaxHealth()).withStyle(ChatFormatting.GREEN), true);
+            } else if (rayed) {
+                rayed = false;
+                player.displayClientMessage(new TextComponent(""), true);
             }
         }
     }
 
     @Nullable
-    public static <T extends LivingEntity> LivingEntity rayItem(ServerPlayer player, Class<T> clazz) {
+    public static <T extends LivingEntity> LivingEntity rayEntity(ServerPlayer player, Class<T> clazz) {
         double length = 0.05D;
         Vec3 playerPos = player.getEyePosition();
         double yaw = player.getYRot();
