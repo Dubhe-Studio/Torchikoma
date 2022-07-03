@@ -114,7 +114,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, BACKGROUND);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            this.blit(pPoseStack, this.x, this.y, this.index * 18, this.isSelected ? 106 : 122, this.width, this.height);
+            this.blit(pPoseStack, this.x, this.y, this.index * 18, this.isSelected ? 106 : this.isHoveredOrFocused() ? 138 : 122, this.width, this.height);
         }
 
         @Override

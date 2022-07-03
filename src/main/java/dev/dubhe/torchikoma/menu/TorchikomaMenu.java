@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,7 +26,7 @@ public class TorchikomaMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                this.addSlot(new Slot(this.entity.getInventory(), j + i * 2, 99 + j * 18, 16 + i * 18));
+                this.addSlot(new Slot(this.entity.getInventory(), j + i * 4, 99 + j * 18, 16 + i * 18));
             }
         }
 
@@ -43,12 +42,8 @@ public class TorchikomaMenu extends AbstractContainerMenu {
                 return pStack.getItem() instanceof EnergyCoreItem;
             }
         });
-        this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52) {
-            @Override
-            public boolean mayPlace(ItemStack pStack) { // 染料
-                return pStack.getItem() instanceof DyeItem;
-            }
-        });
+
+        this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
@@ -70,36 +65,36 @@ public class TorchikomaMenu extends AbstractContainerMenu {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (pIndex < 15) {
-                if (!this.moveItemStackTo(itemstack1, 15, this.slots.size(), false)) {
+                if (!this.moveItemStackTo(itemstack1, 15, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else {
-                if (itemstack.getItem() instanceof TorchLauncherItem) {
-                    if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (itemstack.getItem() instanceof EnergyCoreItem) {
-                    if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (itemstack.getItem() instanceof DyeItem) {
-                    if (!this.moveItemStackTo(itemstack1, 14, 15, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (pIndex < 42) {
+            } else if (this.slots.get(12).mayPlace(itemstack) && !this.slots.get(12).hasItem()) {
+                if (!this.moveItemStackTo(itemstack1, 12, 13, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (this.slots.get(13).mayPlace(itemstack) && !this.slots.get(13).hasItem()) {
+                if (!this.moveItemStackTo(itemstack1, 13, 14, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemstack1, 0, 12, false)) {
+                if (pIndex < 42) {
                     if (!this.moveItemStackTo(itemstack1, 42, this.slots.size(), false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 15, 42, false)) {
                     return ItemStack.EMPTY;
                 }
-            }
-            if (itemstack1.isEmpty()) slot.set(ItemStack.EMPTY);
-            else slot.setChanged();
-            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            } else if (pIndex < 42) {
+                if (!this.moveItemStackTo(itemstack1, 42, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (pIndex < this.slots.size() && !this.moveItemStackTo(itemstack1, 15, 42, false)) {
                 return ItemStack.EMPTY;
             }
-            slot.onTake(pPlayer, itemstack1);
+
+            if (itemstack1.isEmpty()) slot.set(ItemStack.EMPTY);
+            else slot.setChanged();
         }
         return itemstack;
     }

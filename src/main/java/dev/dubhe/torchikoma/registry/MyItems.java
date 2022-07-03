@@ -13,53 +13,36 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 
-import javax.annotation.Nonnull;
-
 public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始化, 否则NPE异常
     private static final CreativeModeTab TAB = new CreativeModeTab(Torchikoma.ID + ".tab") {
-        @Nonnull
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(TORCH_LAUNCHER);
         }
     };
 
-    public static final Item PRISMARINE_TORCH = new StandingAndWallBlockItem(MyBlocks.PRISMARINE_TORCH, MyBlocks.PRISMARINE_WALL_TORCH, defaultProperties())
-            .setRegistryName(Torchikoma.getId("prismarine_torch"));
-    public static final Item GLOWSTONE_TORCH = new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties())
-            .setRegistryName(Torchikoma.getId("glowstone_torch"));
-    public static final Item CLUSTERED_TORCH = new Item(defaultProperties())
-            .setRegistryName(Torchikoma.getId("clustered_torch"));
-    public static final Item CLUSTERED_SOUL_TORCH = new Item(defaultProperties())
-            .setRegistryName(Torchikoma.getId("clustered_soul_torch"));
-    public static final Item CLUSTERED_REDSTONE_TORCH = new Item(defaultProperties())
-            .setRegistryName(Torchikoma.getId("clustered_redstone_torch"));
-    public static final Item CLUSTERED_PRISMARINE_TORCH = new Item(defaultProperties())
-            .setRegistryName(Torchikoma.getId("clustered_prismarine_torch"));
-    public static final Item CLUSTERED_GLOWSTONE_TORCH = new Item(defaultProperties())
-            .setRegistryName(Torchikoma.getId("clustered_glowstone_torch"));
-    public static final Item TORCH_LAUNCHER = new TorchLauncherItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_launcher"));
-    public static final Item TORCH_GATLING = new TorchGatlingItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_gatling"));
-    public static final Item TORCH_CANNON = new TorchCannonItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("torch_cannon"));
-    public static final Item REDSTONE_ENERGY_CORE = new EnergyCoreItem(1, defaultProperties().stacksTo(1))
-            .setRegistryName(Torchikoma.getId("redstone_energy_core"));
-    public static final Item BEACON_ENERGY_CORE = new EnergyCoreItem(5, defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON))
-            .setRegistryName(Torchikoma.getId("beacon_energy_core"));
-    public static final Item CREATIVE_ENERGY_CORE = new EnergyCoreItem(100, defaultProperties().stacksTo(1).rarity(Rarity.EPIC))
-            .setRegistryName(Torchikoma.getId("creative_energy_core"));
-    public static final Item TORCHIKOMA = new TorchikomaItem(MyBlocks.TORCHIKOMA, defaultProperties())
-            .setRegistryName(Torchikoma.getId("torchikoma"));
-    public static final Item MECHANICAL_COMPONENT = new ItemNameBlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties())
-            .setRegistryName(Torchikoma.getId("mechanical_component"));
-    public static final Item ELECTRONIC_COMPONENT = new ItemNameBlockItem(MyBlocks.ELECTRONIC_COMPONENT, defaultProperties())
-            .setRegistryName(Torchikoma.getId("electronic_component"));
-    public static final Item CLAY_EXPLOSIVES = new ItemNameBlockItem(MyBlocks.CLAY_EXPLOSIVES, defaultProperties())
-            .setRegistryName(Torchikoma.getId("clay_explosives"));
-    public static final Item BLOCKLIGHT_DETECTOR = new ItemNameBlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties())
-            .setRegistryName(Torchikoma.getId("blocklight_detector"));
+    public static final Item PRISMARINE_TORCH = genItem("prismarine_torch", new StandingAndWallBlockItem(MyBlocks.PRISMARINE_TORCH, MyBlocks.PRISMARINE_WALL_TORCH, defaultProperties()));
+    public static final Item GLOWSTONE_TORCH = genItem("glowstone_torch", new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties()));
+    public static final Item CLUSTERED_TORCH = genItem("clustered_torch", new Item(defaultProperties()));
+    public static final Item CLUSTERED_SOUL_TORCH = genItem("clustered_soul_torch", new Item(defaultProperties()));
+    public static final Item CLUSTERED_REDSTONE_TORCH = genItem("clustered_redstone_torch", new Item(defaultProperties()));
+    public static final Item CLUSTERED_PRISMARINE_TORCH = genItem("clustered_prismarine_torch", new Item(defaultProperties()));
+    public static final Item CLUSTERED_GLOWSTONE_TORCH = genItem("clustered_glowstone_torch", new Item(defaultProperties()));
+    public static final Item TORCH_LAUNCHER = genItem("torch_launcher", new TorchLauncherItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final Item TORCH_GATLING = genItem("torch_gatling", new TorchGatlingItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final Item TORCH_CANNON = genItem("torch_cannon", new TorchCannonItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final Item REDSTONE_ENERGY_CORE = genItem("redstone_energy_core", new EnergyCoreItem(1, defaultProperties().stacksTo(1)));
+    public static final Item BEACON_ENERGY_CORE = genItem("beacon_energy_core", new EnergyCoreItem(5, defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final Item CREATIVE_ENERGY_CORE = genItem("creative_energy_core", new EnergyCoreItem(100, defaultProperties().stacksTo(1).rarity(Rarity.EPIC)));
+    public static final Item TORCHIKOMA = genItem("torchikoma", new TorchikomaItem(MyBlocks.TORCHIKOMA, defaultProperties()));
+    public static final Item MECHANICAL_COMPONENT = genItem("mechanical_component", new ItemNameBlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties()));
+    public static final Item ELECTRONIC_COMPONENT = genItem("electronic_component", new ItemNameBlockItem(MyBlocks.ELECTRONIC_COMPONENT, defaultProperties()));
+    public static final Item CLAY_EXPLOSIVES = genItem("clay_explosives", new ItemNameBlockItem(MyBlocks.CLAY_EXPLOSIVES, defaultProperties()));
+    public static final Item BLOCKLIGHT_DETECTOR = genItem("blocklight_detector", new ItemNameBlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties()));
+
+    public static <T extends Item> Item genItem(String id, T item) {
+        return item.setRegistryName(Torchikoma.getId(id));
+    }
 
     private static Item.Properties defaultProperties() {
         return new Item.Properties().tab(TAB);
