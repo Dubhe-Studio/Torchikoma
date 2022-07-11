@@ -49,7 +49,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider, ContainerListener {
-    private static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
+    //private static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
@@ -78,7 +78,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         this.entityData.define(OWNER, Optional.empty());
         this.entityData.define(ENERGY_DATA, 0);
         this.entityData.define(STATUS_FLAG, (byte) 1); // 默认原地警戒
-        this.entityData.define(PAINTING_ITEM, "minecraft:blaze_powder");
+        //this.entityData.define(PAINTING_ITEM, "minecraft:blaze_powder");
     }
 
     @Override
@@ -150,7 +150,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public void readAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setOwnerUUID(pCompound.hasUUID("Owner") ? pCompound.getUUID("Owner") : null);
-        if (pCompound.contains("PaintingItem")) this.setPainting(pCompound.getString("PaintingItem"));
+        //if (pCompound.contains("PaintingItem")) this.setPainting(pCompound.getString("PaintingItem"));
         if (pCompound.contains("Energy")) this.setEnergy(pCompound.getInt("Energy"));
         if (pCompound.contains("Status")) this.setStatus(pCompound.getByte("Status"));
         ListTag listtag = pCompound.getList("Items", 10);
@@ -242,12 +242,13 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public String getPainting() {
-        return this.entityData.get(PAINTING_ITEM);
+        // System.out.println(inventory.getItem(14).getItem().toString());
+        return "minecraft:"+inventory.getItem(14).getItem().toString();
     }
 
-    public void setPainting(String itemName) {
-        this.entityData.set(PAINTING_ITEM, itemName);
-    }
+//    public void setPainting(String itemName) {
+//        this.entityData.set(PAINTING_ITEM, itemName);
+//    }
 
     public int getEnergy() {
         return Math.min(this.entityData.get(ENERGY_DATA), 20000);
