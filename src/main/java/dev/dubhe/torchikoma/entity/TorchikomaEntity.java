@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.InteractionHand;
@@ -22,6 +23,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import dev.dubhe.torchikoma.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -45,14 +47,24 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.UUID;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider, ContainerListener {
+public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider,
+        ContainerListener, PlayerRideableJumping {
+
+    protected float playerJumpPendingScale;
+    private boolean allowStandSliding;
+    protected int gallopSoundCounter;
+    protected boolean isJumping;
     //private static final EntityDataAccessor<String> PAINTING_ITEM = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class,
+            EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class,
+            EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class,
+            EntityDataSerializers.BYTE);
     private static final DecimalFormat TRANS_FORMAT = new DecimalFormat("0.00#");
     private final AnimationFactory factory = new AnimationFactory(this);
     private final SimpleContainer inventory;
@@ -82,6 +94,16 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
+    public double getPassengersRidingOffset() {
+        return (double)this.getBbHeight() * 0.7D;
+    }
+
+    @Override
+    public boolean canBeControlledByRider() {
+        return this.getControllingPassenger() instanceof LivingEntity;
+    }
+
+    @Override
     public void tick() {
         super.tick();
 
@@ -96,13 +118,22 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                 double d0 = (player.getX() - this.getX()) / (double) f;
                 double d1 = (player.getY() - this.getY()) / (double) f;
                 double d2 = (player.getZ() - this.getZ()) / (double) f;
-                this.setDeltaMovement(this.getDeltaMovement().add(Math.copySign(d0 * d0 * 0.4D, d0), Math.copySign(d1 * d1 * 0.4D, d1), Math.copySign(d2 * d2 * 0.4D, d2)));
+                this.setDeltaMovement(this.getDeltaMovement()
+                        .add(Math.copySign(d0 * d0 * 0.4D, d0), Math.copySign(d1 * d1 * 0.4D, d1),
+                                Math.copySign(d2 * d2 * 0.4D, d2)));
             } else {
                 this.goalSelector.enableControlFlag(Goal.Flag.MOVE);
-                Vec3 vec3 = (new Vec3(player.getX() - this.getX(), player.getY() - this.getY(), player.getZ() - this.getZ())).normalize().scale(Math.max(f - 2.0F, 0.0F));
-                this.getNavigation().moveTo(this.getX() + vec3.x, this.getY() + vec3.y, this.getZ() + vec3.z, this.followLeashSpeed());
+                Vec3 vec3 = (new Vec3(player.getX() - this.getX(), player.getY() - this.getY(),
+                        player.getZ() - this.getZ())).normalize().scale(Math.max(f - 2.0F, 0.0F));
+                this.getNavigation().moveTo(this.getX() + vec3.x, this.getY() + vec3.y, this.getZ() + vec3.z,
+                        this.followLeashSpeed());
             }
         }
+    }
+
+    @Override
+    protected double followLeashSpeed() {
+        return 0.25D;
     }
 
     @Override
@@ -110,7 +141,18 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         if (!this.level.isClientSide && pPlayer.isSecondaryUseActive()) {
             this.openGUI(pPlayer, ItemStack.EMPTY);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else return super.mobInteract(pPlayer, pHand);
+        } else {
+            this.doPlayerRide(pPlayer);
+            return super.mobInteract(pPlayer, pHand);
+        }
+    }
+
+    protected void doPlayerRide(Player pPlayer) {
+        if (!this.level.isClientSide) {
+            pPlayer.setYRot(this.getYRot());
+            pPlayer.setXRot(this.getXRot());
+            pPlayer.startRiding(this);
+        }
     }
 
     @Override
@@ -129,16 +171,18 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void addAdditionalSaveData(@Nonnull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        if (this.getOwnerUUID() != null) pCompound.putUUID("Owner", this.getOwnerUUID());
+        if (this.getOwnerUUID() != null) {
+            pCompound.putUUID("Owner", this.getOwnerUUID());
+        }
         pCompound.putString("PaintingItem", this.getPainting());
         pCompound.putInt("Energy", this.getEnergy());
         pCompound.putByte("Status", this.getStatus());
         ListTag list = new ListTag();
-        for(int i = 0; i < this.inventory.getContainerSize(); ++i) {
+        for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
             ItemStack itemstack = this.inventory.getItem(i);
             if (!itemstack.isEmpty()) {
                 CompoundTag compoundtag = new CompoundTag();
-                compoundtag.putByte("Slot", (byte)i);
+                compoundtag.putByte("Slot", (byte) i);
                 itemstack.save(compoundtag);
                 list.add(compoundtag);
             }
@@ -151,10 +195,14 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         super.readAdditionalSaveData(pCompound);
         this.setOwnerUUID(pCompound.hasUUID("Owner") ? pCompound.getUUID("Owner") : null);
         //if (pCompound.contains("PaintingItem")) this.setPainting(pCompound.getString("PaintingItem"));
-        if (pCompound.contains("Energy")) this.setEnergy(pCompound.getInt("Energy"));
-        if (pCompound.contains("Status")) this.setStatus(pCompound.getByte("Status"));
+        if (pCompound.contains("Energy")) {
+            this.setEnergy(pCompound.getInt("Energy"));
+        }
+        if (pCompound.contains("Status")) {
+            this.setStatus(pCompound.getByte("Status"));
+        }
         ListTag listtag = pCompound.getList("Items", 10);
-        for(int i = 0; i < listtag.size(); ++i) {
+        for (int i = 0; i < listtag.size(); ++i) {
             CompoundTag compoundtag = listtag.getCompound(i);
             int j = compoundtag.getByte("Slot") & 255;
             if (j >= 2 && j < this.inventory.getContainerSize()) {
@@ -177,7 +225,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void die(@Nonnull DamageSource pCause) {
         super.die(pCause);
-        if (this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof ServerPlayer) {
+        if (this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)
+                && this.getOwner() instanceof ServerPlayer) {
             this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage(), Util.NIL_UUID);
         }
     }
@@ -195,18 +244,23 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController<TorchikomaEntity> controller = new AnimationController<>(this, "controller", 0, this::predicate);
+        AnimationController<TorchikomaEntity> controller = new AnimationController<>(this, "controller", 0,
+                this::predicate);
         controller.registerCustomInstructionListener(this::customListener);
         data.addAnimationController(controller);
     }
 
     private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
-        if (event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.unpacking", false));
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.walk", true));
+        if (event.isMoving()) {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.walk", true));
+        } else {
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.packing", false));
         }
-        else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.packing", false));
+        if (allowStandSliding){
+            event.getController()
+                    .setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.beforejump", false));
         }
         return PlayState.CONTINUE;
     }
@@ -215,6 +269,16 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         final LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             player.displayClientMessage(new TextComponent("KeyFraming"), true);
+        }
+    }
+
+    @Override
+    public void positionRider(@Nonnull Entity pPassenger) {
+        if (this.hasPassenger(pPassenger)) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+            float f2 = 0.3F;
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset(), this.getZ() - (double)(0.3F * f));
         }
     }
 
@@ -243,7 +307,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public String getPainting() {
         // System.out.println(inventory.getItem(14).getItem().toString());
-        return "minecraft:"+inventory.getItem(14).getItem().toString();
+        return inventory.getItem(14).getItem().toString();
     }
 
 //    public void setPainting(String itemName) {
@@ -264,7 +328,9 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public void addEnergy(int energy) {
         int now = this.getEnergy();
-        if (now != 20000) this.setEnergy(Math.min(now + energy, 20000));
+        if (now != 20000) {
+            this.setEnergy(Math.min(now + energy, 20000));
+        }
     }
 
     public boolean decEnergy(int energy) {
@@ -291,5 +357,107 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public SimpleContainer getInventory() {
         return inventory;
+    }
+
+    @Override
+    public void onPlayerJump(int pJumpPower) {
+        if (pJumpPower < 0) {
+            pJumpPower = 0;
+        }
+
+        if (pJumpPower >= 90) {
+            this.playerJumpPendingScale = 1.0F;
+        } else {
+            this.playerJumpPendingScale = 0.4F + 0.4F * (float) pJumpPower / 90.0F;
+        }
+    }
+
+    @Override
+    public void travel(Vec3 pTravelVector) {
+        if (this.isAlive()) {
+            if (this.isVehicle() && this.canBeControlledByRider()) {
+                LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
+                this.setYRot(livingentity.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(livingentity.getXRot() * 0.5F);
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.yBodyRot;
+                float f = livingentity.xxa * 0.5F;
+                float f1 = livingentity.zza;
+                if (f1 <= 0.0F) {
+                    f1 *= 0.25F;
+                    this.gallopSoundCounter = 0;
+                }
+
+                if (this.onGround && this.playerJumpPendingScale == 0.0F && !this.allowStandSliding) {
+                    f = 0.0F;
+                    f1 = 0.0F;
+                }
+
+                if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround) {
+                    double d0 = this.getCustomJump() * (double)this.playerJumpPendingScale * (double)this.getBlockJumpFactor();
+                    double d1 = d0 + this.getJumpBoostPower();
+                    Vec3 vec3 = this.getDeltaMovement();
+                    this.setDeltaMovement(vec3.x, d1, vec3.z);
+                    this.setIsJumping(true);
+                    this.hasImpulse = true;
+                    net.minecraftforge.common.ForgeHooks.onLivingJump(this);
+                    if (f1 > 0.0F) {
+                        float f2 = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
+                        float f3 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
+                        this.setDeltaMovement(this.getDeltaMovement().add((double)(-0.4F * f2 * this.playerJumpPendingScale), 0.0D, (double)(0.4F * f3 * this.playerJumpPendingScale)));
+                    }
+
+                    this.playerJumpPendingScale = 0.0F;
+                }
+
+                this.flyingSpeed = this.getSpeed() * 0.1F;
+                if (this.isControlledByLocalInstance()) {
+                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
+                } else if (livingentity instanceof Player) {
+                    this.setDeltaMovement(Vec3.ZERO);
+                }
+
+                if (this.onGround) {
+                    this.playerJumpPendingScale = 0.0F;
+                    this.setIsJumping(false);
+                }
+
+                this.calculateEntityAnimation(this, false);
+                this.tryCheckInsideBlocks();
+            } else {
+                this.flyingSpeed = 0.02F;
+                super.travel(pTravelVector);
+            }
+        }
+    }
+
+    public boolean isJumping() {
+        return this.isJumping;
+    }
+
+    @Override
+    public boolean canJump() {
+        return true;
+    }
+
+    public void setIsJumping(boolean pJumping) {
+        this.isJumping = pJumping;
+    }
+
+    public double getCustomJump() {
+        return this.getAttributeValue(Attributes.JUMP_STRENGTH);
+    }
+
+    @Override
+    public void handleStartJump(int pJumpPower) {
+        this.allowStandSliding = true;
+    }
+
+    @Override
+    public void handleStopJump() {
+
     }
 }
