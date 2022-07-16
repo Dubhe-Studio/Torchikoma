@@ -9,7 +9,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forgespi.language.IModInfo;
 
 import java.util.function.Consumer;
 
@@ -27,7 +29,10 @@ public class CommandRegistry {
 //        root.then(tempCommand("m3", val -> TorchLauncherMenu.temp3 = val));
 //        root.then(tempCommand("m4", val -> TorchLauncherMenu.temp4 = val));
         root.then(Commands.literal("t").executes(ctx -> {
-            Torchikoma.LOGGER.info("test");
+            for (IModInfo mod : ModList.get().getMods()) {
+                Torchikoma.LOGGER.info(mod.getDisplayName());
+                Torchikoma.LOGGER.info(mod.getVersion().toString());
+            }
             return Command.SINGLE_SUCCESS;
         }));
         event.getDispatcher().register(root);

@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu> {
-    private static final ResourceLocation BACKGROUND = Torchikoma.getId("textures/gui/torchikoma.png");
+    private static final ResourceLocation BACKGROUND = Torchikoma.of("textures/gui/torchikoma.png");
 
     private final TorchikomaEntity entity;
     private final TorchikomaButton[] buttons = new TorchikomaButton[3];

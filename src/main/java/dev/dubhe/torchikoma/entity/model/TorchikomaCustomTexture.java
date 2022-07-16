@@ -1,7 +1,6 @@
 package dev.dubhe.torchikoma.entity.model;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.mojang.brigadier.StringReader;
@@ -25,42 +24,27 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class TorchikomaCustomTexture {
-    private final Gson GSON = new GsonBuilder().create();
-    private final TypeToken<Map<String, String>> TORCHIKOMA_CUSTOME_TEXTURE_TYPE = new TypeToken<>() {
-    };
+    private static final TypeToken<Map<String, String>> TORCHIKOMA_CUSTOME_TEXTURE_TYPE = new TypeToken<>() {};
+    private static final Gson GSON = new Gson();
+
     private Map<String, String> itemMap;
 
-    public TorchikomaCustomTexture() {
-    }
-
     public void reload(ResourceManager pResourceManager) throws IOException {
-        Resource resource = pResourceManager.getResource(new ResourceLocation(Torchikoma.ID, "textures/entity/torchikoma/bind.json"));
+        Resource resource = pResourceManager.getResource(Torchikoma.of("textures/entity/torchikoma/bind.json"));
         try (InputStream inputStream = resource.getInputStream(); Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
             this.itemMap = GsonHelper.fromJson(GSON, reader, TORCHIKOMA_CUSTOME_TEXTURE_TYPE);
         } catch (JsonParseException e) {
             Torchikoma.LOGGER.error("Invalid torchikoma:textures/entity/torchikoma/bind.json");
-            e.printStackTrace();
         }
-    }
-
-    public Map<String, String> getItemMap() {
-        return this.itemMap;
-    }
-
-    public boolean has(String pKey) {
-        return this.itemMap.getOrDefault(pKey, null) != null;
     }
 
     public String get(String pKey) {
-        if (this.has(pKey)) {
-            return this.getItemMap().get(pKey);
-        }
+        if (this.itemMap.containsKey(pKey)) return this.itemMap.get(pKey);
         ItemParser itemParser = new ItemParser(new StringReader(pKey), false);
         try {
             itemParser.readItem();
         } catch (CommandSyntaxException e) {
             Torchikoma.LOGGER.error("Read Item Faild");
-            e.printStackTrace();
         }
         ItemStack itemStack = new ItemStack(itemParser.getItem());
         if (itemStack.getTags().toList().size() != 0) {
@@ -70,8 +54,7 @@ public class TorchikomaCustomTexture {
                     TagKey<Item> itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.read(new StringReader(entry.getKey().substring(1))));
                     if (itemStack.is(itemTag)) return entry.getValue();
                 } catch (NullPointerException | CommandSyntaxException e) {
-                    Torchikoma.LOGGER.error(entry.getKey() + " is not a approved tag");
-                    e.printStackTrace();
+                    Torchikoma.LOGGER.warn(entry.getKey() + " is not a approved tag");
                 }
             }
         }

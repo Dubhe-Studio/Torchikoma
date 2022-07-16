@@ -16,13 +16,13 @@ public class MyMenuTypes {
 
     private static <T extends AbstractContainerMenu> MenuType<T> vanillaMenu(String id, MenuType.MenuSupplier<T> factory) {
         MenuType<T> menuType = new MenuType<>(factory);
-        menuType.setRegistryName(Torchikoma.getId(id));
+        menuType.setRegistryName(Torchikoma.of(id));
         return menuType;
     }
 
     private static <T extends AbstractContainerMenu> MenuType<T> forgeMenu(String id, IContainerFactory<T> factory) {
         MenuType<T> menuType = IForgeMenuType.create(factory);
-        menuType.setRegistryName(Torchikoma.getId(id));
+        menuType.setRegistryName(Torchikoma.of(id));
         return menuType;
     }
 }

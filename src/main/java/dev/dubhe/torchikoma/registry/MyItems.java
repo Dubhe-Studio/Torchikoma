@@ -42,7 +42,7 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
     public static final Item BLOCKLIGHT_DETECTOR = create("blocklight_detector", new ItemNameBlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties()));
 
     public static <T extends ForgeRegistryEntry<T>> T create(String id, T entry) {
-        return entry.setRegistryName(Torchikoma.getId(id));
+        return entry.setRegistryName(Torchikoma.of(id));
     }
     private static Item.Properties defaultProperties() {
         return new Item.Properties().tab(TAB);

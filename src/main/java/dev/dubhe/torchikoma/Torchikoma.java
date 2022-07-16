@@ -14,7 +14,7 @@ public class Torchikoma {
         LOGGER.info("test");
     }
 
-    public static ResourceLocation getId(String path) {
+    public static ResourceLocation of(String path) {
         return new ResourceLocation(ID, path);
     }
 }

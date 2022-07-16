@@ -14,7 +14,7 @@ public class MyBlockEntities {
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> BlockEntityType<T> create(String pKey, BlockEntityType.BlockEntitySupplier<T> pFactory, Block... pValidBlocks) {
         BlockEntityType<T> blockEntity = BlockEntityType.Builder.of(pFactory, pValidBlocks).build(null);
-        blockEntity.setRegistryName(Torchikoma.getId(pKey));
+        blockEntity.setRegistryName(Torchikoma.of(pKey));
         return blockEntity;
     }
 }

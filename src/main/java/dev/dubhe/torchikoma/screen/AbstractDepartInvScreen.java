@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public abstract class AbstractDepartInvScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
-    private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.getId("textures/gui/player.png");
+    private static final ResourceLocation PLAYER_BACKGROUND = Torchikoma.of("textures/gui/player.png");
     protected static final int PLAYER_WIDTH = 176;
     protected static final int PLAYER_HEIGHT = 100;
     protected final int menuWidth;

@@ -7,7 +7,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 public class Network {
     private static final String VERSION = "1.0";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(Torchikoma.getId("network"), () -> VERSION, VERSION::equals, VERSION::equals);
+    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(Torchikoma.of("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static int id = 0;
 
     private static int nextID() {

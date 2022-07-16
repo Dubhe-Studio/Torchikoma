@@ -25,7 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TorchLauncherScreen extends AbstractDepartInvScreen<TorchToolMenu> {
-    private static final ResourceLocation BACKGROUND = Torchikoma.getId("textures/gui/gun.png");
+    private static final ResourceLocation BACKGROUND = Torchikoma.of("textures/gui/gun.png");
     private int rotateAngle = 0;
 
     public TorchLauncherScreen(TorchToolMenu pMenu, Inventory inventory, Component pTitle) {

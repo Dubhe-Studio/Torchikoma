@@ -27,7 +27,7 @@ public class MyBlocks {
     public static final Block CREATIVE_ENERGY_CORE = create("creative_energy_core", new EnergyCoreBlock(defaultProperties().noOcclusion().lightLevel(state -> 15)));
 
     public static <T extends ForgeRegistryEntry<T>> T create(String id, T entry) {
-        return entry.setRegistryName(Torchikoma.getId(id));
+        return entry.setRegistryName(Torchikoma.of(id));
     }
 
     private static BlockBehaviour.Properties defaultProperties() {

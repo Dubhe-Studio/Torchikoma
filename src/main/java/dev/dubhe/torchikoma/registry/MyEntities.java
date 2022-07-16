@@ -16,7 +16,7 @@ public class MyEntities {
 
     public static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {
         EntityType<T> entityType = builder.build(name);
-        entityType.setRegistryName(Torchikoma.getId(name));
+        entityType.setRegistryName(Torchikoma.of(name));
         return entityType;
     }
 }
