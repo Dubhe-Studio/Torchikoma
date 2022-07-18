@@ -5,7 +5,6 @@ import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.network.C2SKeyPacket;
 import dev.dubhe.torchikoma.network.Network;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.InputEvent;
@@ -32,7 +31,7 @@ public class KeyBoardRegistry {
     static class KeyInput {
         @SubscribeEvent
         public static void onKeyboardInput(InputEvent.KeyInputEvent event) {
-            if (MESSAGE_KEY.isDown()) Network.INSTANCE.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI));
+            if (MESSAGE_KEY.isDown()) Network.sendToServer(new C2SKeyPacket(C2SKeyPacket.Command.OPEN_GUN_GUI));
         }
     }
 

@@ -1,7 +1,7 @@
 package dev.dubhe.torchikoma.entity;
 
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
-import dev.dubhe.torchikoma.menu.TorchikomaMenu;
+import dev.dubhe.torchikoma.menu.TorchikomaEntityMenu;
 import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import net.minecraft.Util;
@@ -48,7 +48,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,7 +62,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
-    private static final DecimalFormat TRANS_FORMAT = new DecimalFormat("0.00#");
     private final AnimationFactory factory = new AnimationFactory(this);
     private final SimpleContainer inventory = new SimpleContainer(15);
 
@@ -151,7 +149,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public void openGUI(Player pPlayer, ItemStack item) {
         NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenuProvider(
                 this.getDisplayName(),
-                (id, inv, player) -> new TorchikomaMenu(id, inv, this)
+                (id, inv, player) -> new TorchikomaEntityMenu(id, inv, this)
         ), buffer -> buffer.writeInt(this.getId()));
     }
 
@@ -166,7 +164,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         if (this.getOwnerUUID() != null) {
             pCompound.putUUID("Owner", this.getOwnerUUID());
         }
-        pCompound.putString("PaintingItem", this.getPainting());
         pCompound.putInt("Energy", this.getEnergy());
         pCompound.putByte("Status", this.getStatus());
         ListTag list = new ListTag();
@@ -202,7 +199,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         }
     }
 
-    public boolean canSitu() {
+    public boolean canStandby() {
         return new BlockPlaceContext(
                 this.level ,
                 null, InteractionHand.MAIN_HAND,
@@ -310,10 +307,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public int getEnergy() {
         return Math.min(this.entityData.get(ENERGY_DATA), 20000);
-    }
-
-    public String getFormatEnergy() {
-        return TRANS_FORMAT.format(getEnergy() / 100F);
     }
 
     public void setEnergy(int energy) {

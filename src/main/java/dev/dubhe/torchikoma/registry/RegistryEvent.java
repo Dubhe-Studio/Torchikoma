@@ -57,7 +57,8 @@ public class RegistryEvent {
     @SubscribeEvent
     public static void onRegisterMenu(net.minecraftforge.event.RegistryEvent.Register<MenuType<?>> event) {
         event.getRegistry().register(MyMenuTypes.TORCH_TOOL);
-        event.getRegistry().register(MyMenuTypes.TORCHIKOMA);
+        event.getRegistry().register(MyMenuTypes.TORCHIKOMA_ENTITY);
+        event.getRegistry().register(MyMenuTypes.TORCHIKOMA_BLOCK);
     }
 
     @SubscribeEvent

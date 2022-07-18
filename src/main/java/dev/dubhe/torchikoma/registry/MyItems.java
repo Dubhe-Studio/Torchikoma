@@ -6,9 +6,9 @@ import dev.dubhe.torchikoma.item.TorchCannonItem;
 import dev.dubhe.torchikoma.item.TorchGatlingItem;
 import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.item.TorchikomaItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
@@ -36,10 +36,10 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
     public static final Item BEACON_ENERGY_CORE = create("beacon_energy_core", new EnergyCoreItem(MyBlocks.BEACON_ENERGY_CORE,5, defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final Item CREATIVE_ENERGY_CORE = create("creative_energy_core", new EnergyCoreItem(MyBlocks.CREATIVE_ENERGY_CORE, 100, defaultProperties().stacksTo(1).rarity(Rarity.EPIC)));
     public static final Item TORCHIKOMA = create("torchikoma", new TorchikomaItem(MyBlocks.TORCHIKOMA, defaultProperties()));
-    public static final Item MECHANICAL_COMPONENT = create("mechanical_component", new ItemNameBlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties()));
-    public static final Item ELECTRONIC_COMPONENT = create("electronic_component", new ItemNameBlockItem(MyBlocks.ELECTRONIC_COMPONENT, defaultProperties()));
-    public static final Item CLAY_EXPLOSIVES = create("clay_explosives", new ItemNameBlockItem(MyBlocks.CLAY_EXPLOSIVES, defaultProperties()));
-    public static final Item BLOCKLIGHT_DETECTOR = create("blocklight_detector", new ItemNameBlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties()));
+    public static final Item MECHANICAL_COMPONENT = create("mechanical_component", new BlockItem(MyBlocks.MECHANICAL_COMPONENT, defaultProperties()));
+    public static final Item ELECTRONIC_COMPONENT = create("electronic_component", new BlockItem(MyBlocks.ELECTRONIC_COMPONENT, defaultProperties()));
+    public static final Item CLAY_EXPLOSIVES = create("clay_explosives", new BlockItem(MyBlocks.CLAY_EXPLOSIVES, defaultProperties()));
+    public static final Item BLOCKLIGHT_DETECTOR = create("blocklight_detector", new BlockItem(MyBlocks.BLOCKLIGHT_DETECTOR, defaultProperties()));
 
     public static <T extends ForgeRegistryEntry<T>> T create(String id, T entry) {
         return entry.setRegistryName(Torchikoma.of(id));

@@ -18,7 +18,8 @@ public class RenderRegistry {
     @SubscribeEvent
     public static void onClientSetUpEvent(FMLClientSetupEvent event) {
         MenuScreens.register(MyMenuTypes.TORCH_TOOL, TorchLauncherScreen::new);
-        MenuScreens.register(MyMenuTypes.TORCHIKOMA, TorchikomaScreen::new);
+        MenuScreens.register(MyMenuTypes.TORCHIKOMA_ENTITY, TorchikomaScreen::new);
+        MenuScreens.register(MyMenuTypes.TORCHIKOMA_BLOCK, TorchikomaScreen::new);
 
         EntityRenderers.register(MyEntities.TORCH, TorchRender::new);
         EntityRenderers.register(MyEntities.TORCHIKOMA, TorchikomaRender::new);

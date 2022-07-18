@@ -10,23 +10,25 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class C2SKeyPacket {
+public class C2SKeyPacket implements IPacket{
     private final Command command;
-
-    public C2SKeyPacket(FriendlyByteBuf buffer) {
-        this.command = Command.values()[buffer.readInt()];
-    }
 
     public C2SKeyPacket(Command command) {
         this.command = command;
     }
 
+    public C2SKeyPacket(FriendlyByteBuf buffer) {
+        this.command = Command.values()[buffer.readInt()];
+    }
+
+    @Override
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.command.ordinal());
     }
 
+    @Override
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        this.command.accept(ctx.get());
+        this.command.consumer.accept(ctx.get());
         ctx.get().setPacketHandled(true);
     }
 
@@ -38,13 +40,9 @@ public class C2SKeyPacket {
             if (!stack.isEmpty() && stack.getItem() instanceof ScreenProvider item) item.openGUI(player, stack);
         });
 
-        private final Consumer<NetworkEvent.Context> consumer;
+        public final Consumer<NetworkEvent.Context> consumer;
         Command(Consumer<NetworkEvent.Context> consumer) {
             this.consumer = consumer;
-        }
-
-        public void accept(NetworkEvent.Context ctx) {
-            this.consumer.accept(ctx);
         }
     }
 }

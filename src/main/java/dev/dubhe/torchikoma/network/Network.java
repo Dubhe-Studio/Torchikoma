@@ -1,13 +1,16 @@
 package dev.dubhe.torchikoma.network;
 
 import dev.dubhe.torchikoma.Torchikoma;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.function.Function;
+
 public class Network {
     private static final String VERSION = "1.0";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(Torchikoma.of("network"), () -> VERSION, VERSION::equals, VERSION::equals);
+    private static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(Torchikoma.of("network"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static int id = 0;
 
     private static int nextID() {
@@ -15,11 +18,16 @@ public class Network {
     }
 
     public static void register() {
-        INSTANCE.messageBuilder(C2SKeyPacket.class, nextID(), NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SKeyPacket::write)
-                .decoder(C2SKeyPacket::new)
-                .consumer(C2SKeyPacket::handle)
-                .add();
+        register(C2SKeyPacket.class, C2SKeyPacket::new);
+        register(C2STorchikomaBlock2Entity.class, C2STorchikomaBlock2Entity::new);
+    }
+
+    private static <T extends IPacket> void register(final Class<T> type, Function<FriendlyByteBuf, T> decoder) {
+        INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumer(T::handle).add();
+    }
+
+    public static <T> void sendToServer(T packet) {
+        INSTANCE.sendToServer(packet);
     }
 
 }

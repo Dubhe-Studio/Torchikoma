@@ -3,10 +3,11 @@ package dev.dubhe.torchikoma.menu;
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
 import dev.dubhe.torchikoma.item.TorchLauncherItem;
-import dev.dubhe.torchikoma.registry.MyMenuTypes;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,35 +16,35 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 
-public class TorchikomaMenu extends AbstractContainerMenu {
+public abstract class TorchikomaMenu<T> extends AbstractContainerMenu {
 
-    private final TorchikomaEntity entity;
+    protected final T supplier;
 
-    public TorchikomaMenu(int pContainerId, Inventory inventory, @Nonnull TorchikomaEntity entity) {
-        super(MyMenuTypes.TORCHIKOMA, pContainerId);
-        this.entity = entity;
-        this.entity.getInventory().startOpen(inventory.player);
+    protected TorchikomaMenu(MenuType<?> menuType, int pContainerId, Inventory inventory, @Nonnull T entity) {
+        super(menuType, pContainerId);
+        this.supplier = entity;
+        this.getInventory().startOpen(inventory.player);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                this.addSlot(new Slot(this.entity.getInventory(), j + i * 4, 99 + j * 18, 16 + i * 18));
+                this.addSlot(new Slot(this.getInventory(), j + i * 4, 99 + j * 18, 16 + i * 18));
             }
         }
 
-        this.addSlot(new Slot(this.entity.getInventory(), 12, 9, 16) {
+        this.addSlot(new Slot(this.getInventory(), 12, 9, 16) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 三种枪
                 return pStack.getItem() instanceof TorchLauncherItem;
             }
         });
-        this.addSlot(new Slot(this.entity.getInventory(), 13, 9, 34) {
+        this.addSlot(new Slot(this.getInventory(), 13, 9, 34) {
             @Override
             public boolean mayPlace(ItemStack pStack) { // 能量
                 return pStack.getItem() instanceof EnergyCoreItem;
             }
         });
 
-        this.addSlot(new Slot(this.entity.getInventory(), 14, 9, 52));
+        this.addSlot(new Slot(this.getInventory(), 14, 9, 52));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
@@ -99,8 +100,10 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
-    public TorchikomaEntity getEntity() {
-        return this.entity;
+    @Override
+    public void removed(Player pPlayer) {
+        super.removed(pPlayer);
+        this.getInventory().stopOpen(pPlayer);
     }
 
     @Override
@@ -108,14 +111,28 @@ public class TorchikomaMenu extends AbstractContainerMenu {
         return true;
     }
 
-    @Override
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
-        this.entity.getInventory().stopOpen(pPlayer);
-    }
-
     @OnlyIn(Dist.CLIENT)
     public boolean isEmpty(int pIndex) {
-        return this.entity.getInventory().getItem(pIndex).isEmpty();
+        return this.getInventory().getItem(pIndex).isEmpty();
     }
+
+    protected abstract Container getInventory();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract TorchikomaEntity getEntity();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract byte getStatus();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract float getHealth();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract int getEnergy();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract boolean canStandby();
+
+    @OnlyIn(Dist.CLIENT)
+    public abstract void setStatus(byte status);
 }

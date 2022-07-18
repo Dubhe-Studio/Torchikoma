@@ -1,9 +1,9 @@
 package dev.dubhe.torchikoma.item;
 
-import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 
-public class EnergyCoreItem extends ItemNameBlockItem {
+public class EnergyCoreItem extends BlockItem {
     private final int recovery;
     public EnergyCoreItem(Block pBlock, int recovery, Properties pProperties) {
         super(pBlock, pProperties);
