@@ -8,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TextComponent;
@@ -302,7 +303,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public String getPainting() {
-        return inventory.getItem(14).getItem().toString();
+        return Registry.ITEM.getKey(inventory.getItem(14).getItem()).toString();
     }
 
     public int getEnergy() {
