@@ -18,11 +18,11 @@ public class Network {
     }
 
     public static void register() {
-        register(C2SKeyPacket.class, C2SKeyPacket::new);
-        register(C2STorchikomaBlock2Entity.class, C2STorchikomaBlock2Entity::new);
+        registerC2S(C2SKeyPacket.class, C2SKeyPacket::new);
+        registerC2S(C2STorchikomaBlock2Entity.class, C2STorchikomaBlock2Entity::new);
     }
 
-    private static <T extends IPacket> void register(final Class<T> type, Function<FriendlyByteBuf, T> decoder) {
+    private static <T extends IPacket> void registerC2S(final Class<T> type, Function<FriendlyByteBuf, T> decoder) {
         INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumer(T::handle).add();
     }
 
