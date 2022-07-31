@@ -2,12 +2,15 @@ package dev.dubhe.torchikoma.entity;
 
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
 import dev.dubhe.torchikoma.menu.TorchikomaEntityMenu;
+import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -55,7 +58,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider, ContainerListener, PlayerRideableJumping {
+public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider<ItemStack>, ContainerListener, PlayerRideableJumping {
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
@@ -69,6 +72,18 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
         super(type, inLevel);
         this.noCulling = true;
+    }
+
+    public static TorchikomaEntity of(Level level, BlockPos pos, NonNullList<ItemStack> items, @Nullable UUID uuid, float health, int energy) {
+        TorchikomaEntity entity = new TorchikomaEntity(MyEntities.TORCHIKOMA, level);
+        entity.setPos(pos.getX(), pos.getY(), pos.getZ());
+        for (int i = 0; i < items.size(); i++) {
+            entity.inventory.setItem(i, items.get(i));
+        }
+        entity.setOwnerUUID(uuid);
+        entity.setHealth(health);
+        entity.setEnergy(energy);
+        return entity;
     }
 
     @Override
@@ -130,7 +145,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         if (!this.level.isClientSide && pPlayer.isSecondaryUseActive()) {
-            this.openGUI(pPlayer, ItemStack.EMPTY);
+            this.openGUI(pPlayer, null);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             this.doPlayerRide(pPlayer);
@@ -147,8 +162,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
-    public void openGUI(Player pPlayer, ItemStack item) {
-        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenuProvider(
+    public void openGUI(Player pPlayer, ItemStack ignore) {
+        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
                 this.getDisplayName(),
                 (id, inv, player) -> new TorchikomaEntityMenu(id, inv, this)
         ), buffer -> buffer.writeInt(this.getId()));

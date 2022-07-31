@@ -9,7 +9,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -72,7 +71,7 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     public TorchikomaEntity genEntity() {
-        return null;
+        return TorchikomaEntity.of(this.level, this.getBlockPos(), this.items, this.owner, this.health, this.energy);
     }
 
     public void setOwner(UUID pOwner) {
@@ -102,9 +101,8 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
     public void setStatus(boolean follow) {
         TorchikomaEntity entity = this.genEntity();
         entity.setStatus((byte) (follow ? 0 : 1));
-        entity.moveTo(this.getBlockPos(), 0, 0);
         this.level.setBlockAndUpdate(this.getBlockPos(), Blocks.AIR.defaultBlockState());
-        ((ServerLevel)this.level).tryAddFreshEntityWithPassengers(entity);
+        this.level.addFreshEntity(entity);
     }
 
     @Nonnull

@@ -5,15 +5,14 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-public interface ScreenProvider {
+public interface ScreenProvider<T> {
 
-    void openGUI(Player pPlayer, ItemStack item);
+    void openGUI(Player pPlayer, T item);
 
-    default MenuProvider getMenuProvider(Component displayName, MenuFunction inventory) {
+    default MenuProvider getMenu(Component displayName, MenuFunction inventory) {
         return new MenuProvider() {
             @Override
             public Component getDisplayName() {

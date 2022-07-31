@@ -24,7 +24,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class TorchLauncherItem extends Item implements ScreenProvider {
+public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack> {
     private final int cooldown;
 
     public TorchLauncherItem(Properties pProperties) {
@@ -49,7 +49,7 @@ public class TorchLauncherItem extends Item implements ScreenProvider {
 
     @Override
     public void openGUI(Player pPlayer, ItemStack item){
-        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenuProvider(
+        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
                 this.getDescription(),
                 (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));
