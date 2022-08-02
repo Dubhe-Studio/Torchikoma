@@ -2,6 +2,8 @@ package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.block.entity.TorchikomaBlockEntity;
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
+import dev.dubhe.torchikoma.network.C2STorchikomaBlock2Entity;
+import dev.dubhe.torchikoma.network.Network;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,6 +44,7 @@ public class TorchikomaBlockMenu extends TorchikomaMenu<TorchikomaBlockEntity> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getEnergy() {
+        System.out.println(this.supplier.getEnergy());
         return this.supplier.getEnergy();
     }
 
@@ -54,5 +57,6 @@ public class TorchikomaBlockMenu extends TorchikomaMenu<TorchikomaBlockEntity> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setStatus(byte status) {
+        if (status == 0 || status == 1) Network.sendToServer(new C2STorchikomaBlock2Entity(this.supplier.getBlockPos(), status == 0));
     }
 }

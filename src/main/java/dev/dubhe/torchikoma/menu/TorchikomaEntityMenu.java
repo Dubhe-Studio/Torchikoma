@@ -1,6 +1,9 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
+import dev.dubhe.torchikoma.network.C2SKeyPacket;
+import dev.dubhe.torchikoma.network.C2STorchikomaEntity2Block;
+import dev.dubhe.torchikoma.network.Network;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,6 +57,6 @@ public class TorchikomaEntityMenu extends TorchikomaMenu<TorchikomaEntity> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void setStatus(byte status) {
-        this.supplier.setStatus(status);
+        Network.sendToServer(new C2STorchikomaEntity2Block(this.supplier.getId(), status));
     }
 }

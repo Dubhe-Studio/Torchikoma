@@ -1,7 +1,9 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.block.entity.TorchikomaBlockEntity;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
 import dev.dubhe.torchikoma.menu.TorchikomaEntityMenu;
+import dev.dubhe.torchikoma.registry.MyBlocks;
 import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
@@ -59,13 +61,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider<ItemStack>, ContainerListener, PlayerRideableJumping {
+    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
     protected boolean isJumping;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
     private final AnimationFactory factory = new AnimationFactory(this);
     private final SimpleContainer inventory = new SimpleContainer(15);
 
@@ -116,6 +118,16 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void tick() {
         super.tick();
+
+        if (!this.level.isClientSide && this.entityData.get(STATUS_FLAG) == 2 && this.canStandby()) {
+            Vec3 position = this.getPosition(1.0F);
+            BlockPos pos = new BlockPos(position.x, position.y, position.z);
+            this.level.setBlockAndUpdate(pos, MyBlocks.TORCHIKOMA.defaultBlockState());
+            if (this.level.getBlockEntity(pos) instanceof TorchikomaBlockEntity blockEntity) {
+                blockEntity.initFromEntity(this);
+                this.remove(RemovalReason.DISCARDED);
+            }
+        }
 
         ItemStack itemStack = this.inventory.getItem(13);
         if (itemStack.getItem() instanceof EnergyCoreItem item) {
@@ -223,7 +235,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                 new BlockHitResult(
                         this.getDeltaMovement(),
                         Direction.UP,
-                        this.getBlockPosBelowThatAffectsMyMovement(),
+                        this.getOnPos(),
                         false
                 )
         ).canPlace();

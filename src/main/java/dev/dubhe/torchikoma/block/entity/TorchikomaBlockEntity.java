@@ -2,28 +2,35 @@ package dev.dubhe.torchikoma.block.entity;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
-import dev.dubhe.torchikoma.menu.TorchikomaBlockMenu;
 import dev.dubhe.torchikoma.registry.MyBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 
-public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
-    private NonNullList<ItemStack> items = NonNullList.withSize(15, ItemStack.EMPTY);
+public class TorchikomaBlockEntity extends BlockEntity implements Container, Nameable {
+    private LazyOptional<?> itemHandler = LazyOptional.of(this::createUnSidedHandler);
+    private final NonNullList<ItemStack> items = NonNullList.withSize(15, ItemStack.EMPTY);
+    private Component name;
     private UUID owner;
     private float health;
     private int energy;
@@ -34,8 +41,8 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         this.health = 80.0F;
         this.energy = 0;
     }
-    public TorchikomaBlockEntity(BlockPos pPos, BlockState pBlockState, TorchikomaEntity entity) {
-        super(MyBlockEntities.TORCHIKOMA, pPos, pBlockState);
+
+    public void initFromEntity(TorchikomaEntity entity) {
         this.owner = entity.getOwnerUUID();
         this.health = entity.getHealth();
         this.energy = entity.getEnergy();
@@ -53,8 +60,11 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
 
     @Override
     public void load(CompoundTag pTag) {
-        super.load(pTag);
         this.items.clear();
+        super.load(pTag);
+        if (pTag.contains("CustomName", 8)) {
+            this.name = Component.Serializer.fromJson(pTag.getString("CustomName"));
+        }
         if (pTag.contains("Owner")) this.owner = pTag.getUUID("Owner");
         if (pTag.contains("Energy")) this.energy = pTag.getInt("Energy");
         if (pTag.contains("Health")) this.health = pTag.getInt("Health");
@@ -64,6 +74,9 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
+        if (this.name != null) {
+            pTag.putString("CustomName", Component.Serializer.toJson(this.name));
+        }
         if (this.owner != null) pTag.putUUID("Owner", this.owner);
         pTag.putInt("Energy", this.energy);
         pTag.putFloat("Health", this.health);
@@ -105,31 +118,92 @@ public class TorchikomaBlockEntity extends RandomizableContainerBlockEntity {
         this.level.addFreshEntity(entity);
     }
 
-    @Nonnull
-    @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.items;
+    public void setCustomName(Component pName) {
+        this.name = pName;
     }
 
-    @Override
-    protected void setItems(@Nonnull NonNullList<ItemStack> pItemStacks) {
-        this.items = pItemStacks;
+    public Component getName() {
+        return this.name != null ? this.name : new TranslatableComponent("torchikoma.title");
     }
 
-    @Nonnull
-    @Override
-    protected Component getDefaultName() {
-        return new TranslatableComponent("torchikoma.title");
+    public Component getDisplayName() {
+        return this.getName();
     }
 
-    @NotNull
-    @Override
-    protected AbstractContainerMenu createMenu(int pContainerId, @Nonnull Inventory pInventory) {
-        return new TorchikomaBlockMenu(pContainerId, pInventory, this);
+    public Component getCustomName() {
+        return this.name;
     }
 
     @Override
     public int getContainerSize() {
         return this.items.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.items.isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int pIndex) {
+        return this.items.get(pIndex);
+    }
+
+    @Override
+    public ItemStack removeItem(int pIndex, int pCount) {
+        ItemStack itemstack = ContainerHelper.removeItem(this.items, pIndex, pCount);
+        if (!itemstack.isEmpty()) this.setChanged();
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int pIndex) {
+        return ContainerHelper.takeItem(this.items, pIndex);
+    }
+
+    @Override
+    public void setItem(int pIndex, ItemStack pStack) {
+        this.items.set(pIndex, pStack);
+        if (pStack.getCount() > this.getMaxStackSize()) {
+            pStack.setCount(this.getMaxStackSize());
+        }
+        this.setChanged();
+    }
+
+    @Override
+    @SuppressWarnings("ConstantConditions")
+    public boolean stillValid(Player pPlayer) {
+        if (this.level.getBlockEntity(this.worldPosition) != this) {
+            return false;
+        } else {
+            return !(pPlayer.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) > 64.0D);
+        }
+    }
+
+    @Override
+    public void clearContent() {
+        this.items.clear();
+    }
+
+    protected IItemHandler createUnSidedHandler() {
+        return new InvWrapper(this);
+    }
+
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+        if (!this.remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return itemHandler.cast();
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        itemHandler.invalidate();
+    }
+
+    @Override
+    public void reviveCaps() {
+        super.reviveCaps();
+        itemHandler = LazyOptional.of(this::createUnSidedHandler);
     }
 }
