@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.pipeline.ForgeBlockModelRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class TorchRender extends EntityRenderer<TorchEntity> {

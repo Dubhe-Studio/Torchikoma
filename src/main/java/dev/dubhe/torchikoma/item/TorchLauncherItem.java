@@ -5,6 +5,7 @@ import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
+import javax.annotation.Nonnull;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,6 +26,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack> {
+
     private final int cooldown;
 
     public TorchLauncherItem(Properties pProperties) {
@@ -37,7 +39,8 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+    @Nonnull
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer,@Nonnull InteractionHand pUsedHand) {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (shootTorch(pLevel, pPlayer, item)) {
@@ -48,17 +51,19 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
     }
 
     @Override
-    public void openGUI(Player pPlayer, ItemStack item){
+    public void openGUI(Player pPlayer, ItemStack item) {
         NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
                 this.getDescription(),
                 (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));
     }
 
-    public static boolean shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
+    public boolean shootTorch(Level pLevel, Player pPlayer, ItemStack pStack) {
         CompoundTag nbt = pStack.getOrCreateTag();
         int shoots = nbt.getInt("Shoots");
-        if (shoots == 0) return false;
+        if (shoots == 0) {
+            return false;
+        }
         NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
         ListTag torches = nbt.getList("Torches", 10);
         ItemStack item;
@@ -66,7 +71,9 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
         for (int i = 0; i < torches.size(); i++) {
             tag = torches.getCompound(i);
             item = ItemStack.of(tag);
-            if (!item.isEmpty() && isTorchItem(item)) items.set(tag.getByte("Slot"), item);
+            if (!item.isEmpty() && isTorch(item)) {
+                items.set(tag.getByte("Slot"), item);
+            }
         }
         item = ItemStack.EMPTY;
         for (ItemStack itemStack : items) {
@@ -75,12 +82,12 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
                 break;
             }
         }
-        if (item.isEmpty()) return false;
+        if (item.isEmpty()) {
+            return false;
+        }
         ItemStack stack = item.copy();
         stack.setCount(1);
-        TorchEntity entity = new TorchEntity(pPlayer, stack);
-        entity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 2.0F, 1.0F);
-        pLevel.addFreshEntity(entity);
+        shoot(pLevel, pPlayer, stack);
         item.shrink(1);
         nbt.putInt("Shoots", --shoots);
         saveItems(nbt, items);
@@ -95,12 +102,18 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
         return true;
     }
 
-    public static boolean isTorchItem(ItemStack pStack) {
+    protected void shoot(Level pLevel, Player pPlayer, ItemStack pStack) {
+        TorchEntity entity = new TorchEntity(pPlayer, pStack);
+        entity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 2.0F, 1.0F);
+        pLevel.addFreshEntity(entity);
+    }
+
+    public boolean isTorch(ItemStack pStack) {
         return pStack.getItem() instanceof BlockItem item &&
                 (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
     }
 
-    private static void saveItems(CompoundTag pNbt, List<ItemStack> pStacks) {
+    protected static void saveItems(CompoundTag pNbt, List<ItemStack> pStacks) {
         ListTag torches = new ListTag();
         CompoundTag nbt;
         ItemStack item;

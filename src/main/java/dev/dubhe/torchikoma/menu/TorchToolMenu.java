@@ -1,29 +1,38 @@
 package dev.dubhe.torchikoma.menu;
 
+import dev.dubhe.torchikoma.block.ColdFireTorchBlock;
 import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.TorchBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory> {
+    public TorchToolMenu(int pContainerId, Inventory inventory, ItemStack itemStack){
+        this(MyMenuTypes.TORCH_TOOL, pContainerId, inventory, itemStack);
+    }
 
-    public TorchToolMenu(int pContainerId, Inventory inventory, ItemStack itemStack) {
-        super(MyMenuTypes.TORCH_TOOL, pContainerId, inventory, itemStack);
+    public TorchToolMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory, ItemStack itemStack) {
+        super(pMenuType, pContainerId, inventory, itemStack);
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 this.addSlot(new Slot(this.itemInventory, j + i * 2, 135 + j * 18, 16 + i * 18) {
                     @Override
-                    public boolean mayPlace(ItemStack pStack) {
-                        return TorchLauncherItem.isTorchItem(pStack);
+                    public boolean mayPlace(@Nonnull ItemStack pStack) {
+                        return isTorch(pStack);
                     }
                 });
             }
@@ -31,7 +40,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
 
         this.addSlot(new Slot(this.itemInventory, 4, 52, 25) {
             @Override
-            public boolean mayPlace(ItemStack pStack) {
+            public boolean mayPlace(@Nonnull ItemStack pStack) {
                 return pStack.getItem() == Items.GUNPOWDER;
             }
         });
@@ -64,7 +73,8 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    @Nonnull
+    public ItemStack quickMoveStack(@Nonnull Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
         if (slot.hasItem()) {
@@ -79,7 +89,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
                     if (!this.moveItemStackTo(itemstack1, 4, 5, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (TorchLauncherItem.isTorchItem(itemstack)) {
+                } else if (isTorch(itemstack)) {
                     if (!this.moveItemStackTo(itemstack1, 0, 4, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -156,7 +166,7 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
         }
 
         @Override
-        public void setItem(int pIndex, ItemStack pStack) {
+        public void setItem(int pIndex,@Nonnull ItemStack pStack) {
             super.setItem(pIndex, pStack);
             if (pIndex == 4) {
                 ItemStack item = this.items.get(pIndex);
@@ -169,4 +179,8 @@ public class TorchToolMenu extends AbstractItemMenu<TorchToolMenu.ItemInventory>
         }
     }
 
+    public boolean isTorch(ItemStack pStack) {
+        return pStack.getItem() instanceof BlockItem item &&
+                (item.getBlock() instanceof TorchBlock || item.getBlock() instanceof ColdFireTorchBlock);
+    }
 }

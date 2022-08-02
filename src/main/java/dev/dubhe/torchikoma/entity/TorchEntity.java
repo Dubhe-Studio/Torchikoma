@@ -65,12 +65,16 @@ public class TorchEntity extends Projectile {
     private int life;
     private double baseDamage;
 
-    public TorchEntity(EntityType<? extends TorchEntity> entityEntityType, Level level) {
-        super(entityEntityType, level);
+    public TorchEntity(EntityType<? extends TorchEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     public TorchEntity(LivingEntity entity, ItemStack stack) {
-        super(MyEntities.TORCH, entity.level);
+        this(MyEntities.TORCH, entity, stack);
+    }
+
+    public TorchEntity(EntityType<? extends TorchEntity> entityType, LivingEntity entity, ItemStack stack) {
+        super(entityType, entity.level);
         this.setPos(entity.getX(), entity.getEyeY() - 0.1, entity.getZ());
         this.setOwner(entity);
         this.entityData.set(ITEM_STACK, stack);

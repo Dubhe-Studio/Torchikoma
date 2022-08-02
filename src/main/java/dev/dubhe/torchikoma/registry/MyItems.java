@@ -1,6 +1,7 @@
 package dev.dubhe.torchikoma.registry;
 
 import dev.dubhe.torchikoma.Torchikoma;
+import dev.dubhe.torchikoma.item.ClusteredTorchItem;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
 import dev.dubhe.torchikoma.item.TorchCannonItem;
 import dev.dubhe.torchikoma.item.TorchGatlingItem;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -24,11 +26,11 @@ public class MyItems { //TODO 不稳定, 必须在方块注册事件之后初始
     };
     public static final Item PRISMARINE_TORCH = create("prismarine_torch", new StandingAndWallBlockItem(MyBlocks.PRISMARINE_TORCH, MyBlocks.PRISMARINE_WALL_TORCH, defaultProperties()));
     public static final Item GLOWSTONE_TORCH = create("glowstone_torch", new StandingAndWallBlockItem(MyBlocks.GLOWSTONE_TORCH, MyBlocks.GLOWSTONE_WALL_TORCH, defaultProperties()));
-    public static final Item CLUSTERED_TORCH = create("clustered_torch", new Item(defaultProperties()));
-    public static final Item CLUSTERED_SOUL_TORCH = create("clustered_soul_torch", new Item(defaultProperties()));
-    public static final Item CLUSTERED_REDSTONE_TORCH = create("clustered_redstone_torch", new Item(defaultProperties()));
-    public static final Item CLUSTERED_PRISMARINE_TORCH = create("clustered_prismarine_torch", new Item(defaultProperties()));
-    public static final Item CLUSTERED_GLOWSTONE_TORCH = create("clustered_glowstone_torch", new Item(defaultProperties()));
+    public static final Item CLUSTERED_TORCH = create("clustered_torch", new ClusteredTorchItem(defaultProperties(), Items.TORCH));
+    public static final Item CLUSTERED_SOUL_TORCH = create("clustered_soul_torch", new ClusteredTorchItem(defaultProperties(), Items.SOUL_TORCH));
+    public static final Item CLUSTERED_REDSTONE_TORCH = create("clustered_redstone_torch", new ClusteredTorchItem(defaultProperties(), Items.REDSTONE_TORCH));
+    public static final Item CLUSTERED_PRISMARINE_TORCH = create("clustered_prismarine_torch", new ClusteredTorchItem(defaultProperties(), PRISMARINE_TORCH));
+    public static final Item CLUSTERED_GLOWSTONE_TORCH = create("clustered_glowstone_torch", new ClusteredTorchItem(defaultProperties(), GLOWSTONE_TORCH));
     public static final Item TORCH_LAUNCHER = create("torch_launcher", new TorchLauncherItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final Item TORCH_GATLING = create("torch_gatling", new TorchGatlingItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final Item TORCH_CANNON = create("torch_cannon", new TorchCannonItem(defaultProperties().stacksTo(1).rarity(Rarity.UNCOMMON)));
