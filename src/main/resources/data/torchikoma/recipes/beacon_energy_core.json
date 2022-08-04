@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "Y": {
+      "item": "minecraft:gold_block"
+    },
+    "Z": {
+      "item": "minecraft:beacon"
+    }
+  },
+  "result": {
+    "item": "torchikoma:beacon_energy_core",
+    "count": 1
+  }
+}
