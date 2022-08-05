@@ -7,8 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Nameable;
@@ -51,10 +55,12 @@ public class TorchikomaBlockEntity extends BlockEntity implements Container, Nam
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void tick() {
         ItemStack itemStack = this.items.get(13);
-        if (itemStack.getItem() instanceof EnergyCoreItem item) {
+        if (!this.level.isClientSide && itemStack.getItem() instanceof EnergyCoreItem item) {
             this.addEnergy(item.getRecovery());
+            this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         }
     }
 
@@ -81,6 +87,28 @@ public class TorchikomaBlockEntity extends BlockEntity implements Container, Nam
         pTag.putInt("Energy", this.energy);
         pTag.putFloat("Health", this.health);
         ContainerHelper.saveAllItems(pTag, this.items);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = super.getUpdateTag();
+        nbt.putFloat("Health", this.health);
+        nbt.putInt("Energy", this.energy);
+        return nbt;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag nbt = pkt.getTag();
+        assert nbt != null;
+        this.health = nbt.getFloat("Health");
+        this.energy = nbt.getInt("Energy");
     }
 
     public TorchikomaEntity genEntity() {

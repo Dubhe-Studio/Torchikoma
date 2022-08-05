@@ -116,6 +116,10 @@ public abstract class TorchikomaMenu<T> extends AbstractContainerMenu {
         return this.getInventory().getItem(pIndex).isEmpty();
     }
 
+    public Container getInv() {
+        return this.getInventory();
+    }
+
     protected abstract Container getInventory();
 
     @OnlyIn(Dist.CLIENT)

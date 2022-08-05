@@ -44,7 +44,6 @@ public class TorchikomaBlockMenu extends TorchikomaMenu<TorchikomaBlockEntity> {
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getEnergy() {
-        System.out.println(this.supplier.getEnergy());
         return this.supplier.getEnergy();
     }
 
