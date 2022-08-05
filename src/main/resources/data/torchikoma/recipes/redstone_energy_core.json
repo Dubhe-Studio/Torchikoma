@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_block"
+    },
+    "Y": {
+      "item": "minecraft:copper_block"
+    },
+    "Z": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "torchikoma:redstone_energy_core",
+    "count": 1
+  }
+}
