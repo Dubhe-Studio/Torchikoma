@@ -64,12 +64,12 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
+    private final AnimationFactory factory = new AnimationFactory(this);
+    private final SimpleContainer inventory = new SimpleContainer(15);
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
     protected boolean isJumping;
-    private final AnimationFactory factory = new AnimationFactory(this);
-    private final SimpleContainer inventory = new SimpleContainer(15);
 
     public TorchikomaEntity(EntityType<? extends PathfinderMob> type, Level inLevel) {
         super(type, inLevel);
@@ -106,16 +106,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
-    public double getPassengersRidingOffset() {
-        return (double)this.getBbHeight() * 0.7D;
-    }
-
-    @Override
-    public boolean canBeControlledByRider() {
-        return this.getControllingPassenger() instanceof LivingEntity;
-    }
-
-    @Override
     public void tick() {
         super.tick();
 
@@ -147,43 +137,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                 this.getNavigation().moveTo(this.getX() + vec3.x, this.getY() + vec3.y, this.getZ() + vec3.z, this.followLeashSpeed());
             }
         }
-    }
-
-    @Override
-    protected double followLeashSpeed() {
-        return 0.25D;
-    }
-
-    @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        if (!this.level.isClientSide && pPlayer.isSecondaryUseActive()) {
-            this.openGUI(pPlayer, null);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            this.doPlayerRide(pPlayer);
-            return super.mobInteract(pPlayer, pHand);
-        }
-    }
-
-    protected void doPlayerRide(Player pPlayer) {
-        if (!this.level.isClientSide) {
-            pPlayer.setYRot(this.getYRot());
-            pPlayer.setXRot(this.getXRot());
-            pPlayer.startRiding(this);
-        }
-    }
-
-    @Override
-    public void openGUI(Player pPlayer, ItemStack ignore) {
-        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
-                this.getDisplayName(),
-                (id, inv, player) -> new TorchikomaEntityMenu(id, inv, this)
-        ), buffer -> buffer.writeInt(this.getId()));
-    }
-
-    @Override
-    public void containerChanged(Container pInvBasic) {
-
     }
 
     @Override
@@ -225,6 +178,64 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                 this.inventory.setItem(j, ItemStack.of(compoundtag));
             }
         }
+    }
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return (double)this.getBbHeight() * 0.7D;
+    }
+
+    @Override
+    public boolean canBeControlledByRider() {
+        return this.getControllingPassenger() instanceof LivingEntity;
+    }
+
+    @Nullable
+    @Override
+    public Entity getControllingPassenger() {
+        return this.getFirstPassenger();
+    }
+
+    @Override
+    public boolean isPushable() {
+        return !this.isVehicle();
+    }
+
+    @Override
+    protected double followLeashSpeed() {
+        return 0.25D;
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if (!this.level.isClientSide) {
+            if (pPlayer.isSecondaryUseActive()) {
+                this.openGUI(pPlayer, null);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            } else this.doPlayerRide(pPlayer);
+        }
+        return super.mobInteract(pPlayer, pHand);
+    }
+
+    protected void doPlayerRide(Player pPlayer) {
+        if (!this.level.isClientSide) {
+            pPlayer.setYRot(this.getYRot());
+            pPlayer.setXRot(this.getXRot());
+            pPlayer.startRiding(this);
+        }
+    }
+
+    @Override
+    public void openGUI(Player pPlayer, ItemStack ignore) {
+        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
+                this.getDisplayName(),
+                (id, inv, player) -> new TorchikomaEntityMenu(id, inv, this)
+        ), buffer -> buffer.writeInt(this.getId()));
+    }
+
+    @Override
+    public void containerChanged(Container pInvBasic) {
+
     }
 
     public boolean canStandby() {
@@ -463,7 +474,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     public double getCustomJump() {
-        return this.getAttributeValue(Attributes.JUMP_STRENGTH);
+        return 0.65D;
     }
 
     @Override
@@ -475,4 +486,5 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public void handleStopJump() {
 
     }
+
 }
