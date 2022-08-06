@@ -64,8 +64,9 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<String> PAINTING = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     private final AnimationFactory factory = new AnimationFactory(this);
-    private final SimpleContainer inventory = new SimpleContainer(15);
+    private final Container inventory = new TorchikomaContainer(this);
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
@@ -103,6 +104,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         this.entityData.define(OWNER, Optional.empty());
         this.entityData.define(ENERGY_DATA, 0);
         this.entityData.define(STATUS_FLAG, (byte) 1); // 默认原地警戒
+        this.entityData.define(PAINTING, "minecraft:air");
     }
 
     @Override
@@ -340,8 +342,17 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         this.entityData.set(OWNER, Optional.ofNullable(Owner));
     }
 
+    @SuppressWarnings("deprecation")
+    public void updatePainting() {
+        if (!this.level.isClientSide) {
+            String old = this.entityData.get(PAINTING);
+            String now = Registry.ITEM.getKey(inventory.getItem(14).getItem()).toString();
+            if (!now.equals(old)) this.entityData.set(PAINTING, now);
+        }
+    }
+
     public String getPainting() {
-        return Registry.ITEM.getKey(inventory.getItem(14).getItem()).toString();
+        return this.entityData.get(PAINTING);
     }
 
     public int getEnergy() {
@@ -381,7 +392,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         return this.factory;
     }
 
-    public SimpleContainer getInventory() {
+    public Container getInventory() {
         return inventory;
     }
 
@@ -398,6 +409,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void travel(Vec3 pTravelVector) {
         if (this.isAlive()) {
@@ -485,6 +497,20 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void handleStopJump() {
 
+    }
+
+    static class TorchikomaContainer extends SimpleContainer {
+        private final TorchikomaEntity entity;
+        private TorchikomaContainer(TorchikomaEntity entity) {
+            super(15);
+            this.entity = entity;
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            this.entity.updatePainting();
+        }
     }
 
 }
