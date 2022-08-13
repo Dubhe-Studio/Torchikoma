@@ -27,7 +27,7 @@ if (build_number != "undefined") {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 mixin {
-    add sourceSets.main, "mixins.refmap.json"
+    add sourceSets.main, "torchikoma.mixins.refmap.json"
 }
 
 minecraft {
