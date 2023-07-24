@@ -15,7 +15,7 @@ public class ServerGamePacketListenerImplMixin {
 
     @Shadow public ServerPlayer player;
 
-    @Inject(method = "handlePlayerCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getVehicle()Lnet/minecraft/world/entity/Entity;", ordinal = 4))
+    @Inject(method = "handlePlayerCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getVehicle()Lnet/minecraft/world/entity/Entity;"))
 //    @Inject(method = "handlePlayerCommand", at = @At(value = "HEAD"))
     private void openTorchikomaMenu(ServerboundPlayerCommandPacket pPacket, CallbackInfo ci) {
         System.out.println("Inject");
