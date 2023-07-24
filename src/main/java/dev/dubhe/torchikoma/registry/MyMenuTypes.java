@@ -16,8 +16,8 @@ import net.minecraftforge.network.IContainerFactory;
 public class MyMenuTypes {
     public static final MenuType<TorchToolMenu> TORCH_TOOL = forgeMenu("torch_tool", (containerId, inv, buffer) -> new TorchToolMenu(containerId, inv, buffer.readItem()));
     public static final MenuType<ClusteredTorchToolMenu> CLUSTERED_TORCH_TOOL = forgeMenu("clustered_torch_tool", (containerId, inv, buffer) -> new ClusteredTorchToolMenu(containerId, inv, buffer.readItem()));
-    public static final MenuType<TorchikomaEntityMenu> TORCHIKOMA_ENTITY = forgeMenu("torchikoma_entity", (containerId, inv, buffer) -> new TorchikomaEntityMenu(containerId, inv, (TorchikomaEntity) inv.player.level.getEntity(buffer.readInt())));
-    public static final MenuType<TorchikomaBlockMenu> TORCHIKOMA_BLOCK = forgeMenu("torchikoma_block", (containerId, inv, buffer) -> new TorchikomaBlockMenu(containerId, inv, (TorchikomaBlockEntity) inv.player.level.getBlockEntity(buffer.readBlockPos())));
+    public static final MenuType<TorchikomaEntityMenu> TORCHIKOMA_ENTITY = forgeMenu("torchikoma_entity", (containerId, inv, buffer) -> new TorchikomaEntityMenu(containerId, inv, (TorchikomaEntity) inv.player.level().getEntity(buffer.readInt())));
+    public static final MenuType<TorchikomaBlockMenu> TORCHIKOMA_BLOCK = forgeMenu("torchikoma_block", (containerId, inv, buffer) -> new TorchikomaBlockMenu(containerId, inv, (TorchikomaBlockEntity) inv.player.level().getBlockEntity(buffer.readBlockPos())));
 
     private static <T extends AbstractContainerMenu> MenuType<T> vanillaMenu(String id, MenuType.MenuSupplier<T> factory) {
         MenuType<T> menuType = new MenuType<>(factory);

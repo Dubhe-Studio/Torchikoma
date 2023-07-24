@@ -32,7 +32,7 @@ public class C2STorchikomaBlock2Entity implements IPacket{
     @SuppressWarnings("ConstantConditions")
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
-        BlockEntity blockEntity = context.getSender().level.getBlockEntity(this.pos);
+        BlockEntity blockEntity = context.getSender().level().getBlockEntity(this.pos);
         if (blockEntity instanceof TorchikomaBlockEntity tbe) tbe.setStatus(this.isFollowMode);
         context.setPacketHandled(true);
     }

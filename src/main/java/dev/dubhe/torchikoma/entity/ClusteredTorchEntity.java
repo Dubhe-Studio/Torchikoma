@@ -47,12 +47,12 @@ public class ClusteredTorchEntity extends TorchEntity{
         entity3.setDeltaMovement(0,i,i);
         entity4.setDeltaMovement(0,i,-i);
 
-        level.addFreshEntity(entity1);
-        level.addFreshEntity(entity2);
-        level.addFreshEntity(entity3);
-        level.addFreshEntity(entity4);
+        level().addFreshEntity(entity1);
+        level().addFreshEntity(entity2);
+        level().addFreshEntity(entity3);
+        level().addFreshEntity(entity4);
 
-        this.level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        this.level().playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
         this.discard();
     }
 }

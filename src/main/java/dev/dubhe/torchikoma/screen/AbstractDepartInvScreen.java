@@ -1,14 +1,15 @@
 package dev.dubhe.torchikoma.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import dev.dubhe.torchikoma.Torchikoma;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractDepartInvScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
 
@@ -27,17 +28,17 @@ public abstract class AbstractDepartInvScreen<T extends AbstractContainerMenu> e
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-        this.renderBackground(pPoseStack);
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+    public void render(@NotNull GuiGraphics graphics, int pMouseX, int pMouseY, float pPartialTick) {
+        this.renderBackground(graphics);
+        super.render(graphics, pMouseX, pMouseY, pPartialTick);
+        this.renderTooltip(graphics, pMouseX, pMouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(@NotNull GuiGraphics graphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, PLAYER_BACKGROUND);
-        this.blit(pPoseStack, (this.width - PLAYER_WIDTH) / 2, (this.height - PLAYER_HEIGHT + this.menuHeight) / 2 + 4, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
+        graphics.blit(PLAYER_BACKGROUND, (this.width - PLAYER_WIDTH) / 2, (this.height - PLAYER_HEIGHT + this.menuHeight) / 2 + 4, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 }
