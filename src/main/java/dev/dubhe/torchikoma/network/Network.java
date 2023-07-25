@@ -24,7 +24,7 @@ public class Network {
     }
 
     private static <T extends IPacket> void registerC2S(final Class<T> type, Function<FriendlyByteBuf, T> decoder) {
-        INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumer(T::handle).add();
+        INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumerNetworkThread(T::handle).add();  // TODO: 检查这里的调用是否符合原意
     }
 
     public static <T> void sendToServer(T packet) {

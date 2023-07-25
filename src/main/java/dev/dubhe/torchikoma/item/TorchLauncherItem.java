@@ -52,7 +52,7 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
 
     @Override
     public void openGUI(Player pPlayer, ItemStack item) {
-        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
+        NetworkHooks.openScreen((ServerPlayer) pPlayer, this.getMenu(
                 this.getDescription(),
                 (id, inv, player) -> new TorchToolMenu(id, inv, item)
         ), buffer -> buffer.writeItem(item));

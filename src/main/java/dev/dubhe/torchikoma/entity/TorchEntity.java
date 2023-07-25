@@ -1,5 +1,6 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.mixin.DamageSourcesAccessor;
 import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;  // FIXME
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -288,7 +288,9 @@ public class TorchEntity extends Projectile {
     }
 
     private DamageSource getDamageSource(@Nullable Entity entity) {
-        return (new IndirectEntityDamageSource("torch", this, entity)).setProjectile();  // FIXME
+//        return (new IndirectEntityDamageSource("torch", this, entity)).setProjectile();  // FIXME
+//        return ((DamageSourcesAccessor) entity.damageSources()).callSource();
+        return entity.damageSources().generic();  // TODO: 替换掉这个通用伤害源
     }
 
     @Override
