@@ -3,8 +3,8 @@
 	"parent": "block/cube",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "torchikoma:entity/torchikoma",
-		"particle": "torchikoma:entity/torchikoma"
+		"0": "torchikoma:block/torchikoma",
+		"particle": "torchikoma:block/torchikoma"
 	},
 	"elements": [
 		{

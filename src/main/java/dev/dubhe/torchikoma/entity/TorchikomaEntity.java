@@ -179,10 +179,10 @@ public class TorchikomaEntity extends PathfinderMob implements GeoEntity, Screen
     @Nullable
     @Override
     public LivingEntity getControllingPassenger() {
-        if (this.getFirstPassenger() instanceof LivingEntity) {
-            return null;
+        if (this.getFirstPassenger() instanceof LivingEntity entity) {
+            return entity;
         }
-        return (LivingEntity) this.getFirstPassenger();
+        return null;
     }
 
     @Override
@@ -288,7 +288,7 @@ public class TorchikomaEntity extends PathfinderMob implements GeoEntity, Screen
     }
 
     @Override
-    protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback)  {
+    protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
         if (this.hasPassenger(pPassenger)) {
             float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
             float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
