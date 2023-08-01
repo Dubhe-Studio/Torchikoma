@@ -11,4 +11,4 @@ A mod what about torch
 [![star](https://img.shields.io/github/stars/Dubhe-Studio/Torchikoma)](https://github.com/Dubhe-Studio/Torchikoma/stargazers)
 [![issue](https://img.shields.io/github/issues/Dubhe-Studio/Torchikoma)](https://github.com/Dubhe-Studio/Torchikoma/issues)
 [![Java](https://img.shields.io/badge/Java-17-yellow)](https://docs.microsoft.com/java/openjdk/download)
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.18.2-66ccff)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.20.1-66ccff)](https://www.minecraft.net/)
