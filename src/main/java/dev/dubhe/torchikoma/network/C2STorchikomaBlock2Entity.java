@@ -1,8 +1,10 @@
 package dev.dubhe.torchikoma.network;
 
 import dev.dubhe.torchikoma.block.entity.TorchikomaBlockEntity;
+import dev.dubhe.torchikoma.entity.TorchikomaEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -28,14 +30,17 @@ public class C2STorchikomaBlock2Entity implements IPacket {
         buffer.writeBoolean(this.isFollowMode);
     }
 
+    @SuppressWarnings({"DataFlowIssue", "resource"})
     @Override
-    @SuppressWarnings("ConstantConditions")
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            NetworkEvent.Context context = ctx.get();
-            BlockEntity blockEntity = context.getSender().level().getBlockEntity(this.pos);
-            if (blockEntity instanceof TorchikomaBlockEntity tbe) tbe.setStatus(this.isFollowMode);
-            context.setPacketHandled(true);
+        NetworkEvent.Context context = ctx.get();
+        context.enqueueWork(() -> {
+            ServerPlayer sender = context.getSender();
+            BlockEntity blockEntity = sender.level().getBlockEntity(this.pos);
+            if (blockEntity instanceof TorchikomaBlockEntity tbe) {
+                TorchikomaEntity entity = tbe.setStatus(this.isFollowMode);
+                entity.openGUI(sender, null);
+            }
         });
     }
 

@@ -1,7 +1,6 @@
 package dev.dubhe.torchikoma.menu;
 
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
-import dev.dubhe.torchikoma.network.C2SKeyPacket;
 import dev.dubhe.torchikoma.network.C2STorchikomaEntity2Block;
 import dev.dubhe.torchikoma.network.Network;
 import dev.dubhe.torchikoma.registry.MyMenuTypes;

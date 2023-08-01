@@ -1,6 +1,5 @@
 package dev.dubhe.torchikoma.entity;
 
-import dev.dubhe.torchikoma.mixin.DamageSourcesAccessor;
 import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import net.minecraft.core.BlockPos;
