@@ -1,9 +1,11 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.mixin.DamageSourcesAccessor;
 import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -18,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -74,7 +75,7 @@ public class TorchEntity extends Projectile {
     }
 
     public TorchEntity(EntityType<? extends TorchEntity> entityType, LivingEntity entity, ItemStack stack) {
-        super(entityType, entity.level);
+        super(entityType, entity.level());
         this.setPos(entity.getX(), entity.getEyeY() - 0.1, entity.getZ());
         this.setOwner(entity);
         this.entityData.set(ITEM_STACK, stack);
@@ -111,7 +112,7 @@ public class TorchEntity extends Projectile {
         super.readAdditionalSaveData(pCompound);
         this.life = pCompound.getShort("life");
         if (pCompound.contains("inBlockState", 10)) {
-            this.lastState = NbtUtils.readBlockState(pCompound.getCompound("inBlockState"));
+            this.lastState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), pCompound.getCompound("inBlockState"));
         }
         this.shakeTime = pCompound.getByte("shake") & 255;
         this.inGround = pCompound.getBoolean("inGround");
@@ -137,9 +138,9 @@ public class TorchEntity extends Projectile {
         }
 
         BlockPos blockpos = this.blockPosition();
-        BlockState blockstate = this.level.getBlockState(blockpos);
+        BlockState blockstate = this.level().getBlockState(blockpos);
         if (!blockstate.isAir()) {
-            VoxelShape voxelshape = blockstate.getCollisionShape(this.level, blockpos);
+            VoxelShape voxelshape = blockstate.getCollisionShape(this.level(), blockpos);
             if (!voxelshape.isEmpty()) {
                 Vec3 pos = this.position();
                 for(AABB aabb : voxelshape.toAabbs()) {
@@ -154,13 +155,13 @@ public class TorchEntity extends Projectile {
         if (this.isInWaterOrRain() || blockstate.is(Blocks.POWDER_SNOW)) this.clearFire();
         if (this.inGround) {
             if (this.lastState != blockstate && this.shouldFall()) this.startFalling();
-            else if (!this.level.isClientSide && ++this.life >= 1200) this.discard();
+            else if (!this.level().isClientSide && ++this.life >= 1200) this.discard();
             ++this.inGroundTime;
         } else {
             this.inGroundTime = 0;
             Vec3 oPos = this.position();
             Vec3 nPos = oPos.add(moveResult);
-            HitResult hit = this.level.clip(new ClipContext(oPos, nPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            HitResult hit = this.level().clip(new ClipContext(oPos, nPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (hit.getType() != HitResult.Type.MISS) nPos = hit.getLocation();
             while(!this.isRemoved()) {
                 EntityHitResult entityHit = this.findHitEntity(oPos, nPos);
@@ -196,7 +197,7 @@ public class TorchEntity extends Projectile {
             float f = 0.99F;
             if (this.isInWater()) {
                 for(int j = 0; j < 4; ++j) {
-                    this.level.addParticle(ParticleTypes.BUBBLE, nX - oX * 0.25D, nY - oY * 0.25D, nZ - oZ * 0.25D, oX, oY, oZ);
+                    this.level().addParticle(ParticleTypes.BUBBLE, nX - oX * 0.25D, nY - oY * 0.25D, nZ - oZ * 0.25D, oX, oY, oZ);
                 }
                 if (this.slowInWater()) f = 0.6F;
             }
@@ -211,7 +212,7 @@ public class TorchEntity extends Projectile {
     }
 
     private boolean shouldFall() {
-        return this.inGround && this.level.noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
+        return this.inGround && this.level().noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
     }
 
     private void startFalling() {
@@ -249,7 +250,7 @@ public class TorchEntity extends Projectile {
         if (hitEntity.hurt(damagesource, (float) this.baseDamage)) {
             if (hitEnderman) return;
             if (hitEntity instanceof LivingEntity livingentity) {
-                if (!this.level.isClientSide && owner instanceof LivingEntity) {
+                if (!this.level().isClientSide && owner instanceof LivingEntity) {
                     EnchantmentHelper.doPostHurtEffects(livingentity, owner);
                     EnchantmentHelper.doPostDamageEffects((LivingEntity)owner, livingentity);
                 }
@@ -265,7 +266,7 @@ public class TorchEntity extends Projectile {
             this.setYRot(this.getYRot() + 180.0F);
             this.yRotO += 180.0F;
             double sqr = this.getDeltaMovement().lengthSqr();
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 if (sqr == 0.0D) this.discard();
             } else if (sqr < 1.0E-7D) {
                 if (this.pickup == Pickup.ALLOWED) {
@@ -287,12 +288,14 @@ public class TorchEntity extends Projectile {
     }
 
     private DamageSource getDamageSource(@Nullable Entity entity) {
-        return (new IndirectEntityDamageSource("torch", this, entity)).setProjectile();
+//        return (new IndirectEntityDamageSource("torch", this, entity)).setProjectile();  // FIXME
+//        return ((DamageSourcesAccessor) entity.damageSources()).callSource();
+        return entity.damageSources().generic();  // TODO: 替换掉这个通用伤害源
     }
 
     @Override
     protected void onHitBlock(@Nonnull BlockHitResult result) {
-        this.lastState = this.level.getBlockState(result.getBlockPos());
+        this.lastState = this.level().getBlockState(result.getBlockPos());
         super.onHitBlock(result);
         Vec3 offset = result.getLocation().subtract(this.getX(), this.getY(), this.getZ());
         this.setDeltaMovement(offset);
@@ -309,7 +312,7 @@ public class TorchEntity extends Projectile {
     }
 
     protected EntityHitResult findHitEntity(Vec3 pStartVec, Vec3 pEndVec) {
-        return ProjectileUtil.getEntityHitResult(this.level, this, pStartVec, pEndVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
+        return ProjectileUtil.getEntityHitResult(this.level(), this, pStartVec, pEndVec, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
 
     @Override
@@ -322,8 +325,8 @@ public class TorchEntity extends Projectile {
 
     @Override
     public void playerTouch(Player pEntity) {
-        if (!this.level.isClientSide && this.inGround && this.shakeTime <= 0 && this.tryPickup(pEntity)) {
-            if (!this.isRemoved()) ((ServerLevel)this.level).getChunkSource().broadcast(this, new ClientboundTakeItemEntityPacket(this.getId(), pEntity.getId(), 1));
+        if (!this.level().isClientSide && this.inGround && this.shakeTime <= 0 && this.tryPickup(pEntity)) {
+            if (!this.isRemoved()) ((ServerLevel)this.level()).getChunkSource().broadcast(this, new ClientboundTakeItemEntityPacket(this.getId(), pEntity.getId(), 1));
             this.discard();
         }
     }

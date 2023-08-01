@@ -21,10 +21,11 @@ public class Network {
         registerC2S(C2SKeyPacket.class, C2SKeyPacket::new);
         registerC2S(C2STorchikomaBlock2Entity.class, C2STorchikomaBlock2Entity::new);
         registerC2S(C2STorchikomaEntity2Block.class, C2STorchikomaEntity2Block::new);
+        registerC2S(C2STorchikomaEntityShoot.class, C2STorchikomaEntityShoot::new);
     }
 
     private static <T extends IPacket> void registerC2S(final Class<T> type, Function<FriendlyByteBuf, T> decoder) {
-        INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumer(T::handle).add();
+        INSTANCE.messageBuilder(type, nextID(), NetworkDirection.PLAY_TO_SERVER).encoder(T::write).decoder(decoder).consumerNetworkThread(T::handle).add();  // TODO: 检查这里的调用是否符合原意
     }
 
     public static <T> void sendToServer(T packet) {

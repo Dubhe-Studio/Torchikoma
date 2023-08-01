@@ -1,22 +1,22 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.block.entity.TorchikomaBlockEntity;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
+import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.menu.TorchikomaEntityMenu;
 import dev.dubhe.torchikoma.registry.MyBlocks;
 import dev.dubhe.torchikoma.registry.MyEntities;
 import dev.dubhe.torchikoma.registry.MyItems;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,8 +29,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
 import dev.dubhe.torchikoma.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.PlayerRideableJumping;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -42,15 +46,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.CustomInstructionKeyframeEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import net.minecraftforge.registries.ForgeRegistries;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation.LoopType;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.keyframe.event.CustomInstructionKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -58,13 +65,13 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAnimationTickable, ScreenProvider<ItemStack>, ContainerListener, PlayerRideableJumping {
+public class TorchikomaEntity extends PathfinderMob implements GeoEntity, ScreenProvider<ItemStack>, ContainerListener, PlayerRideableJumping {
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENERGY_DATA = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<String> PAINTING = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
-    private final AnimationFactory factory = new AnimationFactory(this);
-    private final Container inventory = new TorchikomaContainer(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final TorchikomaContainer inventory = new TorchikomaContainer(this);
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
@@ -85,6 +92,14 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         entity.setHealth(health);
         entity.setEnergy(energy);
         return entity;
+    }
+
+    public void shoot(Player player) {
+        ItemStack stack = this.inventory.getItem(12);
+        if (stack.getItem() instanceof TorchLauncherItem item && !player.getCooldowns().isOnCooldown(item)) {
+            item.shootTorch(this.level(), player, stack);
+            player.getCooldowns().addCooldown(item, item.cooldown);
+        }
     }
 
     @Override
@@ -109,11 +124,11 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     public void tick() {
         super.tick();
 
-        if (!this.level.isClientSide && this.entityData.get(STATUS_FLAG) == 2 && this.canStandby()) {
+        if (!this.level().isClientSide && this.entityData.get(STATUS_FLAG) == 2 && this.canStandby()) {
             Vec3 position = this.getPosition(1.0F);
-            BlockPos pos = new BlockPos(position.x, position.y, position.z);
-            this.level.setBlockAndUpdate(pos, MyBlocks.TORCHIKOMA.defaultBlockState());
-            if (this.level.getBlockEntity(pos) instanceof TorchikomaBlockEntity blockEntity) {
+            BlockPos pos = BlockPos.containing(position.x, position.y, position.z);
+            this.level().setBlockAndUpdate(pos, MyBlocks.TORCHIKOMA.defaultBlockState());
+            if (this.level().getBlockEntity(pos) instanceof TorchikomaBlockEntity blockEntity) {
                 blockEntity.initFromEntity(this);
                 this.remove(RemovalReason.DISCARDED);
             }
@@ -171,15 +186,13 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         return (double) this.getBbHeight() * 0.7D;
     }
 
-    @Override
-    public boolean canBeControlledByRider() {
-        return this.getControllingPassenger() instanceof LivingEntity;
-    }
-
     @Nullable
     @Override
-    public Entity getControllingPassenger() {
-        return this.getFirstPassenger();
+    public LivingEntity getControllingPassenger() {
+        if (this.getFirstPassenger() instanceof LivingEntity entity) {
+            return entity;
+        }
+        return null;
     }
 
     @Override
@@ -194,17 +207,17 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     @Override
     protected @Nonnull InteractionResult mobInteract(@Nonnull Player pPlayer, @Nonnull InteractionHand pHand) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (pPlayer.isSecondaryUseActive()) {
                 this.openGUI(pPlayer, null);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             } else this.doPlayerRide(pPlayer);
         }
         return super.mobInteract(pPlayer, pHand);
     }
 
     protected void doPlayerRide(Player pPlayer) {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             pPlayer.setYRot(this.getYRot());
             pPlayer.setXRot(this.getXRot());
             pPlayer.startRiding(this);
@@ -213,7 +226,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     @Override
     public void openGUI(Player pPlayer, ItemStack ignore) {
-        NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
+        NetworkHooks.openScreen((ServerPlayer) pPlayer, this.getMenu(
                 this.getDisplayName(),
                 (id, inv, player) -> new TorchikomaEntityMenu(id, inv, this)
         ), buffer -> buffer.writeInt(this.getId()));
@@ -226,7 +239,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
 
     public boolean canStandby() {
         return new BlockPlaceContext(
-                this.level,
+                this.level(),
                 null, InteractionHand.MAIN_HAND,
                 new ItemStack(MyItems.TORCHIKOMA),
                 new BlockHitResult(
@@ -245,52 +258,47 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
-    public int tickTimer() {
-        return this.tickCount;
-    }
-
-    @Override
     public void die(@Nonnull DamageSource pCause) {
         super.die(pCause);
-        if (this.dead && this.level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof ServerPlayer) {
-            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage(), Util.NIL_UUID);
+        if (this.dead && this.level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES) && this.getOwner() instanceof ServerPlayer) {
+            this.getOwner().sendSystemMessage(this.getCombatTracker().getDeathMessage());
         }
     }
 
     @Nullable
     public LivingEntity getOwner() {
         UUID uuid = this.getOwnerUUID();
-        return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+        return uuid == null ? null : this.level().getPlayerByUUID(uuid);
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<TorchikomaEntity> controller = new AnimationController<>(this, "controller", 0, this::predicate);
-        controller.registerCustomInstructionListener(this::customListener);
-        data.addAnimationController(controller);
+        controller.setCustomInstructionKeyframeHandler(this::customListener);
+        controllers.add(controller);
     }
 
-    private <T extends IAnimatable> PlayState predicate(AnimationEvent<T> event) {
+    private <T extends GeoAnimatable> PlayState predicate(AnimationState<T> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.walk", true));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.torchikoma.walk", LoopType.LOOP));
         } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.packing", false));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.torchikoma.packing", LoopType.PLAY_ONCE));
         }
         if (allowStandSliding) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.torchikoma.beforejump", false));
+            event.getController().setAnimation(RawAnimation.begin().then("animation.torchikoma.beforejump", LoopType.PLAY_ONCE));
         }
         return PlayState.CONTINUE;
     }
 
-    private <T extends IAnimatable> void customListener(CustomInstructionKeyframeEvent<T> event) {
+    private <T extends GeoAnimatable> void customListener(CustomInstructionKeyframeEvent<T> event) {
         final LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            player.displayClientMessage(new TextComponent("KeyFraming"), true);
+            player.displayClientMessage(Component.literal("KeyFraming"), true);
         }
     }
 
     @Override
-    public void positionRider(@Nonnull Entity pPassenger) {
+    protected void positionRider(Entity pPassenger, Entity.MoveFunction pCallback) {
         if (this.hasPassenger(pPassenger)) {
             float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
             float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
@@ -321,11 +329,10 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
         this.entityData.set(OWNER, Optional.ofNullable(Owner));
     }
 
-    @SuppressWarnings("deprecation")
     public void updatePainting() {
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             String old = this.entityData.get(PAINTING);
-            String now = Registry.ITEM.getKey(inventory.getItem(14).getItem()).toString();
+            String now = ForgeRegistries.ITEMS.getKey(inventory.getItem(14).getItem()).toString();
             if (!now.equals(old)) this.entityData.set(PAINTING, now);
         }
     }
@@ -367,8 +374,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     public Container getInventory() {
@@ -392,8 +399,8 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
     @Override
     public void travel(@Nonnull Vec3 pTravelVector) {
         if (this.isAlive()) {
-            if (this.isVehicle() && this.canBeControlledByRider()) {
-                LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
+            if (this.isVehicle() && this.isControlledByLocalInstance()) {
+                LivingEntity livingentity = this.getControllingPassenger();
                 this.setYRot(livingentity.getYRot());
                 this.yRotO = this.getYRot();
                 this.setXRot(livingentity.getXRot() * 0.5F);
@@ -407,7 +414,7 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                     this.gallopSoundCounter = 0;
                 }
 
-                if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround) {
+                if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround()) {
                     double d0 = this.getCustomJump() * (double) this.playerJumpPendingScale * (double) this.getBlockJumpFactor();
                     double d1 = d0 + this.getJumpBoostPower();
                     Vec3 vec3 = this.getDeltaMovement();
@@ -424,7 +431,6 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                     this.playerJumpPendingScale = 0.0F;
                 }
 
-                this.flyingSpeed = this.getSpeed() * 0.1F;
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed(0.4f);
                     super.travel(new Vec3(f, pTravelVector.y, f1));
@@ -432,15 +438,14 @@ public class TorchikomaEntity extends PathfinderMob implements IAnimatable, IAni
                     this.setDeltaMovement(Vec3.ZERO);
                 }
 
-                if (this.onGround) {
+                if (this.onGround()) {
                     this.playerJumpPendingScale = 0.0F;
                     this.setIsJumping(false);
                 }
 
-                this.calculateEntityAnimation(this, false);
+                this.calculateEntityAnimation(false);
                 this.tryCheckInsideBlocks();
             } else {
-                this.flyingSpeed = 0.02F;
                 super.travel(pTravelVector);
             }
         }

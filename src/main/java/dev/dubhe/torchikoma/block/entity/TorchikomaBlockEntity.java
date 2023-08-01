@@ -9,7 +9,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -22,8 +21,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
@@ -151,7 +150,7 @@ public class TorchikomaBlockEntity extends BlockEntity implements Container, Nam
     }
 
     public Component getName() {
-        return this.name != null ? this.name : new TranslatableComponent("torchikoma.title");
+        return this.name != null ? this.name : Component.translatable("torchikoma.title");
     }
 
     public Component getDisplayName() {
@@ -218,7 +217,7 @@ public class TorchikomaBlockEntity extends BlockEntity implements Container, Nam
     }
 
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        if (!this.remove && cap == ForgeCapabilities.ITEM_HANDLER)
             return itemHandler.cast();
         return super.getCapability(cap, side);
     }

@@ -129,7 +129,7 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
     }
 
     private static void explode(Level pLevel, BlockPos pPos, @Nullable LivingEntity pEntity) {
-        pLevel.gameEvent(GameEvent.EXPLODE, pPos);
+        pLevel.gameEvent(null, GameEvent.EXPLODE, pPos);
         if (!pLevel.isClientSide) {
             pLevel.playSound(null, pPos.getX(), pPos.getY(), pPos.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
             BlockPos behindBlock = behindBlock(pLevel, pPos);
@@ -153,7 +153,7 @@ public class ClayExplosivesBlock extends DirectionalBlock implements SimpleWater
             BlockPos blockpos = pHit.getBlockPos();
             Entity entity = pProjectile.getOwner();
             if (pProjectile.isOnFire() && pProjectile.mayInteract(pLevel, blockpos)) {
-                onCaughtFire(pState, pLevel, blockpos, null, entity instanceof LivingEntity ? (LivingEntity)entity : null);
+                onCaughtFire(pState, pLevel, blockpos, null, entity instanceof LivingEntity ? (LivingEntity) entity : null);
                 pLevel.removeBlock(blockpos, false);
             }
         }

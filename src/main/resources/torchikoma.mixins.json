@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "torchikoma.mixins.refmap.json",
   "mixins": [
+    "DamageSourcesAccessor",
     "ServerGamePacketListenerImplMixin"
   ],
   "injectors": {

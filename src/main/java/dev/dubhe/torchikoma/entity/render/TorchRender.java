@@ -11,9 +11,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class TorchRender extends EntityRenderer<TorchEntity> {
@@ -27,14 +29,14 @@ public class TorchRender extends EntityRenderer<TorchEntity> {
     }
 
     @Override
-    public void render(TorchEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(TorchEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
 //        Item item = pEntity.getItemStack().getItem();
 //        ResourceLocation location = Registry.ITEM.getKey(item);
 //        BakedModel bakedmodel = modelManager.getModel(location);
         ItemStack itemstack = pEntity.getItemStack();
-        BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pEntity.level, null, pEntity.getId());
+        BakedModel bakedmodel = this.itemRenderer.getModel(itemstack, pEntity.level(), null, pEntity.getId());
         pMatrixStack.pushPose();
-        this.itemRenderer.render(itemstack, ItemTransforms.TransformType.GROUND, false, pMatrixStack, pBuffer, pPackedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
+        this.itemRenderer.render(itemstack, ItemDisplayContext.GROUND, false, pMatrixStack, pBuffer, pPackedLight, OverlayTexture.NO_OVERLAY, bakedmodel);
         if (!bakedmodel.isGui3d()) {
             pMatrixStack.translate(0.0, 0.0, 0.09375F);
         }
@@ -43,7 +45,7 @@ public class TorchRender extends EntityRenderer<TorchEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TorchEntity pEntity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull TorchEntity pEntity) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }
