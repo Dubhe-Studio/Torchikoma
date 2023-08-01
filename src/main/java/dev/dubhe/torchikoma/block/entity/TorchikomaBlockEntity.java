@@ -138,11 +138,12 @@ public class TorchikomaBlockEntity extends BlockEntity implements Container, Nam
     }
 
     @SuppressWarnings("ConstantConditions")
-    public void setStatus(boolean follow) {
+    public TorchikomaEntity setStatus(boolean follow) {
         TorchikomaEntity entity = this.genEntity();
         entity.setStatus((byte) (follow ? 0 : 1));
         this.level.setBlockAndUpdate(this.getBlockPos(), Blocks.AIR.defaultBlockState());
         this.level.addFreshEntity(entity);
+        return entity;
     }
 
     public void setCustomName(Component pName) {

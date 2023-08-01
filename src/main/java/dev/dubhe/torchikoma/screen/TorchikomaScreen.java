@@ -72,7 +72,7 @@ public class TorchikomaScreen extends AbstractDepartInvScreen<TorchikomaMenu<?>>
             graphics.renderTooltip(this.font, Component.translatable("gui.torchikoma.health", this.menu.getHealth()), pX, pY);
         }
         for (TorchikomaButton button : buttons) {
-            if (button.isHoveredOrFocused()) graphics.renderTooltip(this.font, button.tooltip, pX, pY);
+            if (button.isHovered()) graphics.renderTooltip(this.font, button.tooltip, pX, pY);
         }
     }
 
