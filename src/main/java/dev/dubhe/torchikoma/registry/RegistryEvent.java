@@ -1,78 +1,24 @@
 package dev.dubhe.torchikoma.registry;
 
-import net.minecraft.world.entity.EntityType;
+import dev.dubhe.torchikoma.Torchikoma;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryEvent {
     @SubscribeEvent
-    public static void onRegisterBlock(net.minecraftforge.event.RegistryEvent.Register<Block> event) {
-        event.getRegistry().register(MyBlocks.PRISMARINE_TORCH);
-        event.getRegistry().register(MyBlocks.PRISMARINE_WALL_TORCH);
-        event.getRegistry().register(MyBlocks.GLOWSTONE_TORCH);
-        event.getRegistry().register(MyBlocks.GLOWSTONE_WALL_TORCH);
-        event.getRegistry().register(MyBlocks.TORCHIKOMA);
-        event.getRegistry().register(MyBlocks.ELECTRONIC_COMPONENT);
-        event.getRegistry().register(MyBlocks.MECHANICAL_COMPONENT);
-        event.getRegistry().register(MyBlocks.CLAY_EXPLOSIVES);
-        event.getRegistry().register(MyBlocks.BLOCKLIGHT_DETECTOR);
-        event.getRegistry().register(MyBlocks.BEACON_ENERGY_CORE);
-        event.getRegistry().register(MyBlocks.CREATIVE_ENERGY_CORE);
-        event.getRegistry().register(MyBlocks.REDSTONE_ENERGY_CORE);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterItem(net.minecraftforge.event.RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(MyItems.PRISMARINE_TORCH);
-        event.getRegistry().register(MyItems.GLOWSTONE_TORCH);
-        event.getRegistry().register(MyItems.CLUSTERED_TORCH);
-        event.getRegistry().register(MyItems.CLUSTERED_SOUL_TORCH);
-        event.getRegistry().register(MyItems.CLUSTERED_REDSTONE_TORCH);
-        event.getRegistry().register(MyItems.CLUSTERED_PRISMARINE_TORCH);
-        event.getRegistry().register(MyItems.CLUSTERED_GLOWSTONE_TORCH);
-        event.getRegistry().register(MyItems.TORCH_LAUNCHER);
-        event.getRegistry().register(MyItems.TORCH_GATLING);
-        event.getRegistry().register(MyItems.TORCH_CANNON);
-        event.getRegistry().register(MyItems.REDSTONE_ENERGY_CORE);
-        event.getRegistry().register(MyItems.BEACON_ENERGY_CORE);
-        event.getRegistry().register(MyItems.CREATIVE_ENERGY_CORE);
-        event.getRegistry().register(MyItems.TORCHIKOMA);
-        event.getRegistry().register(MyItems.ELECTRONIC_COMPONENT);
-        event.getRegistry().register(MyItems.MECHANICAL_COMPONENT);
-        event.getRegistry().register(MyItems.CLAY_EXPLOSIVES);
-        event.getRegistry().register(MyItems.BLOCKLIGHT_DETECTOR);
-        event.getRegistry().register(MyItems.BEACON_ENERGY_CORE);
-        event.getRegistry().register(MyItems.CREATIVE_ENERGY_CORE);
-        event.getRegistry().register(MyItems.REDSTONE_ENERGY_CORE);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterMenu(net.minecraftforge.event.RegistryEvent.Register<MenuType<?>> event) {
-        event.getRegistry().register(MyMenuTypes.TORCH_TOOL);
-        event.getRegistry().register(MyMenuTypes.CLUSTERED_TORCH_TOOL);
-        event.getRegistry().register(MyMenuTypes.TORCHIKOMA_ENTITY);
-        event.getRegistry().register(MyMenuTypes.TORCHIKOMA_BLOCK);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterEntity(net.minecraftforge.event.RegistryEvent.Register<EntityType<?>> event) {
-        event.getRegistry().register(MyEntities.TORCH);
-        event.getRegistry().register(MyEntities.CLUSTERED_TORCH);
-        event.getRegistry().register(MyEntities.TORCHIKOMA);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterBlockEntity(net.minecraftforge.event.RegistryEvent.Register<BlockEntityType<?>> event) {
-        event.getRegistry().register(MyBlockEntities.BLOCKLIGHT_DETECTOR);
-        event.getRegistry().register(MyBlockEntities.TORCHIKOMA);
+    public static void onRegister(net.minecraftforge.registries.RegisterEvent event) {
+        event.register(ForgeRegistries.Keys.BLOCKS, helper -> MyBlocks.BLOCK_MAP.forEach(helper::register));
+        event.register(ForgeRegistries.Keys.ITEMS, helper -> MyItems.ITEM_MAP.forEach(helper::register));
+        event.register(Registries.CREATIVE_MODE_TAB, helper -> helper.register(Torchikoma.of("torchikoma"), MyItems.TAB));
+        event.register(ForgeRegistries.Keys.MENU_TYPES, helper -> MyMenuTypes.MENU_TYPE_MAP.forEach(helper::register));
+        event.register(ForgeRegistries.Keys.ENTITY_TYPES, helper -> MyEntities.ENTITY_MAP.forEach(helper::register));
+        event.register(ForgeRegistries.Keys.BLOCK_ENTITY_TYPES, helper -> MyBlockEntities.BLOCK_ENTITY_MAP.forEach(helper::register));
     }
 
     @SubscribeEvent

@@ -38,7 +38,7 @@ public class TorchikomaBlock extends HorizontalDirectionalBlock implements Entit
         if (!pLevel.isClientSide) {
             BlockEntity blockentity = pLevel.getBlockEntity(pPos);
             if (blockentity instanceof TorchikomaBlockEntity torchikomaBlockEntity) {
-                NetworkHooks.openGui((ServerPlayer) pPlayer, this.getMenu(
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, this.getMenu(
                         torchikomaBlockEntity.getDisplayName(),
                         (id, inv, player) -> new TorchikomaBlockMenu(id, inv, torchikomaBlockEntity)
                 ), buffer -> buffer.writeBlockPos(pPos));

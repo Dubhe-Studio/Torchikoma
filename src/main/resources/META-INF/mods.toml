@@ -21,13 +21,13 @@ side = "BOTH"
 [[dependencies.torchikoma]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18.2,)"
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.torchikoma]]
-modId = "geckolib3"
+modId = "geckolib"
 mandatory = true
-versionRange = "[3.0.15,)"
+versionRange = "[4.2,)"
 ordering = "NONE"
 side = "BOTH"

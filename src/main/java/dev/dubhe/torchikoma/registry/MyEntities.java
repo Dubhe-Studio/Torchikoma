@@ -1,6 +1,5 @@
 package dev.dubhe.torchikoma.registry;
 
-import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.entity.ClusteredTorchEntity;
 import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.entity.TorchikomaEntity;
@@ -8,7 +7,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyEntities {
+    public static final Map<String, EntityType<?>> ENTITY_MAP = new HashMap<>();
 
     public static final EntityType<TorchEntity> TORCH = create("torch",
             EntityType.Builder.<TorchEntity>of(TorchEntity::new, MobCategory.MISC)
@@ -24,7 +27,7 @@ public class MyEntities {
 
     public static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {
         EntityType<T> entityType = builder.build(name);
-        entityType.setRegistryName(Torchikoma.of(name));
+        ENTITY_MAP.put(name, entityType);
         return entityType;
     }
 }

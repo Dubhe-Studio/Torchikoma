@@ -8,7 +8,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class C2STorchikomaBlock2Entity implements IPacket{
+public class C2STorchikomaBlock2Entity implements IPacket {
     private final BlockPos pos;
     private final boolean isFollowMode;
 
@@ -31,10 +31,12 @@ public class C2STorchikomaBlock2Entity implements IPacket{
     @Override
     @SuppressWarnings("ConstantConditions")
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context context = ctx.get();
-        BlockEntity blockEntity = context.getSender().level().getBlockEntity(this.pos);
-        if (blockEntity instanceof TorchikomaBlockEntity tbe) tbe.setStatus(this.isFollowMode);
-        context.setPacketHandled(true);
+        ctx.get().enqueueWork(() -> {
+            NetworkEvent.Context context = ctx.get();
+            BlockEntity blockEntity = context.getSender().level().getBlockEntity(this.pos);
+            if (blockEntity instanceof TorchikomaBlockEntity tbe) tbe.setStatus(this.isFollowMode);
+            context.setPacketHandled(true);
+        });
     }
 
 }

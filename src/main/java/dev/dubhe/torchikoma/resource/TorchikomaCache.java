@@ -4,12 +4,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener.PreparationBarrier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
-import software.bernie.geckolib3.file.AnimationFile;
-import software.bernie.geckolib3.file.AnimationFileLoader;
-import software.bernie.geckolib3.file.GeoModelLoader;
-import software.bernie.geckolib3.geo.render.built.GeoModel;
-import software.bernie.geckolib3.molang.MolangRegistrar;
-import software.bernie.shadowed.eliotlash.molang.MolangParser;
+import software.bernie.geckolib.loading.FileLoader;
+import software.bernie.geckolib.loading.json.raw.Model;
+import software.bernie.geckolib.loading.object.BakedAnimations;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -24,18 +21,7 @@ import java.util.function.Function;
 public class TorchikomaCache {
 	private static TorchikomaCache INSTANCE;
 
-	private final AnimationFileLoader animationLoader;
-	private final GeoModelLoader modelLoader;
-
-	public final MolangParser parser = new MolangParser();
-
-	private Map<ResourceLocation, GeoModel> geoModels = Collections.emptyMap();
-
-	protected TorchikomaCache() {
-		this.animationLoader = new AnimationFileLoader();
-		this.modelLoader = new GeoModelLoader();
-		MolangRegistrar.registerVars(parser);
-	}
+	private Map<ResourceLocation, Model> geoModels = Collections.emptyMap();
 
 	public static TorchikomaCache getInstance() {
 		if (INSTANCE == null) {
@@ -48,23 +34,23 @@ public class TorchikomaCache {
 	public @Nonnull CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager resourceManager,
 												   ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor,
 												   Executor gameExecutor) {
-		Map<ResourceLocation, AnimationFile> animations = new HashMap<>();
-		Map<ResourceLocation, GeoModel> geoModels = new HashMap<>();
+		Map<ResourceLocation, BakedAnimations> animations = new HashMap<>();
+		Map<ResourceLocation, Model> geoModels = new HashMap<>();
 		return CompletableFuture.allOf(loadResources(backgroundExecutor, resourceManager, "animations",
-				animation -> animationLoader.loadAllAnimations(parser, animation, resourceManager), animations::put),
+				animation -> FileLoader.loadAnimationsFile(animation, resourceManager), animations::put),
 				loadResources(backgroundExecutor, resourceManager, "geo",
-						resource -> modelLoader.loadModel(resourceManager, resource), geoModels::put))
+						resource -> FileLoader.loadModelFile(resource, resourceManager), geoModels::put))
 				.thenCompose(stage::wait).thenAcceptAsync(empty -> this.geoModels = geoModels, gameExecutor);
 	}
 
 	private static <T> CompletableFuture<Void> loadResources(Executor executor, ResourceManager resourceManager,
 			String type, Function<ResourceLocation, T> loader, BiConsumer<ResourceLocation, T> map) {
 		return CompletableFuture.supplyAsync(
-				() -> resourceManager.listResources(type, fileName -> fileName.endsWith(".json")), executor)
+				() -> resourceManager.listResources(type, fileName -> fileName.getPath().endsWith(".json")), executor)
 				.thenApplyAsync(resources -> {
 					Map<ResourceLocation, CompletableFuture<T>> tasks = new HashMap<>();
 
-					for (ResourceLocation resource : resources) {
+					resources.forEach(((resource, resourceObj) -> {
 						CompletableFuture<T> existing = tasks.put(resource,
 								CompletableFuture.supplyAsync(() -> loader.apply(resource), executor));
 
@@ -72,7 +58,7 @@ public class TorchikomaCache {
 							System.err.println("Duplicate resource for " + resource);
 							existing.cancel(false);
 						}
-					}
+					}));
 
 					return tasks;
 				}, executor).thenAcceptAsync(tasks -> {

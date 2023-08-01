@@ -2,8 +2,8 @@ package dev.dubhe.torchikoma.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,7 +23,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class ComponentBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
@@ -80,7 +79,7 @@ public class ComponentBlock extends HorizontalDirectionalBlock implements Simple
     }
 
     @Override
-    public void tick(BlockState pState, @Nonnull ServerLevel pLevel, @Nonnull BlockPos pPos, @Nonnull Random pRand) {
+    public void animateTick(BlockState pState, @Nonnull Level pLevel, @Nonnull BlockPos pPos, @Nonnull RandomSource pRand) {
         if (pState.getValue(LIT) && !pLevel.hasNeighborSignal(pPos)) {
             pLevel.setBlock(pPos, pState.cycle(LIT), 2);
         }
@@ -103,7 +102,7 @@ public class ComponentBlock extends HorizontalDirectionalBlock implements Simple
     @Override
     public void stepOn(@Nonnull Level pLevel, @Nonnull BlockPos pPos,BlockState pState, @Nonnull Entity pEntity) {
         if (pState.getValue(LIT) && pEntity instanceof LivingEntity) {
-            pEntity.hurt(DamageSource.GENERIC, (float)this.damage);
+            pEntity.hurt(new DamageSources(pLevel.registryAccess()).generic(), (float)this.damage);
         }
         super.stepOn(pLevel, pPos, pState, pEntity);
     }
