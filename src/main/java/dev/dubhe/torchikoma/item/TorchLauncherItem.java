@@ -5,7 +5,9 @@ import dev.dubhe.torchikoma.entity.TorchEntity;
 import dev.dubhe.torchikoma.screen.ScreenProvider;
 import dev.dubhe.torchikoma.menu.TorchToolMenu;
 import dev.dubhe.torchikoma.screen.TorchLauncherScreen;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -27,7 +29,7 @@ import java.util.List;
 
 public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack> {
 
-    private final int cooldown;
+    public final int cooldown;
 
     public TorchLauncherItem(Properties pProperties) {
         this(pProperties, 20);
@@ -40,7 +42,7 @@ public class TorchLauncherItem extends Item implements ScreenProvider<ItemStack>
 
     @Override
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer,@Nonnull InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, @Nonnull InteractionHand pUsedHand) {
         ItemStack item = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide) {
             if (shootTorch(pLevel, pPlayer, item)) {

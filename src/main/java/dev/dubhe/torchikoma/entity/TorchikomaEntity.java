@@ -1,7 +1,9 @@
 package dev.dubhe.torchikoma.entity;
 
+import dev.dubhe.torchikoma.Torchikoma;
 import dev.dubhe.torchikoma.block.entity.TorchikomaBlockEntity;
 import dev.dubhe.torchikoma.item.EnergyCoreItem;
+import dev.dubhe.torchikoma.item.TorchLauncherItem;
 import dev.dubhe.torchikoma.menu.TorchikomaEntityMenu;
 import dev.dubhe.torchikoma.registry.MyBlocks;
 import dev.dubhe.torchikoma.registry.MyEntities;
@@ -69,7 +71,7 @@ public class TorchikomaEntity extends PathfinderMob implements GeoEntity, Screen
     private static final EntityDataAccessor<Byte> STATUS_FLAG = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<String> PAINTING = SynchedEntityData.defineId(TorchikomaEntity.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final Container inventory = new TorchikomaContainer(this);
+    private final TorchikomaContainer inventory = new TorchikomaContainer(this);
     protected float playerJumpPendingScale;
     private boolean allowStandSliding;
     protected int gallopSoundCounter;
@@ -90,6 +92,14 @@ public class TorchikomaEntity extends PathfinderMob implements GeoEntity, Screen
         entity.setHealth(health);
         entity.setEnergy(energy);
         return entity;
+    }
+
+    public void shoot(Player player) {
+        ItemStack stack = this.inventory.getItem(12);
+        if (stack.getItem() instanceof TorchLauncherItem item && !player.getCooldowns().isOnCooldown(item)) {
+            item.shootTorch(this.level(), player, stack);
+            player.getCooldowns().addCooldown(item, item.cooldown);
+        }
     }
 
     @Override
