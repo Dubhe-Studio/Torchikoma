@@ -31,8 +31,10 @@ public class C2STorchikomaEntity2Block implements IPacket{
     @SuppressWarnings("ConstantConditions")
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
-        Entity entity = context.getSender().level().getEntity(this.id);
-        if (entity instanceof TorchikomaEntity te) te.setStatus(this.status);
+        context.enqueueWork(()->{
+            Entity entity = context.getSender().level().getEntity(this.id);
+            if (entity instanceof TorchikomaEntity te) te.setStatus(this.status);
+        });
         context.setPacketHandled(true);
     }
 }

@@ -42,6 +42,7 @@ public class C2STorchikomaBlock2Entity implements IPacket {
                 entity.openGUI(sender, null);
             }
         });
+        context.setPacketHandled(true);
     }
 
 }

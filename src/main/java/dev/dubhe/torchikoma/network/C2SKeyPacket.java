@@ -10,7 +10,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class C2SKeyPacket implements IPacket{
+public class C2SKeyPacket implements IPacket {
     private final Command command;
 
     public C2SKeyPacket(Command command) {
@@ -28,8 +28,9 @@ public class C2SKeyPacket implements IPacket{
 
     @Override
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        this.command.consumer.accept(ctx.get());
-        ctx.get().setPacketHandled(true);
+        NetworkEvent.Context context = ctx.get();
+        context.enqueueWork(() -> this.command.consumer.accept(context));
+        context.setPacketHandled(true);
     }
 
     public enum Command {
@@ -37,10 +38,12 @@ public class C2SKeyPacket implements IPacket{
             ServerPlayer player = ctx.getSender();
             assert player != null;
             ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (!stack.isEmpty() && stack.getItem() instanceof ScreenProvider item) item.openGUI(player, stack);
+            if (!stack.isEmpty() && stack.getItem() instanceof ScreenProvider item)
+                item.openGUI(player, stack);
         });
 
         public final Consumer<NetworkEvent.Context> consumer;
+
         Command(Consumer<NetworkEvent.Context> consumer) {
             this.consumer = consumer;
         }

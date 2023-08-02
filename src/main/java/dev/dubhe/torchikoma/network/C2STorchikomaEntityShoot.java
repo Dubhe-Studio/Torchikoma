@@ -31,12 +31,14 @@ public class C2STorchikomaEntityShoot implements IPacket {
     @SuppressWarnings("ConstantConditions")
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context context = ctx.get();
-        Level level = context.getSender().level();
-        Player player = level.getPlayerByUUID(this.player);
-        Entity vehicle = player.getVehicle();
-        if (vehicle instanceof TorchikomaEntity torchikoma) {
-            torchikoma.shoot(player);
-        }
+        context.enqueueWork(()->{
+            Level level = context.getSender().level();
+            Player player = level.getPlayerByUUID(this.player);
+            Entity vehicle = player.getVehicle();
+            if (vehicle instanceof TorchikomaEntity torchikoma) {
+                torchikoma.shoot(player);
+            }
+        });
         context.setPacketHandled(true);
     }
 }
